@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.DashBoard">
+   <children>
+      <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Label>
+      <Label layoutX="53.0" layoutY="140.0" text="Welcome back to Library Management System" textFill="#d7f1ff">
+         <font>
+            <Font name="Open Sans" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="search_TextField" layoutX="53.0" layoutY="235.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="50.0" prefWidth="341.0" promptText="              Search faculty, student, books, or member... " styleClass="search">
+         <font>
+            <Font name="Open Sans" size="12.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <ImageView fx:id="search_Image" fitHeight="30.0" fitWidth="30.0" layoutX="61.0" layoutY="245.0">
+         <image>
+            <Image url="@../../../Image/img.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="addBooks" layoutX="63.0" layoutY="409.0" mnemonicParsing="false" onAction="#addBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-add" stylesheets="@DashBoard.css">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0">
+               <image>
+                  <Image url="@../../../Image/add.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="searchBooks" layoutX="203.0" layoutY="414.0" mnemonicParsing="false" onAction="#findBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-search">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0">
+               <image>
+                  <Image url="@../../../Image/searchbook.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="issueBooks" layoutX="342.0" layoutY="412.0" mnemonicParsing="false" onAction="#issueBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-issue">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0">
+               <image>
+                  <Image url="@../../../Image/issuebook.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="deleteBooks" layoutX="59.0" layoutY="523.0" mnemonicParsing="false" onAction="#deleteBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-deletebook">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0">
+               <image>
+                  <Image url="@../../../Image/Delete Book.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="returnBooks" layoutX="200.0" layoutY="523.0" mnemonicParsing="false" onAction="#returnBooks" onDragDetected="#returnBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-return">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0">
+               <image>
+                  <Image url="@../../../Image/returnbook.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="addMembers" layoutX="345.0" layoutY="525.0" mnemonicParsing="false" onAction="#addMembers" prefHeight="50.0" prefWidth="76.0" styleClass="book-addmember">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0">
+               <image>
+                  <Image url="@../../../Image/addmember.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Label layoutX="53.0" layoutY="360.0" text="Function (6)" textFill="#d7f1ff">
+         <font>
+            <Font name="Roboto Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="TOP" layoutX="68.0" layoutY="487.0" text="Add Book" textFill="#eceff1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="205.0" layoutY="487.0" text="Search Book" textFill="#eceff1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="350.0" layoutY="487.0" text="Issue Book" textFill="#eceff1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="61.0" layoutY="599.0" text="Delete Book" textFill="#eceff1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="204.0" layoutY="599.0" text="Return Book" textFill="#eceff1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="343.0" layoutY="599.0" text="Add member" textFill="#eceff1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="logOut" layoutX="193.0" layoutY="647.0" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="100.0" styleClass="button-logout" stylesheets="@DashBoard.css" text="   Logout" textFill="WHITE">
+         <font>
+            <Font name="Roboto Bold" size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" layoutX="191.0" layoutY="678.0" size="2.4em" />
+      <Label fx:id="numberStudent" layoutX="118.0" layoutY="72.0" text="23020155" textFill="WHITE">
+         <font>
+            <Font name="Roboto" size="46.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="anchor_IssueBook" layoutX="478.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="312.0" layoutY="100.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Issue Book">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="131.0" layoutY="191.0" text="Check Availability:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="issue_right" layoutX="573.0" layoutY="541.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Issue" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <ComboBox layoutX="388.0" layoutY="359.0" prefHeight="45.0" prefWidth="240.0" promptText="Category" styleClass="comboBox_SearchBook" visibleRowCount="5" />
+            <TextField layoutX="388.0" layoutY="186.0" prefHeight="45.0" prefWidth="240.0" promptText="Enter book ID" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label layoutX="131.0" layoutY="364.0" text="Select:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField layoutX="388.0" layoutY="244.0" prefHeight="90.0" prefWidth="240.0" promptText="Show if available" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="388.0" layoutY="422.0" prefHeight="45.0" prefWidth="180.0" promptText="Facutly/Student ID" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="388.0" layoutY="476.0" prefHeight="45.0" prefWidth="180.0" promptText="Book ID" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchor_FindBooks" layoutX="478.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="312.0" layoutY="137.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Search Book">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="126.0" layoutY="255.0" text="Search by:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="search_left" layoutX="537.0" layoutY="524.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Search" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <ComboBox layoutX="339.0" layoutY="250.0" prefHeight="45.0" prefWidth="240.0" promptText="Category" styleClass="comboBox_SearchBook" visibleRowCount="5" />
+            <TextField layoutX="339.0" layoutY="318.0" prefHeight="45.0" prefWidth="240.0" promptText="ID/Name/Author" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchor_deleteBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="315.0" layoutY="113.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Delete Book">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="126.0" layoutY="255.0" text="Search by:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="search_left1" layoutX="570.0" layoutY="412.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="145.0" styleClass="add-button-right" text="View Detail" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <ComboBox layoutX="401.0" layoutY="250.0" prefHeight="45.0" prefWidth="260.0" promptText="Category" styleClass="comboBox_SearchBook" visibleRowCount="5" />
+            <TextField layoutX="401.0" layoutY="316.0" prefHeight="45.0" prefWidth="260.0" promptText="ID/Name/Author" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchor_ReturnBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="315.0" layoutY="113.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Return Book">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="208.0" layoutY="305.0" text="Enter ID:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="search_left11" layoutX="597.0" layoutY="412.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="130.0" styleClass="add-button-right" text="View Detail" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <TextField layoutX="383.0" layoutY="298.0" prefHeight="50.0" prefWidth="260.0" promptText="Faculty/Student" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchor_AddMemebers" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="309.0" layoutY="87.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Member">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="208.0" layoutY="169.0" text="Choose:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="158.0" layoutY="240.0" text="Enter name:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="157.0" layoutY="294.0" text="Enter enrollment:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="158.0" layoutY="348.0" text="Enter program:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="add_right1" layoutX="607.0" layoutY="584.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ComboBox layoutX="402.0" layoutY="164.0" prefHeight="45.0" prefWidth="260.0" promptText="Student/Faculty" styleClass="comboBox_SearchBook" visibleRowCount="5" />
+            <TextField layoutX="402.0" layoutY="238.0" prefHeight="40.0" prefWidth="260.0" promptText="NguyenVanA" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="402.0" layoutY="292.0" prefHeight="40.0" prefWidth="260.0" promptText="01-1232312321" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="402.0" layoutY="346.0" prefHeight="40.0" prefWidth="260.0" promptText="Software Engineering" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label layoutX="158.0" layoutY="402.0" text="Year:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <DatePicker editable="false" layoutX="236.0" layoutY="405.0" prefHeight="30.0" prefWidth="146.0" promptText="       01/12/2023" styleClass="date" />
+            <Label layoutX="402.0" layoutY="402.0" text="Ph #:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField layoutX="465.0" layoutY="400.0" prefHeight="40.0" prefWidth="197.0" promptText="012345567" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label layoutX="158.0" layoutY="456.0" text="Email:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField layoutX="402.0" layoutY="454.0" prefHeight="40.0" prefWidth="260.0" promptText="Nguyenvana@gmail.com" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label layoutX="158.0" layoutY="510.0" text="Address:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField layoutX="402.0" layoutY="508.0" prefHeight="40.0" prefWidth="260.0" promptText="BacNinh" styleClass="add-textfield">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="484.8" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="69.0" layoutY="173.0" text="Search history" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="326.0" text="Recently added books" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Line endX="557.4000244140625" layoutX="171.65" layoutY="200.0" startX="-100.0" stroke="#eaeaea" strokeWidth="2.5" AnchorPane.leftAnchor="70.4" AnchorPane.rightAnchor="75.29997558593755" />
+            <Label layoutX="72.0" layoutY="206.0" text="ID" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="178.0" layoutY="206.0" text="Book Name" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="372.0" layoutY="206.0" text="Author Name" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="688.0" layoutY="206.0" text="Time" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="236.0" text="ID" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="175.0" layoutY="236.0" text="Book Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="368.0" layoutY="236.0" text="Author Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="673.0" layoutY="236.0" text="11:19 PM" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="261.0" text="ID" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="175.0" layoutY="261.0" text="Book Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="368.0" layoutY="261.0" text="Author Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="673.0" layoutY="261.0" text="11:19 PM" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="286.0" text="ID" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="175.0" layoutY="286.0" text="Book Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="368.0" layoutY="286.0" text="Author Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="673.0" layoutY="286.0" text="11:19 PM" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Line endX="557.4000244140625" layoutX="173.0" layoutY="370.0" startX="-100.0" stroke="#eaeaea" strokeWidth="2.5" />
+            <Label layoutX="72.0" layoutY="385.0" text="ID" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="175.0" layoutY="385.0" text="Book Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="368.0" layoutY="385.0" text="Author Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="673.0" layoutY="385.0" text="11:19 PM" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="410.0" text="ID" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="175.0" layoutY="410.0" text="Book Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="368.0" layoutY="410.0" text="Author Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="673.0" layoutY="410.0" text="11:19 PM" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="435.0" text="ID" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="175.0" layoutY="435.0" text="Book Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="368.0" layoutY="435.0" text="Author Name" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="673.0" layoutY="435.0" text="11:19 PM" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="351.0" text="ID" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="178.0" layoutY="351.0" text="Book Name" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="372.0" layoutY="351.0" text="Author Name" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="688.0" layoutY="351.0" text="Time" textFill="#c4c1c0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutX="345.0" layoutY="43.0" prefHeight="100.0" prefWidth="100.0" styleClass="user-image" stylesheets="@DashBoard.css">
+               <children>
+                  <ImageView fitHeight="120.0" fitWidth="120.0" layoutX="5.0" layoutY="5.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <Label layoutX="57.0" layoutY="16.0" text="Home Screen" textFill="#345494">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="information" layoutX="633.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="setting" layoutX="687.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="In4" layoutX="737.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Label layoutX="69.0" layoutY="475.0" text="Recomment for you" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="358.0" layoutY="506.0">
+               <image>
+                  <Image url="@../../../Image/book3.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="503.0" layoutY="502.0">
+               <image>
+                  <Image url="@../../../Image/book4.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="215.0" layoutY="506.0">
+               <image>
+                  <Image url="@../../../Image/book2.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="72.0" layoutY="506.0">
+               <image>
+                  <Image url="@../../../Image/book1.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="649.0" layoutY="502.0">
+               <image>
+                  <Image url="@../../../Image/book5.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="54.0" layoutY="639.0" text="The Critique of Pure Reason" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="239.0" layoutY="638.0" text="Stroller" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="330.0" layoutY="639.0" text="The Design of Everyday Things" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="529.0" layoutY="637.0" text="Lean Ex" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="662.0" layoutY="637.0" text="The Republic" textFill="#5f5f5f">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Button fx:id="home_Screen" layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children></AnchorPane>
+      <AnchorPane fx:id="mess_Success" layoutX="561.0" layoutY="25.0" prefHeight="700.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="287.0" layoutY="307.0" text="Successful" textFill="#318229">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="anchor_AddBooks" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="330.0" layoutY="139.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="115.0" layoutY="225.0" text="Enter Book ID:" textFill="#345494">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="115.0" layoutY="290.0" text="Enter Book Name:" textFill="#345494">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="115.0" layoutY="355.0" text="Enter Author Name:" textFill="#345494">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="115.0" layoutY="420.0" text="Enter Description:" textFill="#345494">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="textField_add_BookId" layoutX="400.0" layoutY="217.0" prefHeight="50.0" prefWidth="260.0" promptText="232312" styleClass="add-textfield" AnchorPane.topAnchor="217.0" />
+                  <TextField fx:id="textField_add_BookName" layoutX="400.0" layoutY="282.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. The Essential Rumi" styleClass="add-textfield" />
+                  <TextField fx:id="textField_add_AuthorName" layoutX="400.0" layoutY="347.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Rumi" styleClass="add-textfield" />
+                  <TextField fx:id="textField_add_Descriptopn" layoutX="400.0" layoutY="412.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Love poems by Rumi" styleClass="add-textfield" />
+                  <Button fx:id="add_right" layoutX="611.0" layoutY="529.0" mnemonicParsing="false" onAction="#mess_Success" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+                     <graphic>
+                        <ImageView>
+                           <image>
+                              <Image url="@../../../Image/information.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+                     <graphic>
+                        <ImageView>
+                           <image>
+                              <Image url="@../../../Image/settings.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0">
+                           <image>
+                              <Image url="@../../../Image/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0">
+                           <image>
+                              <Image url="@../../../Image/house.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

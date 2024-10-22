@@ -1,0 +1,151 @@
+.backgroundleft{
+     -fx-background-color:#486494;
+}
+.backgroundright{
+     -fx-background-color: #f6f6f6;
+     -fx-background-radius: 0px 15px 15px 0px;
+}
+.search{
+     -fx-background-color:#7084ac;
+     -fx-text-fill: #FFFFFF;
+     -fx-background-radius: 0px 15px 15px 15px;
+
+}
+
+.button-add{
+     -fx-background-color: transparent;
+     -fx-cursor: hand;
+}
+.button-add: focused{
+     -fx-border-color: #ac6cc4;
+     -fx-border-radius: 0px 8px 8px 8px;
+     -fx-border-width: 2.5;
+     -fx-scale-x: 1.1;
+     -fx-scale-y: 1.1;
+}
+
+.button-search{
+     -fx-background-color: transparent;
+     -fx-cursor: hand;
+}
+.button-search: focused{
+     -fx-border-color: #dad182;
+     -fx-border-radius: 0px 8px 8px 8px;
+     -fx-border-width: 2.5;
+     -fx-scale-x: 1.1;
+     -fx-scale-y: 1.1;
+}
+
+.button-issue{
+     -fx-background-color: transparent;
+     -fx-cursor: hand;
+}
+.button-issue: focused{
+     -fx-border-color: #d8bdad;
+     -fx-border-radius: 0px 8px 8px 8px;
+     -fx-border-width: 2.5;
+     -fx-scale-x: 1.1;
+     -fx-scale-y: 1.1;
+}
+
+
+.book-deletebook{
+     -fx-background-color: transparent;
+     -fx-cursor: hand;
+}
+.book-deletebook: focused{
+     -fx-border-color: #d7529c;
+     -fx-border-radius: 0px 8px 8px 8px;
+     -fx-border-width: 2.5;
+     -fx-scale-x: 1.1;
+     -fx-scale-y: 1.1;
+}
+
+.book-return{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.book-return: focused{
+     -fx-border-color: #e6f9ff;
+     -fx-border-radius: 0px 8px 8px 8px;
+     -fx-border-width: 2.5;
+     -fx-scale-x: 1.1;
+     -fx-scale-y: 1.1;
+}
+
+.book-addmember{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.book-addmember: focused{
+     -fx-border-color: #c96a69;
+     -fx-border-radius: 0px 8px 8px 8px;
+     -fx-border-width: 2.5;
+     -fx-scale-x: 1.1;
+     -fx-scale-y: 1.1;
+}
+.button-logout{
+     -fx-background-color: transparent;
+     -fx-cursor: hand;
+}
+.button-logout: hover{
+     -fx-background-color: #cf5a4e;
+}
+.user-image{
+     -fx-background-color: transparent;
+     -fx-border-color :#ead5cb;
+     -fx-border-radius: 0px 10px 10px 10px;
+     -fx-border-width: 2px;
+     -fx-cursor: hand;
+}
+.button-btn{
+     -fx-background-color: #f5f5f5;
+     -fx-cursor: hand;
+}
+
+.add-textfield {
+    -fx-background-color: #FFFFFF;
+    -fx-cursor: hand;
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #5f5f5f;
+}
+
+.add-textfield:focused {
+    -fx-border-color: #9874bc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.add-button-right {
+    -fx-background-color: #335cb3;
+    -fx-cursor: hand;
+    -fx-background-radius: 0px 12px 12px 12px;
+}
+.comboBox_SearchBook {
+   -fx-background-color: #335cb3;
+   -fx-cursor: hand;
+   -fx-background-radius: 0px 12px 12px 12px;
+   -fx-padding: 5px;
+}
+.comboBox_SearchBook : hover {
+   -fx-border-color: #0056b3;
+}
+.comboBox_SearchBook .list-cell {
+   -fx-text-fill: white;
+   -fx-font-size: 15px;
+}
+.comboBox_SearchBook .list-cell :hover {
+   -fx-background-color :#0056b3;
+}
+
+.background_linhtinh {
+   -fx-background-color : transparent;
+}
+.date {
+   -fx-background-color :#FFFFFF;
+   -fx-background-radius: 10px 10px 10px 10px;
+   -fx-text-fill : #5f5f5f;
+}
+
