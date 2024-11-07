@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.DashBoard">
+<AnchorPane prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
    <children>
       <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
          <font>

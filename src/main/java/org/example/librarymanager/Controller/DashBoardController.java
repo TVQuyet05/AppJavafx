@@ -1,4 +1,4 @@
-package org.example.librarymanager;
+package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class DashBoard implements Initializable {
+public class DashBoardController implements Initializable {
 
     @FXML
     private Button In4;
@@ -130,7 +130,8 @@ public class DashBoard implements Initializable {
                     logOut.getScene().getWindow().hide();
 
                     try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/Login.fxml")));
+
                         Stage stage = new Stage();
                         Scene scene = new Scene(root);
 

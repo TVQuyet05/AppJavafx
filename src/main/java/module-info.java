@@ -6,4 +6,6 @@ module org.example.librarymanager {
 
     opens org.example.librarymanager to javafx.fxml;
     exports org.example.librarymanager;
+    exports org.example.librarymanager.Controller;
+    opens org.example.librarymanager.Controller to javafx.fxml;
 }

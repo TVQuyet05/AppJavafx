@@ -19,14 +19,14 @@ import java.util.Objects;
  *
  * @author WINDOWS 10
  */
-public class HelloApplication extends Application {
+public class App extends Application {
 
     private double x = 0;
     private double y = 0;
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Login.fxml")));
 
         Scene scene = new Scene(root);
 
