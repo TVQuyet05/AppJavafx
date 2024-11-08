@@ -14,9 +14,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.example.librarymanager.Service.LibraryDatabase;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -144,53 +146,68 @@ public class LoginScreenController implements Initializable {
 
     public void login() throws IOException {
         try {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Admin Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Successfully Login!");
-            alert.showAndWait();
 
-            Parent root1 = login.getParent().getParent();
+            // Test connect database
+            LibraryDatabase database = LibraryDatabase.getInstance();
+            Connection connect = database.getConnection();
 
-            FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
-            fadeIn2.setFromValue(1.0);
-            fadeIn2.setToValue(0.0);
+            boolean checkStudent = database.authenticateStudent(studentNumber.getText(), passWord.getText());
 
-            fadeIn2.setOnFinished(event -> {
-                login.getScene().getWindow().hide();
+            if(checkStudent) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Admin Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully Login!");
+                alert.showAndWait();
 
-                try {
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard.fxml")));
+                Parent root1 = login.getParent().getParent();
+
+                FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
+                fadeIn2.setFromValue(1.0);
+                fadeIn2.setToValue(0.0);
+
+                fadeIn2.setOnFinished(event -> {
+                    login.getScene().getWindow().hide();
+
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard.fxml")));
 
 
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root);
 
-                    root.setOnMousePressed((MouseEvent mouseEvent) -> {
-                        x = mouseEvent.getSceneX();
-                        y = mouseEvent.getSceneY();
-                    });
+                        root.setOnMousePressed((MouseEvent mouseEvent) -> {
+                            x = mouseEvent.getSceneX();
+                            y = mouseEvent.getSceneY();
+                        });
 
-                    root.setOnMouseDragged((MouseEvent mouseEvent) -> {
-                        stage.setX(mouseEvent.getScreenX() - x);
-                        stage.setY(mouseEvent.getScreenY() - y);
-                    });
+                        root.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                            stage.setX(mouseEvent.getScreenX() - x);
+                            stage.setY(mouseEvent.getScreenY() - y);
+                        });
 
-                    FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
-                    fadeIn.setFromValue(0.0);
-                    fadeIn.setToValue(1.0);
+                        FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
+                        fadeIn.setFromValue(0.0);
+                        fadeIn.setToValue(1.0);
 
-                    stage.initStyle(StageStyle.TRANSPARENT);
-                    stage.setScene(scene);
-                    stage.show();
-                    fadeIn.play();
+                        stage.initStyle(StageStyle.TRANSPARENT);
+                        stage.setScene(scene);
+                        stage.show();
+                        fadeIn.play();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            fadeIn2.play();
+                fadeIn2.play();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Admin Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed Login!");
+                alert.showAndWait();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
