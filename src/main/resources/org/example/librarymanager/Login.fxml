@@ -30,7 +30,7 @@
             </Label>
             <TextField layoutX="202.0" layoutY="310.0" prefHeight="40.0" prefWidth="280.0" promptText="Email" styleClass="username" stylesheets="@Login.css" />
             <FontAwesomeIcon fill="#595959" glyphName="ENVELOPE" layoutX="167.0" layoutY="339.0" size="2.2em" text="" wrappingWidth="22.628570556640625" />
-            <Button fx:id="forgotpass_submit" layoutX="202.0" layoutY="383.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="280.0" styleClass="button-btn" stylesheets="@Login.css" text="Submit" textFill="WHITE">
+            <Button fx:id="forgotpass_submit" layoutX="202.0" layoutY="383.0" mnemonicParsing="false" onAction="#successful" prefHeight="40.0" prefWidth="280.0" styleClass="button-btn" stylesheets="@Login.css" text="Submit" textFill="WHITE">
                <font>
                   <Font name="Roboto Bold" size="12.0" />
                </font>
@@ -52,7 +52,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="signIn_Anchor" layoutX="700.0" prefHeight="700.0" prefWidth="600.0" styleClass="background" stylesheets="@Login.css">
+      <AnchorPane fx:id="signIn_Anchor" layoutX="700.0" prefHeight="700.0" prefWidth="600.0" styleClass="background" stylesheets="@Login.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="700.0" AnchorPane.rightAnchor="-1.6000000000000227" AnchorPane.topAnchor="0.0">
          <children>
             <Label layoutX="176.0" layoutY="118.0" prefHeight="68.0" prefWidth="254.0" text="Welcome!" textFill="#3c75c4">
                <font>
@@ -208,5 +208,23 @@
             <Image url="@../../../Image/LibraryManager.png" />
          </image>
       </ImageView>
+      <AnchorPane fx:id="mess_Success" layoutX="571.0" layoutY="35.0" prefHeight="700.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="700.0" AnchorPane.rightAnchor="-1.6000000000000227" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="185.0" layoutY="315.0" text="Successful" textFill="#318229">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="mess_Falied" layoutX="581.0" layoutY="45.0" prefHeight="700.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="700.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="155.0" layoutY="315.0" text="Falied Login!" textFill="#318229">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

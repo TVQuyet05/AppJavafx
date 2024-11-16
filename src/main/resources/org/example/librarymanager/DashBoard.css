@@ -16,7 +16,7 @@
      -fx-background-color: transparent;
      -fx-cursor: hand;
 }
-.button-add: focused{
+.button-add:focused{
      -fx-border-color: #ac6cc4;
      -fx-border-radius: 0px 8px 8px 8px;
      -fx-border-width: 2.5;
@@ -28,7 +28,7 @@
      -fx-background-color: transparent;
      -fx-cursor: hand;
 }
-.button-search: focused{
+.button-search:focused{
      -fx-border-color: #dad182;
      -fx-border-radius: 0px 8px 8px 8px;
      -fx-border-width: 2.5;
@@ -40,7 +40,7 @@
      -fx-background-color: transparent;
      -fx-cursor: hand;
 }
-.button-issue: focused{
+.button-issue:focused{
      -fx-border-color: #d8bdad;
      -fx-border-radius: 0px 8px 8px 8px;
      -fx-border-width: 2.5;
@@ -53,7 +53,7 @@
      -fx-background-color: transparent;
      -fx-cursor: hand;
 }
-.book-deletebook: focused{
+.book-deletebook:focused{
      -fx-border-color: #d7529c;
      -fx-border-radius: 0px 8px 8px 8px;
      -fx-border-width: 2.5;
@@ -65,7 +65,7 @@
     -fx-background-color: transparent;
     -fx-cursor: hand;
 }
-.book-return: focused{
+.book-return:focused{
      -fx-border-color: #e6f9ff;
      -fx-border-radius: 0px 8px 8px 8px;
      -fx-border-width: 2.5;
@@ -77,7 +77,7 @@
     -fx-background-color: transparent;
     -fx-cursor: hand;
 }
-.book-addmember: focused{
+.book-addmember:focused{
      -fx-border-color: #c96a69;
      -fx-border-radius: 0px 8px 8px 8px;
      -fx-border-width: 2.5;
@@ -88,7 +88,7 @@
      -fx-background-color: transparent;
      -fx-cursor: hand;
 }
-.button-logout: hover{
+.button-logout:hover{
      -fx-background-color: #cf5a4e;
 }
 .user-image{
@@ -129,7 +129,7 @@
    -fx-background-radius: 0px 12px 12px 12px;
    -fx-padding: 5px;
 }
-.comboBox_SearchBook : hover {
+.comboBox_SearchBook :hover {
    -fx-border-color: #0056b3;
 }
 .comboBox_SearchBook .list-cell {
@@ -149,3 +149,40 @@
    -fx-text-fill : #5f5f5f;
 }
 
+.table_view {
+   -fx-background-color:#f6f6f6;
+}
+.table_view .column-header {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #f6f6f6;
+    -fx-font-weight: bold;
+}
+
+.detail_book {
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-border-color: #D3D3D3;
+    -fx-border-width: 1.2px;
+    -fx-background-color: transparent;
+}
+
+.detail_book_background {
+    -fx-background-color: #ffffff;
+}
+.button_detailbook_backtodashBoard {
+    -fx-background-color: transparent;
+    -fx-cursor:  hand;
+}
+.label_detailbook_author {
+    -fx-background-color: #000000;
+    -fx-background-radius: 10px 10px 10px 10px;
+}
+.button_detailbook_borrowBook{
+    -fx-background-color: #000000;
+    -fx-background-radius: 8px 8px 8px 8px;
+    -fx-text-fill: #ffffff;
+}
+.label_detailbook_status{
+    -fx-background-color: #e0fae3;
+    -fx-background-radius: 15px 15px 15px;
+    -fx-text-fill: #000000;
+}

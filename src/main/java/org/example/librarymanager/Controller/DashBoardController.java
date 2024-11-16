@@ -10,12 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.scene.effect.GaussianBlur;
 
 import java.io.IOException;
 import java.net.URL;
@@ -168,14 +170,14 @@ public class DashBoardController implements Initializable {
 
     public void switchPain(AnchorPane nextPane) {
 
-        FadeTransition fade = new FadeTransition(Duration.millis(500), currentPane);
+        FadeTransition fade = new FadeTransition(Duration.millis(300), currentPane);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
         fade.setOnFinished(event -> {
             currentPane.setVisible(false);
             nextPane.setVisible(true);
 
-            FadeTransition fade2 = new FadeTransition(Duration.millis(1000), nextPane);
+            FadeTransition fade2 = new FadeTransition(Duration.millis(800), nextPane);
             fade2.setFromValue(0.0);
             fade2.setToValue(1.0);
             fade2.play();
@@ -183,28 +185,6 @@ public class DashBoardController implements Initializable {
             currentPane = nextPane;
         });
         fade.play();
-    }
-
-    public void mess_Success() {
-        FadeTransition fade = new FadeTransition(Duration.millis(500), mess_Success);
-        fade.setFromValue(0);
-        fade.setToValue(1);
-        fade.setOnFinished(event -> {
-            mess_Success.setVisible(true);
-        });
-        fade.play();
-        PauseTransition pause = new PauseTransition(Duration.seconds(1));
-
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), mess_Success);
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-
-        fadeOut.setOnFinished(event -> {
-            mess_Success.setVisible(false);
-        });
-
-        fade.setOnFinished(event -> pause.play());
-        pause.setOnFinished(event -> fadeOut.play());
     }
 
     public void addBooks() {
@@ -234,6 +214,23 @@ public class DashBoardController implements Initializable {
     public void backHome() {
         switchPain(anchor_HomeScreen);
     }
+
+    public void successful() {
+        GaussianBlur gaussianBlur = new GaussianBlur();
+        gaussianBlur.setRadius(15.0);
+        currentPane.setEffect(gaussianBlur);
+        mess_Success.setVisible(true);
+
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+
+        pauseTransition.setOnFinished(event -> {
+            currentPane.setEffect(null);
+            mess_Success.setVisible(false);
+        });
+
+        pauseTransition.play();
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

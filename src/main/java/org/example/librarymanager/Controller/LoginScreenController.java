@@ -1,6 +1,7 @@
 package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -76,6 +78,16 @@ public class LoginScreenController implements Initializable {
     private AnchorPane forgot_Anchor;
 
     @FXML
+    private AnchorPane mess_Success;
+
+    @FXML
+    private AnchorPane mess_Falied;
+
+    @FXML
+    private AnchorPane currentPane = null;
+
+
+    @FXML
     private Button forgotpass_submit;
 
     private double x = 0;
@@ -91,17 +103,21 @@ public class LoginScreenController implements Initializable {
         fadeTransition.play();
     }
 
-    public void switchPain(AnchorPane a, AnchorPane b) {
-        FadeTransition fade = new FadeTransition(Duration.millis(500), a);
+    public void switchPain(AnchorPane nextPane) {
+
+        FadeTransition fade = new FadeTransition(Duration.millis(300), currentPane);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
         fade.setOnFinished(event -> {
-            a.setVisible(false);
-            b.setVisible(true);
-            FadeTransition fade2 = new FadeTransition(Duration.millis(1000), b);
+            currentPane.setVisible(false);
+            nextPane.setVisible(true);
+
+            FadeTransition fade2 = new FadeTransition(Duration.millis(800), nextPane);
             fade2.setFromValue(0.0);
             fade2.setToValue(1.0);
             fade2.play();
+
+            currentPane = nextPane;
         });
         fade.play();
     }
@@ -147,66 +163,72 @@ public class LoginScreenController implements Initializable {
     public void login() throws IOException {
         try {
 
-            // Test connect database
-            LibraryDatabase database = LibraryDatabase.getInstance();
-            Connection connect = database.getConnection();
+//            // Test connect database
+//            LibraryDatabase database = LibraryDatabase.getInstance();
+//            Connection connect = database.getConnection();
 
-            boolean checkStudent = database.authenticateStudent(studentNumber.getText(), passWord.getText());
+//            boolean checkStudent = database.authenticateStudent(studentNumber.getText(), passWord.getText());
+            boolean checkStudent = true;
+            if (checkStudent) {
+                successful();
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+                pauseTransition.setOnFinished(pauseEvent -> {
+                    Parent root1 = login.getParent().getParent();
 
-            if(checkStudent) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Admin Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Successfully Login!");
-                alert.showAndWait();
+                    FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
+                    fadeIn2.setFromValue(1.0);
+                    fadeIn2.setToValue(0.0);
+                    fadeIn2.setOnFinished(event -> {
+                        login.getScene().getWindow().hide();
 
-                Parent root1 = login.getParent().getParent();
-
-                FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
-                fadeIn2.setFromValue(1.0);
-                fadeIn2.setToValue(0.0);
-
-                fadeIn2.setOnFinished(event -> {
-                    login.getScene().getWindow().hide();
-
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard.fxml")));
+                        try {
+                            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard.fxml")));
 
 
-                        Stage stage = new Stage();
-                        Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(root);
 
-                        root.setOnMousePressed((MouseEvent mouseEvent) -> {
-                            x = mouseEvent.getSceneX();
-                            y = mouseEvent.getSceneY();
-                        });
+                            root.setOnMousePressed((MouseEvent mouseEvent) -> {
+                                x = mouseEvent.getSceneX();
+                                y = mouseEvent.getSceneY();
+                            });
 
-                        root.setOnMouseDragged((MouseEvent mouseEvent) -> {
-                            stage.setX(mouseEvent.getScreenX() - x);
-                            stage.setY(mouseEvent.getScreenY() - y);
-                        });
+                            root.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                                stage.setX(mouseEvent.getScreenX() - x);
+                                stage.setY(mouseEvent.getScreenY() - y);
+                            });
 
-                        FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
-                        fadeIn.setFromValue(0.0);
-                        fadeIn.setToValue(1.0);
+                            FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
+                            fadeIn.setFromValue(0.0);
+                            fadeIn.setToValue(1.0);
 
-                        stage.initStyle(StageStyle.TRANSPARENT);
-                        stage.setScene(scene);
-                        stage.show();
-                        fadeIn.play();
+                            stage.initStyle(StageStyle.TRANSPARENT);
+                            stage.setScene(scene);
+                            stage.show();
+                            fadeIn.play();
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                    fadeIn2.play();
+                });
+                pauseTransition.play();
+            } else {
+                GaussianBlur gaussianBlur = new GaussianBlur();
+                gaussianBlur.setRadius(25.0);
+                currentPane.setEffect(gaussianBlur);
+                mess_Falied.setVisible(true);
+
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+
+                pauseTransition.setOnFinished(event -> {
+                    currentPane.setEffect(null);
+                    mess_Falied.setVisible(false);
                 });
 
-                fadeIn2.play();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Admin Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Failed Login!");
-                alert.showAndWait();
+                pauseTransition.play();
             }
 
         } catch (Exception e) {
@@ -216,27 +238,50 @@ public class LoginScreenController implements Initializable {
 
 
     public void signUp() {
-        switchPain(signIn_Anchor, signUp_Anchor);
+        switchPain(signUp_Anchor);
     }
 
     public void register() {
-        switchPain(signUp_Anchor, signIn_Anchor);
+        successful();
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+        pauseTransition.setOnFinished(event -> {
+            switchPain(signIn_Anchor);
+        });
+        pauseTransition.play();
     }
 
     public void register_signIn() {
-        switchPain(signUp_Anchor, signIn_Anchor);
+        switchPain(signIn_Anchor);
     }
 
     public void forgotPassword() {
-        switchPain(signIn_Anchor, forgot_Anchor);
+        switchPain(forgot_Anchor);
     }
-    public void forgotPassword_SignIn(){
-        switchPain(forgot_Anchor, signIn_Anchor);
+
+    public void forgotPassword_SignIn() {
+        switchPain(signIn_Anchor);
+    }
+
+    public void successful() {
+        GaussianBlur gaussianBlur = new GaussianBlur();
+        gaussianBlur.setRadius(25.0);
+        currentPane.setEffect(gaussianBlur);
+        mess_Success.setVisible(true);
+
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+
+        pauseTransition.setOnFinished(event -> {
+            currentPane.setEffect(null);
+            mess_Success.setVisible(false);
+        });
+
+        pauseTransition.play();
+
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        currentPane = signIn_Anchor;
     }
 }

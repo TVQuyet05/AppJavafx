@@ -2,10 +2,13 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -425,7 +428,7 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Button fx:id="add_right1" layoutX="607.0" layoutY="584.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
+            <Button fx:id="add_right1" layoutX="607.0" layoutY="584.0" mnemonicParsing="false" onAction="#successful" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -523,7 +526,81 @@
             </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_HomeScreen" layoutX="484.8" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_AddBooks" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.399999999999977" AnchorPane.topAnchor="8.0">
+         <children>
+            <Label layoutX="330.0" layoutY="139.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="115.0" layoutY="225.0" text="Enter Book ID:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="115.0" layoutY="290.0" text="Enter Book Name:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="115.0" layoutY="355.0" text="Enter Author Name:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="115.0" layoutY="420.0" text="Enter Description:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_add_BookId" layoutX="400.0" layoutY="217.0" prefHeight="50.0" prefWidth="260.0" promptText="232312" styleClass="add-textfield" AnchorPane.topAnchor="217.0" />
+            <TextField fx:id="textField_add_BookName" layoutX="400.0" layoutY="282.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. The Essential Rumi" styleClass="add-textfield" />
+            <TextField fx:id="textField_add_AuthorName" layoutX="400.0" layoutY="347.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Rumi" styleClass="add-textfield" />
+            <TextField fx:id="textField_add_Descriptopn" layoutX="400.0" layoutY="412.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Love poems by Rumi" styleClass="add-textfield" />
+            <Button fx:id="add_right" layoutX="611.0" layoutY="529.0" mnemonicParsing="false" onAction="#successful" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/information.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../../../Image/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="45.0">
+                     <image>
+                        <Image url="@../../../Image/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../../../Image/house.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="69.0" layoutY="173.0" text="Search history" textFill="#345494">
                <font>
@@ -533,168 +610,6 @@
             <Label layoutX="72.0" layoutY="326.0" text="Recently added books" textFill="#345494">
                <font>
                   <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Line endX="557.4000244140625" layoutX="171.65" layoutY="200.0" startX="-100.0" stroke="#eaeaea" strokeWidth="2.5" AnchorPane.leftAnchor="70.4" AnchorPane.rightAnchor="75.29997558593755" />
-            <Label layoutX="72.0" layoutY="206.0" text="ID" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="178.0" layoutY="206.0" text="Book Name" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="372.0" layoutY="206.0" text="Author Name" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="688.0" layoutY="206.0" text="Time" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="236.0" text="ID" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="175.0" layoutY="236.0" text="Book Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="236.0" text="Author Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="673.0" layoutY="236.0" text="11:19 PM" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="261.0" text="ID" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="175.0" layoutY="261.0" text="Book Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="261.0" text="Author Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="673.0" layoutY="261.0" text="11:19 PM" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="286.0" text="ID" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="175.0" layoutY="286.0" text="Book Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="286.0" text="Author Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="673.0" layoutY="286.0" text="11:19 PM" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Line endX="557.4000244140625" layoutX="173.0" layoutY="370.0" startX="-100.0" stroke="#eaeaea" strokeWidth="2.5" />
-            <Label layoutX="72.0" layoutY="385.0" text="ID" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="175.0" layoutY="385.0" text="Book Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="385.0" text="Author Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="673.0" layoutY="385.0" text="11:19 PM" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="410.0" text="ID" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="175.0" layoutY="410.0" text="Book Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="410.0" text="Author Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="673.0" layoutY="410.0" text="11:19 PM" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="435.0" text="ID" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="175.0" layoutY="435.0" text="Book Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="435.0" text="Author Name" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="673.0" layoutY="435.0" text="11:19 PM" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="351.0" text="ID" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="178.0" layoutY="351.0" text="Book Name" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="372.0" layoutY="351.0" text="Author Name" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="688.0" layoutY="351.0" text="Time" textFill="#c4c1c0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <AnchorPane layoutX="345.0" layoutY="43.0" prefHeight="100.0" prefWidth="100.0" styleClass="user-image" stylesheets="@DashBoard.css">
@@ -802,6 +717,28 @@
                   </ImageView>
                </graphic>
             </Button>
+            <TableView layoutX="70.0" layoutY="198.0" prefHeight="130.0" prefWidth="660.0" styleClass="table_view" stylesheets="@DashBoard.css">
+              <columns>
+                <TableColumn prefWidth="59.199951171875" styleClass="vovan" text="ID" />
+                <TableColumn prefWidth="152.79998779296875" text="Book Name" />
+                  <TableColumn prefWidth="239.20004272460938" text="Author Name" />
+                  <TableColumn prefWidth="192.7999267578125" text="Time" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView layoutX="70.0" layoutY="350.0" prefHeight="130.0" prefWidth="660.0" styleClass="table_view" stylesheets="@DashBoard.css">
+               <columns>
+                  <TableColumn prefWidth="59.199951171875" styleClass="vovan" text="ID" />
+                  <TableColumn prefWidth="152.79998779296875" text="Book Name" />
+                  <TableColumn prefWidth="239.20004272460938" text="Author Name" />
+                  <TableColumn prefWidth="192.7999267578125" text="Time" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
          </children></AnchorPane>
       <AnchorPane fx:id="mess_Success" layoutX="561.0" layoutY="25.0" prefHeight="700.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
@@ -810,78 +747,135 @@
                   <Font name="System Bold" size="48.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="anchor_AddBooks" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="-6.0" prefHeight="700.0" prefWidth="1301.6000000000001" styleClass="detail_book_background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane layoutX="90.6" layoutY="80.0" prefHeight="540.0" prefWidth="380.0" styleClass="detail_book" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="80.0">
                <children>
-                  <Label layoutX="330.0" layoutY="139.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
+                  <ImageView fitHeight="540.0" fitWidth="380.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@../../../Image/book2.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <Button layoutX="48.0" layoutY="24.0" mnemonicParsing="false" styleClass="button_detailbook_backtodashBoard" text="   Back to Dashboard" textFill="#71717a">
+               <graphic>
+                  <FontAwesomeIcon fill="#71717a" glyphName="ARROW_LEFT" size="1.5em" strokeWidth="0.0">
+                     <cursor>
+                        <Cursor fx:constant="NONE" />
+                     </cursor>
+                  </FontAwesomeIcon>
+               </graphic>
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+            </Button>
+            <AnchorPane layoutX="590.0" layoutY="55.0" prefHeight="414.0" prefWidth="588.0" styleClass="detail_book" AnchorPane.leftAnchor="590.0" AnchorPane.rightAnchor="100.39999999999986" AnchorPane.topAnchor="20.0">
+               <children>
+                  <Label layoutX="24.0" layoutY="35.0" text="The Design of Everyday Things" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                      <font>
-                        <Font name="System Bold" size="30.0" />
+                        <Font name="Segoe UI Bold" size="31.0" />
                      </font>
                   </Label>
-                  <Label layoutX="115.0" layoutY="225.0" text="Enter Book ID:" textFill="#345494">
+                  <Label layoutX="43.0" layoutY="59.0" text="Don Norman" textFill="#71717a" AnchorPane.topAnchor="59.0">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="Segoe UI" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="115.0" layoutY="290.0" text="Enter Book Name:" textFill="#345494">
+                  <FontAwesomeIcon fill="#7e7d7d" glyphName="USER" layoutX="22.0" layoutY="75.0" size="1.2em" AnchorPane.leftAnchor="20.0" />
+                  <Label layoutX="22.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" text="  Psychology  " textFill="WHITE" AnchorPane.leftAnchor="20.0">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="Segoe UI Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label layoutX="115.0" layoutY="355.0" text="Enter Author Name:" textFill="#345494">
+                  <Line endX="461.8999938964844" layoutX="129.0" layoutY="314.0" startX="-100.0" stroke="#71717a" strokeWidth="0.5" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                  <Label layoutX="109.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" text="  Design  " textFill="WHITE">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="Segoe UI Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label layoutX="115.0" layoutY="420.0" text="Enter Description:" textFill="#345494">
+                  <Label layoutX="172.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" text="  Human Factors  " textFill="WHITE">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="Segoe UI Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="textField_add_BookId" layoutX="400.0" layoutY="217.0" prefHeight="50.0" prefWidth="260.0" promptText="232312" styleClass="add-textfield" AnchorPane.topAnchor="217.0" />
-                  <TextField fx:id="textField_add_BookName" layoutX="400.0" layoutY="282.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. The Essential Rumi" styleClass="add-textfield" />
-                  <TextField fx:id="textField_add_AuthorName" layoutX="400.0" layoutY="347.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Rumi" styleClass="add-textfield" />
-                  <TextField fx:id="textField_add_Descriptopn" layoutX="400.0" layoutY="412.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Love poems by Rumi" styleClass="add-textfield" />
-                  <Button fx:id="add_right" layoutX="611.0" layoutY="529.0" mnemonicParsing="false" onAction="#mess_Success" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
+                  <Label layoutX="19.0" layoutY="137.0" text="Description" AnchorPane.leftAnchor="20.0">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="Segoe UI Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="178.0" lineSpacing="4.0" prefWidth="548.0" text="The Design of Everyday Things shows that good, usable design is possible. The rules are simple: make things visible, exploit natural relationships that couple function and control, and make intelligent use of constraints. The goal: guide the user effortlessly to the right action on the right control at the right time." textFill="#71717a" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="19.0" layoutY="338.0" text="ISBN" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="336.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="370.0" text="978-0465050659" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="221.0" layoutY="338.0" text="Publication Date" textFill="#71717a" AnchorPane.bottomAnchor="58.0">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="421.0" layoutY="338.0" text="Pages" textFill="#71717a" AnchorPane.bottomAnchor="58.0">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="444.0" layoutY="367.0" text="368" AnchorPane.bottomAnchor="20.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="246.0" layoutY="367.0" text="2013" AnchorPane.bottomAnchor="20.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIcon glyphName="CALENDAR" layoutX="221.0" layoutY="384.0" size="1.2em" />
+                  <FontAwesomeIcon glyphName="BOOK" layoutX="421.0" layoutY="384.0" size="1.2em" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="590.0" layoutY="483.0" prefHeight="200.0" prefWidth="394.0" styleClass="detail_book" AnchorPane.bottomAnchor="20.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="34.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="40.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="313.0" layoutY="36.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" text="Available" textFill="#71717a" AnchorPane.rightAnchor="25.399999999999977">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="25.6" layoutY="139.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="346.0" styleClass="button_detailbook_borrowBook" text="Borrow Book" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+                     <font>
+                        <Font name="Segoe UI Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
-                     <graphic>
-                        <ImageView>
-                           <image>
-                              <Image url="@../../../Image/information.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
-                     <graphic>
-                        <ImageView>
-                           <image>
-                              <Image url="@../../../Image/settings.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
-                     <graphic>
-                        <ImageView fitHeight="45.0" fitWidth="45.0">
-                           <image>
-                              <Image url="@../../../Image/user.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0">
-                           <image>
-                              <Image url="@../../../Image/house.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <Label layoutX="21.0" layoutY="80.0" text="Rating:" textFill="#71717a">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="1001.0" layoutY="483.0" prefHeight="200.0" prefWidth="200.0" styleClass="detail_book" AnchorPane.bottomAnchor="20.0">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="42.0" layoutY="17.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@../../../Image/qrtest.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
          </children>
