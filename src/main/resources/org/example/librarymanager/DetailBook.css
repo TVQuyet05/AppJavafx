@@ -1,0 +1,28 @@
+.detail_book {
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-border-color: #D3D3D3;
+    -fx-border-width: 1.2px;
+    -fx-background-color: transparent;
+}
+
+.detail_book_background {
+    -fx-background-color: #ffffff;
+}
+.button_detailbook_backtodashBoard {
+    -fx-background-color: transparent;
+    -fx-cursor:  hand;
+}
+.label_detailbook_author {
+    -fx-background-color: #000000;
+    -fx-background-radius: 10px 10px 10px 10px;
+}
+.button_detailbook_borrowBook{
+    -fx-background-color: #000000;
+    -fx-background-radius: 8px 8px 8px 8px;
+    -fx-text-fill: #ffffff;
+}
+.label_detailbook_status{
+    -fx-background-color: #e0fae3;
+    -fx-background-radius: 15px 15px 15px;
+    -fx-text-fill: #000000;
+}

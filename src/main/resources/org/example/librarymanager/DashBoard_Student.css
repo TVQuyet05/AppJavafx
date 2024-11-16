@@ -1,0 +1,14 @@
+.backgroundleft{
+    -fx-background-color:#486494;
+}
+.background {
+    -fx-background-color: #ffffff;
+}
+.backgroundright{
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 0px 15px 15px 0px;
+}
+.button-add{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}

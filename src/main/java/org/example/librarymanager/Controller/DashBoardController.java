@@ -112,6 +112,9 @@ public class DashBoardController implements Initializable {
 
     private AnchorPane currentPane = null;
 
+    @FXML
+    private AnchorPane anchor_DashBoard;
+
 
 
 
@@ -229,6 +232,18 @@ public class DashBoardController implements Initializable {
         });
 
         pauseTransition.play();
+    }
+
+    public void detailBooks() {
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/BookDetail.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage  stage = (Stage) anchor_DashBoard.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

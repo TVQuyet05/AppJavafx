@@ -2,7 +2,6 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -13,10 +12,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
+<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
    <children>
       <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
          <font>
@@ -181,7 +179,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </TextField>
-            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="640.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -190,7 +188,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="691.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -199,7 +197,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="736.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -242,7 +240,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </TextField>
-            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="640.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -251,7 +249,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="691.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -260,7 +258,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="736.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -303,7 +301,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </TextField>
-            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="641.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -312,7 +310,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="692.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -321,7 +319,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="735.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -363,7 +361,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </TextField>
-            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="639.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -372,7 +370,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="693.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -381,7 +379,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="736.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -433,7 +431,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="638.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -442,7 +440,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="692.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -451,7 +449,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="735.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -526,7 +524,7 @@
             </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_AddBooks" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.399999999999977" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_AddBooks" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.399999999999977" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="330.0" layoutY="139.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
                <font>
@@ -562,7 +560,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="643.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="639.0" layoutY="10.0" mnemonicParsing="false" prefWidth="0.0" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -571,7 +569,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="697.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="692.0" layoutY="9.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -580,7 +578,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="740.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button layoutX="734.0" layoutY="2.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -600,7 +598,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="69.0" layoutY="173.0" text="Search history" textFill="#345494">
                <font>
@@ -626,7 +624,7 @@
                   <Font name="Roboto" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="information" layoutX="633.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button fx:id="information" layoutX="632.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -635,7 +633,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="setting" layoutX="687.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button fx:id="setting" layoutX="686.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>
                      <image>
@@ -644,7 +642,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="In4" layoutX="737.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
+            <Button fx:id="In4" layoutX="736.0" layoutY="3.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0">
                      <image>
@@ -688,7 +686,7 @@
                   <Font name="System Bold" size="10.0" />
                </font>
             </Label>
-            <Label layoutX="239.0" layoutY="638.0" text="Stroller" textFill="#5f5f5f">
+            <Label layoutX="239.0" layoutY="639.0" text="Stroller" textFill="#5f5f5f">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -719,7 +717,7 @@
             </Button>
             <TableView layoutX="70.0" layoutY="198.0" prefHeight="130.0" prefWidth="660.0" styleClass="table_view" stylesheets="@DashBoard.css">
               <columns>
-                <TableColumn prefWidth="59.199951171875" styleClass="vovan" text="ID" />
+                <TableColumn prefWidth="59.199951171875" text="ID" />
                 <TableColumn prefWidth="152.79998779296875" text="Book Name" />
                   <TableColumn prefWidth="239.20004272460938" text="Author Name" />
                   <TableColumn prefWidth="192.7999267578125" text="Time" />
@@ -747,137 +745,6 @@
                   <Font name="System Bold" size="48.0" />
                </font>
             </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="-6.0" prefHeight="700.0" prefWidth="1301.6000000000001" styleClass="detail_book_background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane layoutX="90.6" layoutY="80.0" prefHeight="540.0" prefWidth="380.0" styleClass="detail_book" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="80.0">
-               <children>
-                  <ImageView fitHeight="540.0" fitWidth="380.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../../../Image/book2.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <Button layoutX="48.0" layoutY="24.0" mnemonicParsing="false" styleClass="button_detailbook_backtodashBoard" text="   Back to Dashboard" textFill="#71717a">
-               <graphic>
-                  <FontAwesomeIcon fill="#71717a" glyphName="ARROW_LEFT" size="1.5em" strokeWidth="0.0">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                  </FontAwesomeIcon>
-               </graphic>
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Button>
-            <AnchorPane layoutX="590.0" layoutY="55.0" prefHeight="414.0" prefWidth="588.0" styleClass="detail_book" AnchorPane.leftAnchor="590.0" AnchorPane.rightAnchor="100.39999999999986" AnchorPane.topAnchor="20.0">
-               <children>
-                  <Label layoutX="24.0" layoutY="35.0" text="The Design of Everyday Things" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="31.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="43.0" layoutY="59.0" text="Don Norman" textFill="#71717a" AnchorPane.topAnchor="59.0">
-                     <font>
-                        <Font name="Segoe UI" size="15.0" />
-                     </font>
-                  </Label>
-                  <FontAwesomeIcon fill="#7e7d7d" glyphName="USER" layoutX="22.0" layoutY="75.0" size="1.2em" AnchorPane.leftAnchor="20.0" />
-                  <Label layoutX="22.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" text="  Psychology  " textFill="WHITE" AnchorPane.leftAnchor="20.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Line endX="461.8999938964844" layoutX="129.0" layoutY="314.0" startX="-100.0" stroke="#71717a" strokeWidth="0.5" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
-                  <Label layoutX="109.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" text="  Design  " textFill="WHITE">
-                     <font>
-                        <Font name="Segoe UI Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="172.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" text="  Human Factors  " textFill="WHITE">
-                     <font>
-                        <Font name="Segoe UI Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="19.0" layoutY="137.0" text="Description" AnchorPane.leftAnchor="20.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="20.0" layoutY="178.0" lineSpacing="4.0" prefWidth="548.0" text="The Design of Everyday Things shows that good, usable design is possible. The rules are simple: make things visible, exploit natural relationships that couple function and control, and make intelligent use of constraints. The goal: guide the user effortlessly to the right action on the right control at the right time." textFill="#71717a" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-                     <font>
-                        <Font name="Segoe UI" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="19.0" layoutY="338.0" text="ISBN" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="336.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="20.0" layoutY="370.0" text="978-0465050659" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="221.0" layoutY="338.0" text="Publication Date" textFill="#71717a" AnchorPane.bottomAnchor="58.0">
-                     <font>
-                        <Font name="Segoe UI" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="421.0" layoutY="338.0" text="Pages" textFill="#71717a" AnchorPane.bottomAnchor="58.0">
-                     <font>
-                        <Font name="Segoe UI" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="444.0" layoutY="367.0" text="368" AnchorPane.bottomAnchor="20.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="246.0" layoutY="367.0" text="2013" AnchorPane.bottomAnchor="20.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <FontAwesomeIcon glyphName="CALENDAR" layoutX="221.0" layoutY="384.0" size="1.2em" />
-                  <FontAwesomeIcon glyphName="BOOK" layoutX="421.0" layoutY="384.0" size="1.2em" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="590.0" layoutY="483.0" prefHeight="200.0" prefWidth="394.0" styleClass="detail_book" AnchorPane.bottomAnchor="20.0">
-               <children>
-                  <Label layoutX="14.0" layoutY="34.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="40.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="313.0" layoutY="36.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" text="Available" textFill="#71717a" AnchorPane.rightAnchor="25.399999999999977">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="25.6" layoutY="139.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="346.0" styleClass="button_detailbook_borrowBook" text="Borrow Book" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  <Label layoutX="21.0" layoutY="80.0" text="Rating:" textFill="#71717a">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="1001.0" layoutY="483.0" prefHeight="200.0" prefWidth="200.0" styleClass="detail_book" AnchorPane.bottomAnchor="20.0">
-               <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="42.0" layoutY="17.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../../../Image/qrtest.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
