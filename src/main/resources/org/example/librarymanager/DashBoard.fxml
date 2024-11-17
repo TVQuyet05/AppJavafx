@@ -6,8 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -52,7 +50,7 @@
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
-                  <Image url="@../../../Image/searchbook.png" />
+                  <Image url="@../../../Image/book_icon.png" />
                </image>
             </ImageView>
          </graphic></Button>
@@ -73,11 +71,11 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="returnBooks" layoutX="200.0" layoutY="523.0" mnemonicParsing="false" onAction="#returnBooks" onDragDetected="#returnBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-return">
+      <Button fx:id="returnBooks" layoutX="200.0" layoutY="523.0" mnemonicParsing="false" onAction="#returnBooks" onDragDetected="#returnBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-return" AnchorPane.bottomAnchor="109.0">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
-                  <Image url="@../../../Image/returnbook.png" />
+                  <Image url="@../../../Image/personal-information.png" />
                </image>
             </ImageView>
          </graphic>
@@ -100,7 +98,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="205.0" layoutY="487.0" text="Search Book" textFill="#eceff1">
+      <Label layoutX="199.0" layoutY="487.0" text="View all books" textFill="#eceff1">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -115,7 +113,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="204.0" layoutY="599.0" text="Return Book" textFill="#eceff1">
+      <Label layoutX="177.0" layoutY="599.0" text="Member information" textFill="#eceff1">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -524,7 +522,7 @@
             </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_AddBooks" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.399999999999977" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_AddBooks" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.399999999999977" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="330.0" layoutY="139.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
                <font>
@@ -600,25 +598,6 @@
       </AnchorPane>
       <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
-            <Label layoutX="69.0" layoutY="173.0" text="Search history" textFill="#345494">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" layoutY="326.0" text="Recently added books" textFill="#345494">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <AnchorPane layoutX="345.0" layoutY="43.0" prefHeight="100.0" prefWidth="100.0" styleClass="user-image" stylesheets="@DashBoard.css">
-               <children>
-                  <ImageView fitHeight="120.0" fitWidth="120.0" layoutX="5.0" layoutY="5.0">
-                     <image>
-                        <Image url="@../../../Image/user.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
             <Label layoutX="57.0" layoutY="16.0" text="Home Screen" textFill="#345494">
                <font>
                   <Font name="Roboto" size="18.0" />
@@ -651,61 +630,6 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label layoutX="69.0" layoutY="475.0" text="Recomment for you" textFill="#345494">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="358.0" layoutY="506.0">
-               <image>
-                  <Image url="@../../../Image/book3.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="503.0" layoutY="502.0">
-               <image>
-                  <Image url="@../../../Image/book4.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="215.0" layoutY="506.0">
-               <image>
-                  <Image url="@../../../Image/book2.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="72.0" layoutY="506.0">
-               <image>
-                  <Image url="@../../../Image/book1.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="133.3" fitWidth="87.3" layoutX="649.0" layoutY="502.0">
-               <image>
-                  <Image url="@../../../Image/book5.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="54.0" layoutY="639.0" text="The Critique of Pure Reason" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </Label>
-            <Label layoutX="239.0" layoutY="639.0" text="Stroller" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </Label>
-            <Label layoutX="330.0" layoutY="639.0" text="The Design of Everyday Things" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </Label>
-            <Label layoutX="529.0" layoutY="637.0" text="Lean Ex" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </Label>
-            <Label layoutX="662.0" layoutY="637.0" text="The Republic" textFill="#5f5f5f">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </Label>
             <Button fx:id="home_Screen" layoutX="6.0" layoutY="10.0" mnemonicParsing="false" onAction="#backHome" prefHeight="32.0" prefWidth="32.0" styleClass="button-btn" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="32.0">
@@ -715,28 +639,6 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TableView layoutX="70.0" layoutY="198.0" prefHeight="130.0" prefWidth="660.0" styleClass="table_view" stylesheets="@DashBoard.css">
-              <columns>
-                <TableColumn prefWidth="59.199951171875" text="ID" />
-                <TableColumn prefWidth="152.79998779296875" text="Book Name" />
-                  <TableColumn prefWidth="239.20004272460938" text="Author Name" />
-                  <TableColumn prefWidth="192.7999267578125" text="Time" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <TableView layoutX="70.0" layoutY="350.0" prefHeight="130.0" prefWidth="660.0" styleClass="table_view" stylesheets="@DashBoard.css">
-               <columns>
-                  <TableColumn prefWidth="59.199951171875" styleClass="vovan" text="ID" />
-                  <TableColumn prefWidth="152.79998779296875" text="Book Name" />
-                  <TableColumn prefWidth="239.20004272460938" text="Author Name" />
-                  <TableColumn prefWidth="192.7999267578125" text="Time" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
          </children></AnchorPane>
       <AnchorPane fx:id="mess_Success" layoutX="561.0" layoutY="25.0" prefHeight="700.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
