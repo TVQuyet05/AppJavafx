@@ -3,7 +3,7 @@
 }
 .backgroundright{
      -fx-background-color: #f6f6f6;
-    -fx-background-radius: 0px 0px 15px 0px;
+    -fx-background-radius: 0px 15px 15px 0px;
 }
 .search{
      -fx-background-color:#7084ac;
@@ -99,7 +99,7 @@
      -fx-cursor: hand;
 }
 .button-btn{
-     -fx-background-color: transperent;
+     -fx-background-color: transparent;
      -fx-cursor: hand;
 }
 
@@ -162,3 +162,20 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 0px 15px 15px 0px;
 }
+.pane_background {
+    -fx-background-color:#ffffff;
+    -fx-background-radius: 15px;
+}
+
+.chart-pie-label {
+    -fx-fill: #345494;
+    -fx-font-weight: bold ;
+    -fx-font-size: 12px;
+
+}
+
+.chart-legend {
+    -fx-font-size: 12px;
+    -fx-background-color: transparent;
+}
+

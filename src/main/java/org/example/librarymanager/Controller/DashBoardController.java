@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -123,6 +124,13 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane anchor_DashBoard;
+
+    @FXML
+    private PieChart pie_chart_1;
+
+    @FXML
+    private PieChart pie_chart_2;
+
 
 
 
@@ -279,5 +287,8 @@ public class DashBoardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentPane = anchor_HomeScreen;
+        pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
+        pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
+
     }
 }
