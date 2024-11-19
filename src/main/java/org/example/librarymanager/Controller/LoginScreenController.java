@@ -164,11 +164,11 @@ public class LoginScreenController implements Initializable {
         try {
 
 //            // Test connect database
-//            LibraryDatabase database = LibraryDatabase.getInstance();
-//            Connection connect = database.getConnection();
+            LibraryDatabase database = LibraryDatabase.getInstance();
+            Connection connect = database.getConnection();
 
-//            boolean checkStudent = database.authenticateStudent(studentNumber.getText(), passWord.getText());
-            boolean checkStudent = true;
+            boolean checkStudent = database.authenticateStudent(studentNumber.getText(), passWord.getText());
+//            boolean checkStudent = true;
             if (checkStudent) {
                 successful();
                 PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));

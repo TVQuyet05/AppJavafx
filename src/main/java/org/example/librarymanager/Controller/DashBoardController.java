@@ -18,9 +18,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.effect.GaussianBlur;
+import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Service.LibraryDatabase;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -78,13 +84,16 @@ public class DashBoardController implements Initializable {
     private TextField textField_add_AuthorName;
 
     @FXML
-    private TextField textField_add_BookId;
+    private TextField textField_add_ImageBook;
 
     @FXML
     private TextField textField_add_BookName;
 
     @FXML
-    private TextField textField_add_Descriptopn;
+    private TextField textField_add_Genre;
+
+    @FXML
+    private TextField textField_add_Date;
 
     @FXML
     private AnchorPane anchor_AddBooks;
@@ -246,6 +255,26 @@ public class DashBoardController implements Initializable {
         }
     }
 
+
+    public void addBookToDatabase() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        Connection connect = database.getConnection();
+
+        String book_title = textField_add_BookName.getText();
+        String author = textField_add_AuthorName.getText();
+        String genre = textField_add_Genre.getText();
+        String date_string = textField_add_Date.getText();
+        String path_image = textField_add_ImageBook.getText();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date_sql = LocalDate.parse(date_string, formatter);
+        Date sqlDate = java.sql.Date.valueOf(date_sql);
+
+        Book newbook = new Book(book_title, author, genre, (java.sql.Date) sqlDate, path_image);
+
+        database.addBook(newbook);
+
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
