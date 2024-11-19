@@ -225,7 +225,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="searchBooks1111" alignment="TOP_LEFT" layoutX="16.0" layoutY="503.0" mnemonicParsing="false" onAction="#findBooks" prefHeight="73.0" prefWidth="301.0" styleClass="button-add" text="      Return Book" textAlignment="RIGHT" textFill="WHITE">
+      <Button fx:id="searchBooks1111" alignment="TOP_LEFT" layoutX="16.0" layoutY="503.0" mnemonicParsing="false" onAction="#findBooks" prefHeight="73.0" prefWidth="301.0" styleClass="button-add" text="      Favourite Book" textAlignment="RIGHT" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
