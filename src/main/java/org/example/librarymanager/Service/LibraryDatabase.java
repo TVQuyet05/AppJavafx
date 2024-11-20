@@ -55,7 +55,7 @@ public class LibraryDatabase {
 
     public void addBook(Book book) {
 
-        int newBookId = 1; // Default to 1 if the table is empty
+        int newBookId = 1;
         String maxIdQuery = "SELECT MAX(book_id) FROM book";
 
         try (Statement stmt = connection.createStatement();
@@ -63,21 +63,17 @@ public class LibraryDatabase {
 
             // Retrieve the maximum book_id
             if (rs.next()) {
-                String maxBookIdStr = rs.getString(1); // Get the result from the first column
+                int maxBookId = rs.getInt(1); // Get the result from the first column as an int
 
-                // Convert the String to an int for arithmetic
-                if (maxBookIdStr != null && !maxBookIdStr.isEmpty()) {
-                    int maxBookId = Integer.parseInt(maxBookIdStr); // Convert String to int
-                    newBookId = maxBookId + 1; // Increment
-                } else {
-                    newBookId = 1; // Default to 1 if no book_id exists
-                }
+                // Increment the maximum book_id
+                newBookId = maxBookId + 1;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return; // Exit if max ID retrieval fails
         }
+
 
         String query = "INSERT INTO book (book_title, author, genre, date, image, book_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -86,7 +82,7 @@ public class LibraryDatabase {
             stmt.setString(3, book.getGenre());
             stmt.setDate(4, new java.sql.Date(book.getDate().getTime()));
             stmt.setString(5, book.getImage());
-            stmt.setString(6, String.valueOf(newBookId));
+            stmt.setInt(6, newBookId);
 
             // Execute the update
             stmt.executeUpdate();
@@ -97,22 +93,6 @@ public class LibraryDatabase {
     }
 
 
-
-
-    //Example method for inserting a book
-    public boolean addBook(String title, String author, String isbn) {
-        String query = "INSERT INTO books (title, author, isbn) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, title);
-            stmt.setString(2, author);
-            stmt.setString(3, isbn);
-            int rowsInserted = stmt.executeUpdate();
-            return rowsInserted > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public void closeConnection() {
         try {
