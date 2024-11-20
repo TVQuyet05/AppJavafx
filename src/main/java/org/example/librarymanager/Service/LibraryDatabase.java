@@ -1,6 +1,9 @@
 package org.example.librarymanager.Service;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
 
@@ -93,6 +96,52 @@ public class LibraryDatabase {
     }
 
 
+    public void addStudentSignUp(Student student) {
+        String query = "INSERT INTO signupaccount (studentNumber, password, name, class) VALUES (?, ?, ?, ?)";
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, student.getStudentNumber());
+            stmt.setString(2, student.getPassword());
+            stmt.setString(3, student.getName());
+            stmt.setString(4, student.get_class());
+
+            stmt.executeUpdate();
+            System.out.println("Add sign up account to signupaccount success!");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ObservableList<Student> getSignUpAccount() {
+        ObservableList<Student> studentList = FXCollections.observableArrayList();
+
+        String query = "SELECT * FROM signupaccount";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Student student = new Student(
+                        result.getString("studentNumber"),
+                        result.getString("password"),
+                        "",
+                        result.getString("name"),
+                        result.getString("class")
+                );
+
+                studentList.add(student);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(!studentList.isEmpty()) {
+            System.out.println("Get sign up account success!");
+        }
+        return studentList;
+    }
 
     public void closeConnection() {
         try {

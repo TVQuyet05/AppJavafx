@@ -2,15 +2,15 @@ package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +20,9 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.effect.GaussianBlur;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -131,6 +133,20 @@ public class DashBoardController implements Initializable {
     @FXML
     private PieChart pie_chart_2;
 
+    @FXML
+    private TableView<Student> SignUpAccount_TableView;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_studentNumber;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_password;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_name;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_class;
 
 
 
@@ -284,11 +300,25 @@ public class DashBoardController implements Initializable {
 
     }
 
+    public void showSignUpAccount() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        ObservableList<Student> listSignUpAccount = database.getSignUpAccount();
+
+        col_signup_studentNumber.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+        col_signup_password.setCellValueFactory(new PropertyValueFactory<>("password"));
+        col_signup_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_signup_class.setCellValueFactory(new PropertyValueFactory<>("_class"));
+
+        SignUpAccount_TableView.setItems(listSignUpAccount);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentPane = anchor_HomeScreen;
         pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
         pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
 
+        showSignUpAccount();
     }
 }

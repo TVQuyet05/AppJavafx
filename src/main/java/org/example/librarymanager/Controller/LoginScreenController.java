@@ -3,6 +3,7 @@ package org.example.librarymanager.Controller;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,12 +11,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
 
 import java.io.IOException;
@@ -48,19 +51,19 @@ public class LoginScreenController implements Initializable {
     private Button register;
 
     @FXML
-    private TextField register_Cfpass;
-
-    @FXML
-    private TextField register_Email;
-
-    @FXML
-    private Hyperlink register_SignIn;
-
-    @FXML
     private TextField register_Users;
 
     @FXML
-    private TextField register_pass;
+    private TextField register_Pass;
+
+    @FXML
+    private TextField register_Name;
+
+    @FXML
+    private TextField register_Class;
+
+    @FXML
+    private Hyperlink register_SignIn;
 
     @FXML
     private Button signUp;
@@ -85,6 +88,8 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     private AnchorPane currentPane = null;
+
+
 
 
     @FXML
@@ -236,6 +241,22 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+    public void createAccount() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        String student_number = register_Users.getText();
+        String name = register_Name.getText();
+        String password = register_Pass.getText();
+        String _class = register_Class.getText();
+
+        Student student = new Student(student_number, password, "", name, _class);
+
+        database.addStudentSignUp(student);
+
+        register();
+
+    }
+
 
     public void signUp() {
         switchPain(signUp_Anchor);
@@ -282,6 +303,9 @@ public class LoginScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         currentPane = signIn_Anchor;
+
+
     }
 }
