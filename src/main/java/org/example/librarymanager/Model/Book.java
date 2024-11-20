@@ -10,6 +10,20 @@ public class Book {
     private final String genre;
     private final String image;
     private final Date date;
+    private  int id;
+    private  String description;
+    private  int quantity;
+
+    public Book(int id, String title, String author, String genre, Date date, String description, int quantity, String image) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.date = date;
+        this.description = description;
+        this.quantity = quantity;
+        this.image = image;
+    }
 
     public Book(String title, String author, String genre, Date date, String image) {
         this.title = title;
@@ -18,6 +32,7 @@ public class Book {
         this.image = image;
         this.date = date;
     }
+
 
 
     public String getTitle() {return this.title;}
@@ -29,5 +44,12 @@ public class Book {
     public String getImage() {return this.image;}
 
     public Date getDate() {return this.date;}
+
+    public int getId() {return this.id;}
+    public String getDescription() {return this.description;}
+    public int getQuantity() {return this.quantity;}
+
+
+
 
 }

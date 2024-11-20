@@ -1,6 +1,9 @@
 .background{
     -fx-background-color: #ffffff;
 }
+.background_scrollpane{
+    -fx-background-color: #f6f6f6;;
+}
 .button_btn {
     -fx-background-color: transparent;
     -fx-cursor: hand;
@@ -11,7 +14,7 @@
     -fx-background-radius: 8 ;
 }
 .text_field_search {
-    -fx-background-color: transparent;
+    -fx-background-color: #ffffff;
     -fx-cursor:hand;
     -fx-border-color: #cacaca;
     -fx-border-width: 0.5;

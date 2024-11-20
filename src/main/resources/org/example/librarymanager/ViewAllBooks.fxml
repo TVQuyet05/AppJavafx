@@ -7,29 +7,17 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="background" stylesheets="@ViewAllBooks.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ViewAllBookController">
    <children>
-      <ScrollPane hbarPolicy="NEVER" layoutY="76.0" prefHeight="625.0" prefWidth="1300.0" styleClass="background" stylesheets="@ViewAllBooks.css" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
+      <ScrollPane hbarPolicy="NEVER" layoutY="154.4" prefHeight="550.0" prefWidth="1300.0" styleClass="background" stylesheets="@ViewAllBooks.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
          <content>
-            <AnchorPane prefHeight="625.0" prefWidth="1300.0" styleClass="background">
+            <AnchorPane fx:id="anchor" prefHeight="550.0" prefWidth="1300.0">
                <children>
-                  <TextField layoutX="54.0" layoutY="63.0" prefHeight="40.0" prefWidth="849.0" promptText="Search for books....." styleClass="text_field_search" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </TextField>
-                  <ComboBox fx:id="combobox_search" layoutX="908.0" layoutY="40.0" prefHeight="40.0" prefWidth="200.0" promptText="Select" styleClass="combo-box" AnchorPane.topAnchor="40.0" />
-                  <Button layoutX="1065.0" layoutY="63.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" styleClass="button_search" text="      Search" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
-                     <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="1.3em" />
-                     </graphic>
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
+                  <FlowPane fx:id="flow_pane" prefHeight="550.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </content>
@@ -50,6 +38,20 @@
             <FontAwesomeIcon glyphName="MINUS" />
          </graphic>
       </Button>
-      <Line endX="1200.0927734375" endY="1.0000076293945312" layoutX="571.0" layoutY="75.0" startX="-100.0" strokeWidth="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="74.0" />
+      <Line endX="1200.0927734375" endY="1.0000076293945312" layoutX="115.0" layoutY="153.0" startX="-100.0" strokeWidth="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="151.58578646183014" />
+      <TextField layoutX="34.0" layoutY="90.0" prefHeight="40.0" prefWidth="849.0" promptText="Search for books....." styleClass="text_field_search" AnchorPane.leftAnchor="40.0">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="combobox_search" layoutX="906.0" layoutY="90.0" prefHeight="40.0" prefWidth="200.0" promptText="Select" styleClass="combo-box" />
+      <Button layoutX="1139.0" layoutY="90.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" styleClass="button_search" text="      Search" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.rightAnchor="40.0">
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="1.3em" />
+         </graphic>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
