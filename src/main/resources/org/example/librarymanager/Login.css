@@ -1,0 +1,45 @@
+.close-btn{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.close-btn:hover{
+    -fx-background-color: #f13f57;
+}
+.minimize-btn{
+    -fx-background-color : transparent;
+    -fx-cursor: hand;
+}
+.minimize-btn:hover{
+    -fx-background-color: #dddddd;
+}
+.background{
+    -fx-background-color: #D4E6F1;
+    -fx-background-color:linear-gradient(to bottom left , #D4E6F1, #324f6b);
+}
+.username{
+    -fx-background-color:transparent;
+    -fx-text-fill: #2C3E50;
+    -fx-border-color: #000099;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-font-size: 16px;
+    -fx-font-family: "Times New Roman";
+    -fx-cursor: hand;
+    -fx-border-radius: 13px;
+}
+.username:focused{
+   -fx-border-width: 1.8px 1.8px 1.8px 1.8px ;
+   -fx-border-color: #5DADE2;
+
+}
+.button-btn {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #2563eb);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+}
+
+.button-btn:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1A5276);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 12, 0, 0, 7);
+}

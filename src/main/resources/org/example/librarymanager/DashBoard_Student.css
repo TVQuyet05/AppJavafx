@@ -1,0 +1,31 @@
+.backgroundleft{
+    -fx-background-color:#486494;
+}
+.background {
+    -fx-background-color: #ffffff;
+}
+.backgroundright{
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 0px 15px 15px 0px;
+}
+.button-add{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.scroll-pane {
+    -fx-background-color: transparent; /* Làm trong suốt nền */
+    -fx-border-color: #dcdcdc; /* Màu viền */
+    -fx-border-radius: 15; /* Bán kính bo tròn */
+    -fx-background-radius: 15; /* Bo tròn nền */
+    -fx-border-width: 0.2;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: white; /* Nền bên trong */
+    -fx-background-radius: 15; /* Bo tròn nội dung */
+}
+
+.background_pane {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+}
