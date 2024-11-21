@@ -52,9 +52,6 @@ public class DetailBookController implements Initializable {
     private Label name_Book;
 
     @FXML
-    private Label page_book;
-
-    @FXML
     private Label publication_date_Book;
 
     @FXML
@@ -87,7 +84,31 @@ public class DetailBookController implements Initializable {
         }
     }
 
+    public void setBookDetails(String title, String author, String isbn, String publicationDate, String status, String category, String description, String imageUrl) {
+        name_Book.setText(title);
+        name_Book.setMaxHeight(80);
+        author_Book.setText(author);
+        isbn_books.setText(isbn);
+        publication_date_Book.setText(publicationDate);
+        if (status != null && !status.isEmpty() && Integer.parseInt(status) > 0) {
+            status_book.setText("Available");
+        } else {
+            status_book.setText("Unavailable");
+            status_book.setStyle("-fx-background-color: #ff5959;");
+        }
+        category_book.setText(category);
+//        category_book.layoutYProperty().bind(author_Book.layoutYProperty().add(author_Book.heightProperty()).add(10));
+        description_book.setText(description);
 
+        // Cập nhật hình ảnh sách
+        try {
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                image_book.setImage(new javafx.scene.image.Image("file:" + imageUrl, true));
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi tải ảnh: " + e.getMessage());
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
