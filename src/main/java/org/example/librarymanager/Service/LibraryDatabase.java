@@ -6,6 +6,8 @@ import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // Class use Singleton pattern
 // Code all function to access database in here
@@ -29,7 +31,7 @@ public class LibraryDatabase {
     }
 
     public static LibraryDatabase getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LibraryDatabase();
         }
         return instance;
@@ -61,24 +63,23 @@ public class LibraryDatabase {
         int newBookId = 1;
         String maxIdQuery = "SELECT MAX(book_id) FROM book";
 
+        // Lấy giá trị lớn nhất của book_id
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(maxIdQuery)) {
 
-            // Retrieve the maximum book_id
             if (rs.next()) {
-                int maxBookId = rs.getInt(1); // Get the result from the first column as an int
-
-                // Increment the maximum book_id
-                newBookId = maxBookId + 1;
+                int maxBookId = rs.getInt(1); // Lấy giá trị từ cột đầu tiên
+                newBookId = maxBookId + 1;   // Tăng book_id lên 1
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return; // Exit if max ID retrieval fails
+            return; // Dừng hàm nếu truy vấn max ID bị lỗi
         }
 
-
-        String query = "INSERT INTO book (book_title, author, genre, date, image, book_id) VALUES (?, ?, ?, ?, ?, ?)";
+        // Câu lệnh thêm sách với cột mới: description và quantity
+        String query = "INSERT INTO book (book_title, author, genre, date, image, book_id, description, quantity) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, book.getTitle());
             stmt.setString(2, book.getAuthor());
@@ -86,8 +87,10 @@ public class LibraryDatabase {
             stmt.setDate(4, new java.sql.Date(book.getDate().getTime()));
             stmt.setString(5, book.getImage());
             stmt.setInt(6, newBookId);
+            stmt.setString(7, book.getDescription()); // Thêm cột description
+            stmt.setInt(8, book.getQuantity());       // Thêm cột quantity
 
-            // Execute the update
+            // Thực thi câu lệnh
             stmt.executeUpdate();
             System.out.println("Add book success!");
         } catch (SQLException e) {
@@ -153,5 +156,28 @@ public class LibraryDatabase {
             e.printStackTrace();
         }
     }
+
+    public List<Book> getBooks() {
+        List<Book> books = new ArrayList<>();
+        String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book";
+        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                Book book = new Book(
+                        resultSet.getInt("book_id"),
+                        resultSet.getString("book_title"),
+                        resultSet.getString("author"),
+                        resultSet.getString("genre"),
+                        resultSet.getDate("date"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getString("image"));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return books;
+    }
+
 
 }

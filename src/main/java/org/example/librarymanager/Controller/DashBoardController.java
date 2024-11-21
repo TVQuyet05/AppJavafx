@@ -54,7 +54,7 @@ public class DashBoardController implements Initializable {
     private Button information;
 
     @FXML
-    private Button issueBooks;
+    private Button borrowedBook;
 
     @FXML
     private Button logOut;
@@ -108,7 +108,7 @@ public class DashBoardController implements Initializable {
     private AnchorPane anchor_HomeScreen;
 
     @FXML
-    private AnchorPane anchor_IssueBook;
+    private AnchorPane anchor_addMember;
 
     @FXML
     private AnchorPane anchor_deleteBooks;
@@ -116,8 +116,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private AnchorPane anchor_ReturnBooks;
 
-    @FXML
-    private AnchorPane anchor_AddMemebers;
 
     @FXML
     private AnchorPane mess_Success;
@@ -231,9 +229,6 @@ public class DashBoardController implements Initializable {
         switchPain(anchor_FindBooks);
     }
 
-    public void issueBooks() {
-        switchPain(anchor_IssueBook);
-    }
 
     public void deleteBooks() {
         switchPain(anchor_deleteBooks);
@@ -244,7 +239,7 @@ public class DashBoardController implements Initializable {
     }
 
     public void addMembers() {
-        switchPain(anchor_AddMemebers);
+        switchPain(anchor_addMember);
     }
 
     public void backHome() {

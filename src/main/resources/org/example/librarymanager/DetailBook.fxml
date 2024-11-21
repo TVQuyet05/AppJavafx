@@ -24,7 +24,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <Button fx:id="back_to_Dashboard" layoutX="48.0" layoutY="24.0" mnemonicParsing="false" onAction="#backtoDashboard" styleClass="button_detailbook_backtodashBoard" stylesheets="@DetailBook.css" text="   Back to Dashboard" textFill="#71717a">
+            <Button fx:id="back_to_Dashboard" layoutX="50.0" layoutY="26.0" mnemonicParsing="false" onAction="#backtoDashboard" styleClass="button_detailbook_backtodashBoard" stylesheets="@DetailBook.css" text="   Back to Dashboard" textFill="#71717a">
                <graphic>
                   <FontAwesomeIcon fill="#71717a" glyphName="ARROW_LEFT" size="1.5em" strokeWidth="0.0">
                      <cursor>
@@ -38,39 +38,29 @@
             </Button>
             <AnchorPane layoutX="590.0" layoutY="55.0" prefHeight="414.0" prefWidth="588.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.leftAnchor="590.0" AnchorPane.rightAnchor="100.39999999999986" AnchorPane.topAnchor="20.0">
                <children>
-                  <Label fx:id="name_Book" layoutX="24.0" layoutY="35.0" text="The Design of Everyday Things" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                  <Label fx:id="name_Book" alignment="TOP_LEFT" layoutX="20.0" layoutY="14.0" prefHeight="81.0" prefWidth="566.0" text="The Design of Everyday Things" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font name="Segoe UI Bold" size="31.0" />
                      </font>
                   </Label>
-                  <Label fx:id="author_Book" layoutX="43.0" layoutY="59.0" text="Don Norman" textFill="#71717a" AnchorPane.topAnchor="59.0">
+                  <Label fx:id="author_Book" layoutX="41.0" layoutY="94.0" text="Don Norman" textFill="#71717a" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="92.0">
                      <font>
                         <Font name="Segoe UI" size="15.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIcon fill="#7e7d7d" glyphName="USER" layoutX="22.0" layoutY="75.0" size="1.2em" AnchorPane.leftAnchor="20.0" />
-                  <Label fx:id="category_book" layoutX="22.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" stylesheets="@DetailBook.css" text="  Psychology  " textFill="WHITE" AnchorPane.leftAnchor="20.0">
+                  <FontAwesomeIcon fill="#7e7d7d" glyphName="USER" layoutX="24.0" layoutY="109.0" size="1.2em" text="" AnchorPane.leftAnchor="20.0" />
+                  <Label fx:id="category_book" alignment="CENTER" layoutX="22.0" layoutY="130.0" prefHeight="21.0" prefWidth="80.0" styleClass="label_detailbook_author" stylesheets="@DetailBook.css" text="  Psychology  " textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="22.0">
                      <font>
                         <Font name="Segoe UI Bold" size="12.0" />
                      </font>
                   </Label>
                   <Line endX="461.8999938964844" layoutX="129.0" layoutY="314.0" startX="-100.0" stroke="#71717a" strokeWidth="0.5" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
-                  <Label layoutX="109.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" stylesheets="@DetailBook.css" text="  Design  " textFill="WHITE">
-                     <font>
-                        <Font name="Segoe UI Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="172.0" layoutY="97.0" prefHeight="20.0" styleClass="label_detailbook_author" stylesheets="@DetailBook.css" text="  Human Factors  " textFill="WHITE">
-                     <font>
-                        <Font name="Segoe UI Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="19.0" layoutY="137.0" text="Description" AnchorPane.leftAnchor="20.0">
+                  <Label layoutX="22.0" layoutY="183.0" text="Description" AnchorPane.leftAnchor="22.0">
                      <font>
                         <Font name="Segoe UI Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="description_book" layoutX="20.0" layoutY="178.0" lineSpacing="4.0" prefWidth="548.0" text="The Design of Everyday Things shows that good, usable design is possible. The rules are simple: make things visible, exploit natural relationships that couple function and control, and make intelligent use of constraints. The goal: guide the user effortlessly to the right action on the right control at the right time." textFill="#71717a" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                  <Label fx:id="description_book" layoutX="24.0" layoutY="238.0" lineSpacing="4.0" prefHeight="65.0" prefWidth="566.0" text="The Design of Everyday Things shows that good, usable design is possible. The rules are simple: make things visible, exploit natural relationships that couple function and control, and make intelligent use of constraints. The goal: guide the user effortlessly to the right action on the right control at the right time." textFill="#71717a" wrapText="true" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
                      <font>
                         <Font name="Segoe UI" size="16.0" />
                      </font>
@@ -85,28 +75,17 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="221.0" layoutY="338.0" text="Publication Date" textFill="#71717a" AnchorPane.bottomAnchor="58.0">
+                  <Label layoutX="368.0" layoutY="339.0" text="Publication Date" textFill="#71717a" AnchorPane.bottomAnchor="57.0">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="page_book" layoutX="421.0" layoutY="338.0" text="Pages" textFill="#71717a" AnchorPane.bottomAnchor="58.0">
-                     <font>
-                        <Font name="Segoe UI" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="444.0" layoutY="367.0" text="368" AnchorPane.bottomAnchor="20.0">
+                  <Label fx:id="publication_date_Book" layoutX="393.0" layoutY="370.0" text="2013" AnchorPane.bottomAnchor="18.799999999999955">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="publication_date_Book" layoutX="246.0" layoutY="367.0" text="2013" AnchorPane.bottomAnchor="20.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <FontAwesomeIcon glyphName="CALENDAR" layoutX="221.0" layoutY="384.0" size="1.2em" />
-                  <FontAwesomeIcon glyphName="BOOK" layoutX="421.0" layoutY="384.0" size="1.2em" />
+                  <FontAwesomeIcon glyphName="CALENDAR" layoutX="368.0" layoutY="388.0" size="1.2em" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="590.0" layoutY="482.5999999999999" prefHeight="203.0" prefWidth="394.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="30.0">
