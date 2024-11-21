@@ -171,7 +171,6 @@ public class ViewAllBookController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         combobox_search.getItems().addAll("Local Library", "API");
-
         ViewAllBook();
     }
 }
