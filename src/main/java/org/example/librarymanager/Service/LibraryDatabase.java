@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 // Class use Singleton pattern
 // Code all function to access database in here
 
@@ -31,7 +32,7 @@ public class LibraryDatabase {
     }
 
     public static LibraryDatabase getInstance() {
-        if (instance == null) {
+        if(instance == null) {
             instance = new LibraryDatabase();
         }
         return instance;
