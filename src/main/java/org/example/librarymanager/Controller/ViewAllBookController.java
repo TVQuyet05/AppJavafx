@@ -51,8 +51,6 @@ public class ViewAllBookController implements Initializable {
     @FXML
     private Button close;
 
-    @FXML
-    private AnchorPane viewAllBooks;
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
