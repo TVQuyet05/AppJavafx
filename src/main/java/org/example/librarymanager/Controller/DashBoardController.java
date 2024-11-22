@@ -308,6 +308,39 @@ public class DashBoardController implements Initializable {
         SignUpAccount_TableView.setItems(listSignUpAccount);
     }
 
+    public void openViewAllBooks() {
+        try {
+            // Load the FXML file
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
+
+            // Create a new Scene
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+
+            // Add mouse event handlers for dragging the window
+            root.setOnMousePressed((MouseEvent event) -> {
+                x = event.getSceneX();
+                y = event.getSceneY();
+            });
+
+            root.setOnMouseDragged((MouseEvent event) -> {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            });
+
+            // Set the stage to be transparent
+            stage.initStyle(StageStyle.TRANSPARENT);
+
+            // Set the scene and display the stage
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading ViewAllBooks.fxml");
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentPane = anchor_HomeScreen;
