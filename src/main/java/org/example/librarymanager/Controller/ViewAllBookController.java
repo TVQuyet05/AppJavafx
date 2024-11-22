@@ -1,11 +1,15 @@
 package org.example.librarymanager.Controller;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -17,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Service.LibraryDatabase;
 
@@ -40,20 +45,37 @@ public class ViewAllBookController implements Initializable {
     @FXML
     private AnchorPane anchor;
 
-    private void openBookDetail(String title, String author, String isbn, String publicationDate, String status, String category, String description, String imageUrl) {
+    @FXML
+    private Button minimize;
+
+    @FXML
+    private Button close;
+
+    @FXML
+    private AnchorPane viewAllBooks;
+
+    private void openBookDetail(String title, String author, String isbn,
+                                String publicationDate, String status,
+                                String category, String description, String imageUrl) {
         try {
-            // Đảm bảo đường dẫn FXML là của DetailBookController
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DetailBook.fxml"));
             Parent root = loader.load();
 
-            // Lấy controller của DetailBook và truyền dữ liệu vào
             DetailBookController controller = loader.getController();
             controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl);
 
-            // Mở giao diện mới
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+
+            // Thêm hiệu ứng FadeIn cho DetailBook khi hiển thị
+            root.setOpacity(0);
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(400), root);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +148,24 @@ public class ViewAllBookController implements Initializable {
         infoBox.getChildren().addAll(titleLabel, authorLabel, yearLabel, statusLabel);
         bookCard.getChildren().addAll(imageView, infoBox);
 
-        bookCard.setOnMouseClicked(event -> openBookDetail(title, author, isbn, String.valueOf(year), String.valueOf(quantity), category, description, image));
+        bookCard.setOnMouseClicked(event -> {
+            // Thực hiện hiệu ứng FadeOut cho bookCard hoặc container
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(400), anchor); // Hoặc flow_pane
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.setOnFinished(event1 -> {
+                // Sau khi hiệu ứng kết thúc, mở giao diện chi tiết sách
+                openBookDetail(title, author, isbn, String.valueOf(year),
+                        String.valueOf(quantity), category, description, image);
+
+                // Khôi phục lại hiệu ứng FadeIn cho anchor hoặc container
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(400), anchor); // Hoặc flow_pane
+                fadeIn.setFromValue(0.0);
+                fadeIn.setToValue(1.0);
+                fadeIn.play();
+            });
+            fadeTransition.play();
+        });
 
         return bookCard;
     }
@@ -163,15 +202,59 @@ public class ViewAllBookController implements Initializable {
         anchor.getChildren().clear();
         anchor.getChildren().addAll(flow_pane);
 
+    }
 
+    private void addFadeOutEffect(Node node, Runnable onFinished) {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(400));
+        fadeTransition.setNode(node);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setOnFinished(event -> onFinished.run());
+        fadeTransition.play();
+    }
 
+    public void close() {
+        Stage stage = (Stage) close.getScene().getWindow();
+        Parent root = stage.getScene().getRoot();
+        addFadeOutEffect(root, () -> System.exit(0));
+    }
 
+    public void minimize() {
+        Stage stage = (Stage) minimize.getScene().getWindow();
+        Parent root = stage.getScene().getRoot();
+
+        ScaleTransition scaleTransition = new ScaleTransition();
+        scaleTransition.setDuration(Duration.seconds(0.5));
+        scaleTransition.setNode(root);
+        scaleTransition.setFromX(1.0);
+        scaleTransition.setFromY(1.0);
+        scaleTransition.setToX(0);
+        scaleTransition.setToY(0);
+
+        scaleTransition.setOnFinished(event -> {
+            stage.setIconified(true);
+        });
+
+        scaleTransition.play();
+
+        stage.iconifiedProperty().addListener((obs, wasMinimized, isNowMinimized) -> {
+            if (!isNowMinimized) {
+                ScaleTransition restoreTransition = new ScaleTransition();
+                restoreTransition.setDuration(Duration.seconds(0.5));
+                restoreTransition.setNode(root);
+                restoreTransition.setFromX(0);
+                restoreTransition.setFromY(0);
+                restoreTransition.setToX(1.0);
+                restoreTransition.setToY(1.0);
+                restoreTransition.play();
+            }
+        });
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         combobox_search.getItems().addAll("Local Library", "API");
-
         ViewAllBook();
     }
 }
