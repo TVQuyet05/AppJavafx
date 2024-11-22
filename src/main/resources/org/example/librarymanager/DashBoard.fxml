@@ -39,7 +39,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="searchBooks" layoutX="203.0" layoutY="359.0" mnemonicParsing="false" onAction="#findBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-search">
+      <Button fx:id="searchBooks" layoutX="203.0" layoutY="359.0" mnemonicParsing="false" onAction="#openViewAllBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-search">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
