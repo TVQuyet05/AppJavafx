@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static org.example.librarymanager.Util.getData.numberOfUser;
+
 public class StudentDashBoardController implements Initializable {
 
     @FXML
@@ -194,6 +196,9 @@ public class StudentDashBoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         currentPane = homeScreen_std;
+
+        numberStudent.setText(numberOfUser);
     }
 }

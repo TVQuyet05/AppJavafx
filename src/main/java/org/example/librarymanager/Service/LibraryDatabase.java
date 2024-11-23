@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.librarymanager.Util.getData.*;
+
 // Class use Singleton pattern
 // Code all function to access database in here
 
@@ -50,8 +52,44 @@ public class LibraryDatabase {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            // Check if there is at least one result
-            return resultSet.next();
+            if(resultSet.next()) {
+                typeOfUser = "STUDENT";
+                numberOfUser = resultSet.getString("studentNumber");
+                nameOfUser = resultSet.getString("name");
+                pathImageOfStudent = resultSet.getString("image");
+
+                System.out.println("Student log in successfully!");
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean authenticateManager(String managerNumber, String password) {
+        String query = "SELECT * FROM manager WHERE managerNumber = ? AND password = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, managerNumber);
+            stmt.setString(2, password);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if(resultSet.next()) {
+                typeOfUser = "MANAGER";
+                numberOfUser = resultSet.getString("managerNumber");
+                nameOfUser = resultSet.getString("name");
+                pathImageOfStudent = "";
+
+                System.out.println("Manager log in successfully!");
+
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

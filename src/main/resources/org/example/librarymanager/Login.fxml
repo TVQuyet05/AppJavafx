@@ -35,7 +35,7 @@
                   <Font name="Roboto Bold" size="12.0" />
                </font>
             </Button>
-            <Button layoutX="202.0" layoutY="444.0" mnemonicParsing="false" onAction="#forgotPassword_SignIn" prefHeight="40.0" prefWidth="280.0" styleClass="button-btn" stylesheets="@Login.css" text="Back to Login" textFill="WHITE">
+            <Button layoutX="202.0" layoutY="444.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="280.0" styleClass="button-btn" stylesheets="@Login.css" text="Back to Login" textFill="WHITE">
                <font>
                   <Font name="Roboto Bold" size="12.0" />
                </font>
@@ -59,8 +59,8 @@
                   <Font name="Roboto Medium" size="56.0" />
                </font>
             </Label>
-            <TextField fx:id="studentNumber" layoutX="176.0" layoutY="260.0" prefHeight="40.0" prefWidth="280.0" promptText="Student Number" styleClass="username" stylesheets="@Login.css" />
-            <PasswordField fx:id="passWord" layoutX="176.0" layoutY="323.0" prefHeight="40.0" prefWidth="280.0" promptText="Password" styleClass="username" stylesheets="@Login.css" />
+            <TextField fx:id="field_number" layoutX="176.0" layoutY="260.0" prefHeight="40.0" prefWidth="280.0" promptText="Student Number or Manager Number" styleClass="username" stylesheets="@Login.css" />
+            <PasswordField fx:id="field_password" layoutX="176.0" layoutY="323.0" prefHeight="40.0" prefWidth="280.0" promptText="Password" styleClass="username" stylesheets="@Login.css" />
             <Label layoutX="176.0" layoutY="186.0" prefHeight="30.0" prefWidth="260.0" text="Please login to your account" textFill="#46689e">
                <font>
                   <Font name="Roboto" size="20.0" />
@@ -68,7 +68,7 @@
             </Label>
             <FontAwesomeIcon fill="#46689e" glyphName="USER" layoutX="133.0" layoutY="293.0" size="2.4em" text="" />
             <FontAwesomeIcon fill="#46689e" glyphName="LOCK" layoutX="133.0" layoutY="358.0" size="2.8em" text="" />
-            <Hyperlink fx:id="forgotPassword" layoutX="346.0" layoutY="363.0" onAction="#forgotPassword" text="Forgot Password?" textFill="#46689e">
+            <Hyperlink fx:id="forgotPassword" layoutX="346.0" layoutY="363.0" text="Forgot Password?" textFill="#46689e">
                <font>
                   <Font name="Roboto" size="12.0" />
                </font>

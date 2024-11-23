@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static org.example.librarymanager.Util.getData.nameOfUser;
+
 public class DashBoardController implements Initializable {
 
     @FXML
@@ -99,6 +101,9 @@ public class DashBoardController implements Initializable {
     private TextField textField_add_Date;
 
     @FXML
+    private Label managerName;
+
+    @FXML
     private AnchorPane anchor_AddBooks;
 
     @FXML
@@ -115,7 +120,6 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane anchor_ReturnBooks;
-
 
     @FXML
     private AnchorPane mess_Success;
@@ -385,7 +389,11 @@ public class DashBoardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         currentPane = anchor_HomeScreen;
+
+        managerName.setText(nameOfUser);
+
         pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
         pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
 
