@@ -3,6 +3,7 @@ package org.example.librarymanager.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.BorrowedBook;
 import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
@@ -175,12 +176,12 @@ public class LibraryDatabase {
                 studentList.add(student);
             }
 
+            System.out.println("Get sign up account success!");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!studentList.isEmpty()) {
-            System.out.println("Get sign up account success!");
-        }
+
         return studentList;
     }
 
@@ -243,7 +244,49 @@ public class LibraryDatabase {
     }
 
 
+    public ObservableList<BorrowedBook> getBorrowedBook() {
+        ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
 
+        String query = "SELECT s.studentNumber as studentNumber, s.name as name, b.book_id as book_id, b.book_title as book_title," +
+                        " b.author as author, b.genre as genre, b.date as date, b.image as image, bb.borrow_date as borrow_date," +
+                        " bb.due_date as due_date, NULLIF(bb.return_date, '0000-00-00') AS return_date " +
+                        "FROM borrowbook bb " +
+                        "JOIN student s ON bb.studentNumber = s.studentNumber " +
+                        "JOIN book b ON bb.book_id = b.book_id " +
+                        "ORDER BY s.studentNumber;";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            ResultSet result = stmt.executeQuery();
+
+            while(result.next()) {
+                BorrowedBook borrowedBook = new BorrowedBook(
+                        result.getString("studentNumber"),
+                        result.getString("name"),
+                        result.getInt("book_id"),
+                        result.getString("book_title"),
+                        result.getString("author"),
+                        result.getString("genre"),
+                        result.getDate("date"),
+                        result.getString("image"),
+                        result.getDate("borrow_date"),
+                        result.getDate("due_date"),
+                        result.getDate("return_date")
+
+                );
+
+                borrowedBookList.add(borrowedBook);
+            }
+
+            System.out.println("Get borrowed book successfully!");
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return borrowedBookList;
+    }
 
 
 

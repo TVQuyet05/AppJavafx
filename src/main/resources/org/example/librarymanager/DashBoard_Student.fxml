@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard_Student.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.StudentDashBoardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard_Student.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.StudentDashBoardController">
    <children>
       <AnchorPane fx:id="anchor_HomeScreen" layoutX="335.0" layoutY="8.0" prefHeight="700.0" prefWidth="950.0" styleClass="background" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="14.599999999999909" AnchorPane.topAnchor="8.0">
          <children>
@@ -169,13 +169,13 @@
             </AnchorPane>
             <AnchorPane fx:id="returnBooks_std" layoutX="382.0" layoutY="227.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
-                  <TableView layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
+                  <TableView fx:id="borrowedBookStudent_TableView" layoutX="426.0" layoutY="71.0" prefHeight="503.0" prefWidth="870.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="71.0">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="ID" />
-                      <TableColumn prefWidth="230.0" text="Title" />
-                      <TableColumn prefWidth="160.0" text="Author" />
-                        <TableColumn minWidth="0.0" prefWidth="120.0" text="Borrow Date" />
-                        <TableColumn minWidth="0.0" prefWidth="120.0" text="Due Date" />
+                        <TableColumn fx:id="col_bookId_std" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="col_title_std" prefWidth="230.0" text="Title" />
+                      <TableColumn fx:id="col_author_std" prefWidth="160.0" text="Author" />
+                        <TableColumn fx:id="col_borrowDate_std" minWidth="0.0" prefWidth="120.0" text="Borrow Date" />
+                        <TableColumn fx:id="col_dueDate_std" minWidth="0.0" prefWidth="120.0" text="Due Date" />
                         <TableColumn prefWidth="200.0" text="Actions " />
                     </columns>
                      <columnResizePolicy>

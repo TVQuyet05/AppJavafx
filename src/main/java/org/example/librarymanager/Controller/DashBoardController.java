@@ -120,7 +120,7 @@ public class DashBoardController implements Initializable {
     private AnchorPane anchor_deleteBooks;
 
     @FXML
-    private AnchorPane anchor_ReturnBooks;
+    private AnchorPane anchor_borrowedBooks;
 
     @FXML
     private AnchorPane mess_Success;
@@ -239,8 +239,8 @@ public class DashBoardController implements Initializable {
         switchPain(anchor_deleteBooks);
     }
 
-    public void returnBooks() {
-        switchPain(anchor_ReturnBooks);
+    public void borrowedBooks() {
+        switchPain(anchor_borrowedBooks);
     }
 
     public void addMembers() {

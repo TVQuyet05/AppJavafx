@@ -52,6 +52,6 @@ public class Book {
     public int getQuantity() {return this.quantity;}
 
 
-
+    public void setId(int id) {this.id = id;}
 
 }

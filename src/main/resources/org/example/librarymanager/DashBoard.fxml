@@ -47,7 +47,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="borrowedBook" layoutX="342.0" layoutY="359.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="button-issue">
+      <Button fx:id="borrowedBook" layoutX="342.0" layoutY="359.0" mnemonicParsing="false" onAction="#borrowedBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-issue">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
@@ -64,7 +64,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="returnBooks" layoutX="205.0" layoutY="469.0" mnemonicParsing="false" onAction="#returnBooks" onDragDetected="#returnBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-return" AnchorPane.bottomAnchor="163.0">
+      <Button fx:id="returnBooks" layoutX="205.0" layoutY="469.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="book-return" AnchorPane.bottomAnchor="163.0">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
@@ -127,7 +127,7 @@
             <Font name="Roboto" size="46.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="anchor_addMember" layoutX="478.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_addMember" layoutX="478.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" stylesheets="@DashBoard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Button layoutX="640.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
@@ -304,28 +304,8 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_ReturnBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_borrowedBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
-            <Label layoutX="315.0" layoutY="113.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Return Book">
-               <font>
-                  <Font name="System Bold" size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="208.0" layoutY="305.0" text="Enter ID:" textFill="#345494">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Button fx:id="search_left11" layoutX="597.0" layoutY="412.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="130.0" styleClass="add-button-right" text="View Detail" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Button>
-            <TextField layoutX="383.0" layoutY="298.0" prefHeight="50.0" prefWidth="260.0" promptText="Faculty/Student" styleClass="add-textfield">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </TextField>
             <Button layoutX="639.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
                   <ImageView>

@@ -1,6 +1,7 @@
 package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,14 +10,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.example.librarymanager.Model.BorrowedBook;
+import org.example.librarymanager.Service.LibraryDatabase;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -68,6 +75,24 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private AnchorPane returnBooks_std;
+
+    @FXML
+    private TableView<BorrowedBook> borrowedBookStudent_TableView;
+
+    @FXML
+    private TableColumn<BorrowedBook, Integer> col_bookId_std;
+
+    @FXML
+    private TableColumn<BorrowedBook, String> col_title_std;
+
+    @FXML
+    private TableColumn<BorrowedBook, String> col_author_std;
+
+    @FXML
+    private TableColumn<BorrowedBook, Date> col_borrowDate_std;
+
+    @FXML
+    private TableColumn<BorrowedBook, Date> col_dueDate_std;
 
     private AnchorPane currentPane = null;
 
@@ -182,9 +207,30 @@ public class StudentDashBoardController implements Initializable {
         }
     }
 
-    public void returnBook() {
-        switchPain(returnBooks_std);
+    public void showBorrowedBookForStudent() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
+
+        // remove borrowed book not of this student
+        listBorrowedBook.removeIf(borrowedBook ->
+                !borrowedBook.getStudentNumber().equals(numberOfUser));
+
+        // remove returned book of student
+        listBorrowedBook.removeIf(borrowedBook ->
+                borrowedBook.getReturn_date() != null);
+
+        col_bookId_std.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_title_std.setCellValueFactory(new PropertyValueFactory<>("title"));
+        col_author_std.setCellValueFactory(new PropertyValueFactory<>("author"));
+        col_borrowDate_std.setCellValueFactory(new PropertyValueFactory<>("borrow_date"));
+        col_dueDate_std.setCellValueFactory(new PropertyValueFactory<>("due_date"));
+
+        borrowedBookStudent_TableView.setItems(listBorrowedBook);
+
     }
+
+    public void returnBook() { switchPain(returnBooks_std); }
 
     public void commentBook() {
         switchPain(commentBook_std);
@@ -200,5 +246,7 @@ public class StudentDashBoardController implements Initializable {
         currentPane = homeScreen_std;
 
         numberStudent.setText(numberOfUser);
+
+        showBorrowedBookForStudent();
     }
 }
