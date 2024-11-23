@@ -2,6 +2,7 @@ package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -309,37 +310,53 @@ public class DashBoardController implements Initializable {
     }
 
     public void openViewAllBooks() {
-        try {
-            // Load the FXML file
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
+        // Create a new thread to open the second stage
+        Thread viewAllBooksThread = new Thread(() -> {
+            try {
+                // Load the FXML file
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
 
-            // Create a new Scene
-            Scene scene = new Scene(root);
+                // Create a new Scene
+                Scene scene = new Scene(root);
 
-            Stage stage = new Stage();
+                // Use Platform.runLater to update the JavaFX UI
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = new Stage();
 
-            // Add mouse event handlers for dragging the window
-            root.setOnMousePressed((MouseEvent event) -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
+                        // Add mouse event handlers for dragging the window
+                        root.setOnMousePressed((MouseEvent event) -> {
+                            x = event.getSceneX();
+                            y = event.getSceneY();
+                        });
 
-            root.setOnMouseDragged((MouseEvent event) -> {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            });
+                        root.setOnMouseDragged((MouseEvent event) -> {
+                            stage.setX(event.getScreenX() - x);
+                            stage.setY(event.getScreenY() - y);
+                        });
 
-            // Set the stage to be transparent
-            stage.initStyle(StageStyle.TRANSPARENT);
+                        // Set the stage to be transparent
+                        stage.initStyle(StageStyle.TRANSPARENT);
 
-            // Set the scene and display the stage
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading ViewAllBooks.fxml");
-        }
+                        // Set the scene and display the stage
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error displaying ViewAllBooks stage.");
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error loading ViewAllBooks.fxml");
+            }
+        });
+
+        // Start the thread to open the second stage
+        viewAllBooksThread.start();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
