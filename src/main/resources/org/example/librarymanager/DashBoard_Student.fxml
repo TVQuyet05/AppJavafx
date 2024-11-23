@@ -53,7 +53,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <AnchorPane fx:id="homeScreen_std" layoutY="71.0" prefHeight="613.0" prefWidth="950.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane fx:id="homeScreen_std" layoutY="71.0" prefHeight="613.0" prefWidth="950.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
                   <ScrollPane hbarPolicy="NEVER" layoutX="696.0" layoutY="37.0" prefHeight="171.0" prefWidth="239.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="380.0" AnchorPane.leftAnchor="696.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0">
                     <content>
@@ -167,7 +167,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="returnBooks_std" layoutX="382.0" layoutY="227.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane fx:id="returnBooks_std" layoutX="382.0" layoutY="227.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
                   <TableView layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
                     <columns>
