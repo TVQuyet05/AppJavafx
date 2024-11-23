@@ -51,8 +51,6 @@ public class ViewAllBookController implements Initializable {
     @FXML
     private Button close;
 
-    @FXML
-    private AnchorPane viewAllBooks;
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
@@ -70,7 +68,7 @@ public class ViewAllBookController implements Initializable {
 
             // Thêm hiệu ứng FadeIn cho DetailBook khi hiển thị
             root.setOpacity(0);
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(400), root);
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(500), root);
             fadeIn.setFromValue(0.0);
             fadeIn.setToValue(1.0);
             fadeIn.play();
@@ -217,7 +215,11 @@ public class ViewAllBookController implements Initializable {
     public void close() {
         Stage stage = (Stage) close.getScene().getWindow();
         Parent root = stage.getScene().getRoot();
-        addFadeOutEffect(root, () -> System.exit(0));
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(400), root);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setOnFinished(event -> root.getScene().getWindow().hide());
+        fadeTransition.play();
     }
 
     public void minimize() {

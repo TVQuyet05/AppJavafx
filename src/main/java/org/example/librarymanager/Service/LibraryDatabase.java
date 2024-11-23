@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.librarymanager.Util.getData.*;
+
 // Class use Singleton pattern
 // Code all function to access database in here
 
@@ -50,8 +52,44 @@ public class LibraryDatabase {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            // Check if there is at least one result
-            return resultSet.next();
+            if(resultSet.next()) {
+                typeOfUser = "STUDENT";
+                numberOfUser = resultSet.getString("studentNumber");
+                nameOfUser = resultSet.getString("name");
+                pathImageOfStudent = resultSet.getString("image");
+
+                System.out.println("Student log in successfully!");
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean authenticateManager(String managerNumber, String password) {
+        String query = "SELECT * FROM manager WHERE managerNumber = ? AND password = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, managerNumber);
+            stmt.setString(2, password);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if(resultSet.next()) {
+                typeOfUser = "MANAGER";
+                numberOfUser = resultSet.getString("managerNumber");
+                nameOfUser = resultSet.getString("name");
+                pathImageOfStudent = "";
+
+                System.out.println("Manager log in successfully!");
+
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -146,16 +184,39 @@ public class LibraryDatabase {
         return studentList;
     }
 
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Database connection closed.");
-            }
+
+    public void deleteSignUpAccount(Student student) {
+        String query = "DELETE FROM signupaccount WHERE studentNumber = ?";
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, student.getStudentNumber());
+
+            stmt.executeUpdate();
+            System.out.println("Delete sign up account from signupaccount successfully!");
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
+
+
+    public void addStudent(Student student) {
+        String query = "INSERT INTO student (studentNumber, password, name, class, image) VALUES (?, ?, ?, ?, ?)";
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, student.getStudentNumber());
+            stmt.setString(2, student.getPassword());
+            stmt.setString(3, student.getName());
+            stmt.setString(4, student.get_class());
+            stmt.setString(5, "");
+
+            stmt.executeUpdate();
+
+            System.out.println("Add student successfully!");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
@@ -173,6 +234,8 @@ public class LibraryDatabase {
                         resultSet.getString("image"));
                 books.add(book);
             }
+
+            System.out.println("Get book successfully!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -180,4 +243,26 @@ public class LibraryDatabase {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+//    public void closeConnection() {
+//        try {
+//            if (connection != null && !connection.isClosed()) {
+//                connection.close();
+//                System.out.println("Database connection closed.");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

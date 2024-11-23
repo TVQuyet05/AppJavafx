@@ -34,6 +34,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static org.example.librarymanager.Util.getData.nameOfUser;
+
 public class DashBoardController implements Initializable {
 
     @FXML
@@ -100,6 +102,9 @@ public class DashBoardController implements Initializable {
     private TextField textField_add_Date;
 
     @FXML
+    private Label managerName;
+
+    @FXML
     private AnchorPane anchor_AddBooks;
 
     @FXML
@@ -116,7 +121,6 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane anchor_ReturnBooks;
-
 
     @FXML
     private AnchorPane mess_Success;
@@ -309,6 +313,48 @@ public class DashBoardController implements Initializable {
         SignUpAccount_TableView.setItems(listSignUpAccount);
     }
 
+    public void acceptSignUp() {
+
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
+
+        int num = SignUpAccount_TableView.getSelectionModel().getFocusedIndex();
+
+        if(num < 0) {
+            return;
+        }
+
+        //add selected_student to table student in database
+        database.addStudent(selected_student);
+
+        //delete selected_student from table signupaccount in database
+        database.deleteSignUpAccount(selected_student);
+
+        //show table sign up account again
+        showSignUpAccount();
+
+    }
+
+    public void refuseSignUp() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
+
+        int num = SignUpAccount_TableView.getSelectionModel().getFocusedIndex();
+
+        if(num < 0) {
+            return;
+        }
+
+        //delete selected_student from table signupaccount in database
+        database.deleteSignUpAccount(selected_student);
+
+        //show table sign up account again
+        showSignUpAccount();
+
+    }
+
     public void openViewAllBooks() {
         // Create a new thread to open the second stage
         Thread viewAllBooksThread = new Thread(() -> {
@@ -360,7 +406,11 @@ public class DashBoardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         currentPane = anchor_HomeScreen;
+
+        managerName.setText(nameOfUser);
+
         pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
         pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
 
