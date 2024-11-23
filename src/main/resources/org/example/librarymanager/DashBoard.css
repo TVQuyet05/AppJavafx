@@ -150,14 +150,40 @@
 }
 
 .table_view {
-   -fx-background-color:#f6f6f6;
+    -fx-background-color: #f6f6f6;
+    -fx-table-cell-border-color: transparent; /* Ẩn vách ngăn */
 }
 .table_view .column-header {
     -fx-border-width: 0 0 1 0 ;
-    -fx-border-color: #000000;
+    -fx-border-color: #bcbcbc;
     -fx-background-color: #f6f6f6;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
+.table_view .column-header .label {
+    -fx-text-fill: #bcbcbc;
+}
+.table_view .table-row-cell {
+    -fx-border-color: #bfbfbf;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.table_view .table-row-cell:filled .table-cell {
+    -fx-text-fill: #505050;
+}
+.table_view .cell {
+    -fx-padding: 5px;
+    -fx-alignment: CENTER;
+}
+
+.table_view .table-row-cell:selected {
+    -fx-background-color: lightblue; /* Màu nền khi chọn */
+    -fx-text-fill: black; /* Màu chữ khi chọn */
+}
+
+
 .background_white{
     -fx-background-color: #ffffff;
     -fx-background-radius: 0px 15px 15px 0px;
@@ -178,4 +204,16 @@
     -fx-font-size: 12px;
     -fx-background-color: transparent;
 }
+
+.scroll-pane {
+    -fx-background-color: #f6f6f6;
+    -fx-background-radius: 0px 15px 15px 0px;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: white; /* Nền bên trong */
+    -fx-background-radius: 15; /* Bo tròn nội dung */
+}
+
+
 
