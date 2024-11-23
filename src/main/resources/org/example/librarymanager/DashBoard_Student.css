@@ -29,3 +29,13 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 15;
 }
+
+.table_view {
+    -fx-background-color:#f6f6f6;
+}
+.table_view .column-header {
+    -fx-border-width: 0 0 1 0 ;
+    -fx-border-color: #000000;
+    -fx-background-color: #f6f6f6;
+    -fx-font-weight: bold;
+}

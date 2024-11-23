@@ -2,15 +2,15 @@ package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +20,9 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.effect.GaussianBlur;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +54,7 @@ public class DashBoardController implements Initializable {
     private Button information;
 
     @FXML
-    private Button issueBooks;
+    private Button borrowedBook;
 
     @FXML
     private Button logOut;
@@ -106,7 +108,7 @@ public class DashBoardController implements Initializable {
     private AnchorPane anchor_HomeScreen;
 
     @FXML
-    private AnchorPane anchor_IssueBook;
+    private AnchorPane anchor_addMember;
 
     @FXML
     private AnchorPane anchor_deleteBooks;
@@ -114,8 +116,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private AnchorPane anchor_ReturnBooks;
 
-    @FXML
-    private AnchorPane anchor_AddMemebers;
 
     @FXML
     private AnchorPane mess_Success;
@@ -131,6 +131,20 @@ public class DashBoardController implements Initializable {
     @FXML
     private PieChart pie_chart_2;
 
+    @FXML
+    private TableView<Student> SignUpAccount_TableView;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_studentNumber;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_password;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_name;
+
+    @FXML
+    private TableColumn<Student, String> col_signup_class;
 
 
 
@@ -215,9 +229,6 @@ public class DashBoardController implements Initializable {
         switchPain(anchor_FindBooks);
     }
 
-    public void issueBooks() {
-        switchPain(anchor_IssueBook);
-    }
 
     public void deleteBooks() {
         switchPain(anchor_deleteBooks);
@@ -228,7 +239,7 @@ public class DashBoardController implements Initializable {
     }
 
     public void addMembers() {
-        switchPain(anchor_AddMemebers);
+        switchPain(anchor_addMember);
     }
 
     public void backHome() {
@@ -284,11 +295,100 @@ public class DashBoardController implements Initializable {
 
     }
 
+    public void showSignUpAccount() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        ObservableList<Student> listSignUpAccount = database.getSignUpAccount();
+
+        col_signup_studentNumber.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+        col_signup_password.setCellValueFactory(new PropertyValueFactory<>("password"));
+        col_signup_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_signup_class.setCellValueFactory(new PropertyValueFactory<>("_class"));
+
+        SignUpAccount_TableView.setItems(listSignUpAccount);
+    }
+
+    public void acceptSignUp() {
+
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
+
+        int num = SignUpAccount_TableView.getSelectionModel().getFocusedIndex();
+
+        if(num < 0) {
+            return;
+        }
+
+        //add selected_student to table student in database
+        database.addStudent(selected_student);
+
+        //delete selected_student from table signupaccount in database
+        database.deleteSignUpAccount(selected_student);
+
+        //show table sign up account again
+        showSignUpAccount();
+
+    }
+
+    public void refuseSignUp() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
+
+        int num = SignUpAccount_TableView.getSelectionModel().getFocusedIndex();
+
+        if(num < 0) {
+            return;
+        }
+
+        //delete selected_student from table signupaccount in database
+        database.deleteSignUpAccount(selected_student);
+
+        //show table sign up account again
+        showSignUpAccount();
+
+    }
+
+    public void openViewAllBooks() {
+        try {
+            // Load the FXML file
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
+
+            // Create a new Scene
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+
+            // Add mouse event handlers for dragging the window
+            root.setOnMousePressed((MouseEvent event) -> {
+                x = event.getSceneX();
+                y = event.getSceneY();
+            });
+
+            root.setOnMouseDragged((MouseEvent event) -> {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            });
+
+            // Set the stage to be transparent
+            stage.initStyle(StageStyle.TRANSPARENT);
+
+            // Set the scene and display the stage
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading ViewAllBooks.fxml");
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentPane = anchor_HomeScreen;
         pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
         pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
 
+        showSignUpAccount();
     }
 }

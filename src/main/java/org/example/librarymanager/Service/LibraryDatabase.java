@@ -1,6 +1,9 @@
 package org.example.librarymanager.Service;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -96,17 +99,86 @@ public class LibraryDatabase {
     }
 
 
+    public void addStudentSignUp(Student student) {
+        String query = "INSERT INTO signupaccount (studentNumber, password, name, class) VALUES (?, ?, ?, ?)";
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, student.getStudentNumber());
+            stmt.setString(2, student.getPassword());
+            stmt.setString(3, student.getName());
+            stmt.setString(4, student.get_class());
 
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Database connection closed.");
-            }
+            stmt.executeUpdate();
+            System.out.println("Add sign up account to signupaccount success!");
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
+
+    public ObservableList<Student> getSignUpAccount() {
+        ObservableList<Student> studentList = FXCollections.observableArrayList();
+
+        String query = "SELECT * FROM signupaccount";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Student student = new Student(
+                        result.getString("studentNumber"),
+                        result.getString("password"),
+                        "",
+                        result.getString("name"),
+                        result.getString("class")
+                );
+
+                studentList.add(student);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(!studentList.isEmpty()) {
+            System.out.println("Get sign up account success!");
+        }
+        return studentList;
+    }
+
+
+    public void deleteSignUpAccount(Student student) {
+        String query = "DELETE FROM signupaccount WHERE studentNumber = ?";
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, student.getStudentNumber());
+
+            stmt.executeUpdate();
+            System.out.println("Delete sign up account from signupaccount successfully!");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void addStudent(Student student) {
+        String query = "INSERT INTO student (studentNumber, password, name, class, image) VALUES (?, ?, ?, ?, ?)";
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, student.getStudentNumber());
+            stmt.setString(2, student.getPassword());
+            stmt.setString(3, student.getName());
+            stmt.setString(4, student.get_class());
+            stmt.setString(5, "");
+
+            stmt.executeUpdate();
+
+            System.out.println("Add student successfully!");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
@@ -124,6 +196,8 @@ public class LibraryDatabase {
                         resultSet.getString("image"));
                 books.add(book);
             }
+
+            System.out.println("Get book successfully!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -131,4 +205,26 @@ public class LibraryDatabase {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+//    public void closeConnection() {
+//        try {
+//            if (connection != null && !connection.isClosed()) {
+//                connection.close();
+//                System.out.println("Database connection closed.");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

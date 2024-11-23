@@ -46,7 +46,9 @@ public class Book {
     public Date getDate() {return this.date;}
 
     public int getId() {return this.id;}
+
     public String getDescription() {return this.description;}
+
     public int getQuantity() {return this.quantity;}
 
 
