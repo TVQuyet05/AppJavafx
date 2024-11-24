@@ -3,10 +3,12 @@ package org.example.librarymanager.Controller;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -16,10 +18,10 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javafx.scene.effect.GaussianBlur;
 import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
@@ -151,6 +153,22 @@ public class DashBoardController implements Initializable {
     @FXML
     private TableColumn<Student, String> col_signup_class;
 
+    @FXML
+    private TableView<Student> Member_Information_TV;
+
+    @FXML
+    private TableColumn<?, ?> col_listAcc_Stn;
+
+    @FXML
+    private TableColumn<?, ?> col_listAcc_class;
+
+    @FXML
+    private TableColumn<?, ?> col_listAcc_name;
+
+    @FXML
+    private TableColumn<?, ?> col_listAcc_pass;
+
+
 
 
 
@@ -208,7 +226,7 @@ public class DashBoardController implements Initializable {
     }
 
     public void switchPain(AnchorPane nextPane) {
-
+        SignUpAccount_TableView.getSelectionModel().clearSelection();
         FadeTransition fade = new FadeTransition(Duration.millis(300), currentPane);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
@@ -304,16 +322,74 @@ public class DashBoardController implements Initializable {
         LibraryDatabase database = LibraryDatabase.getInstance();
 
         ObservableList<Student> listSignUpAccount = database.getSignUpAccount();
+        SignUpAccount_TableView.setItems(listSignUpAccount);
 
+        // Đặt chiều cao cố định cho từng dòng trong TableView
+        SignUpAccount_TableView.setFixedCellSize(60);
+        SignUpAccount_TableView.prefHeightProperty().bind(
+                Bindings.size(SignUpAccount_TableView.getItems()).multiply(SignUpAccount_TableView.getFixedCellSize()).add(30)
+        );
+
+        // Đặt giá trị cho các cột
         col_signup_studentNumber.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
         col_signup_password.setCellValueFactory(new PropertyValueFactory<>("password"));
         col_signup_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         col_signup_class.setCellValueFactory(new PropertyValueFactory<>("_class"));
 
-        SignUpAccount_TableView.setItems(listSignUpAccount);
+        // Kiểm tra nếu cột "Action" chưa được thêm
+        if (Member_Information_TV.getColumns().stream().noneMatch(column -> column.getText().equals("Action"))) {
+            TableColumn<Student, Void> actionColumn = new TableColumn<>("Action");
+
+            actionColumn.setCellFactory(column -> new TableCell<>() {
+                private final Button acceptButton = new Button("Accept");
+                private final Button refuseButton = new Button("Refuse");
+
+                {
+                    acceptButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-cursor: hand");
+                    refuseButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-cursor: hand");
+                    acceptButton.setPrefWidth(70);
+                    refuseButton.setPrefWidth(70);
+
+                    acceptButton.setOnAction(event -> {
+                        Student student = getTableView().getItems().get(getIndex());
+                        if (student != null) {
+                            acceptSignUp(student);
+                        }
+                    });
+
+                    refuseButton.setOnAction(event -> {
+                        Student student = getTableView().getItems().get(getIndex());
+                        if (student != null) {
+                            refuseSignUp(student);
+                        }
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        HBox buttonsBox = new HBox(10, acceptButton, refuseButton);
+                        buttonsBox.setAlignment(Pos.CENTER);
+                        setGraphic(buttonsBox);
+                    }
+                }
+            });
+
+            SignUpAccount_TableView.getColumns().add(actionColumn);
+        }
     }
 
-    public void acceptSignUp() {
+
+
+
+
+    public void acceptSignUp(Student selectedStudent) {
+        if(selectedStudent == null) {
+            return;
+        }
 
         LibraryDatabase database = LibraryDatabase.getInstance();
 
@@ -336,7 +412,9 @@ public class DashBoardController implements Initializable {
 
     }
 
-    public void refuseSignUp() {
+    public void refuseSignUp(Student student_selected) {
+        if(student_selected == null) return;
+
         LibraryDatabase database = LibraryDatabase.getInstance();
 
         Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
@@ -404,8 +482,96 @@ public class DashBoardController implements Initializable {
     }
 
 
+    public void showMemberInformation() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        ObservableList<Student> listAccStd = database.getAccStudent();
+        Member_Information_TV.setItems(listAccStd);
+
+        // Đặt chiều cao cố định cho từng dòng trong TableView
+        Member_Information_TV.setFixedCellSize(60);
+        Member_Information_TV.prefHeightProperty().bind(
+                Bindings.size(Member_Information_TV.getItems()).multiply(Member_Information_TV.getFixedCellSize()).add(30)
+        );
+
+
+
+
+
+        // Đặt giá trị cho các cột
+        col_listAcc_Stn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+        col_listAcc_pass.setCellValueFactory(new PropertyValueFactory<>("password"));
+        col_listAcc_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_listAcc_class.setCellValueFactory(new PropertyValueFactory<>("_class"));
+
+        // Kiểm tra nếu cột "Action" chưa được thêm
+        if (Member_Information_TV.getColumns().stream().noneMatch(column -> column.getText().equals("Action"))) {
+            TableColumn<Student, Void> actionColumn = new TableColumn<>("Action");
+
+            actionColumn.setCellFactory(column -> new TableCell<>() {
+                private final Button viewButton = new Button("View");
+                private final Button deleteButton = new Button("Delete");
+
+                {
+                    viewButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-cursor: hand");
+                    deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-cursor: hand");
+                    viewButton.setPrefWidth(70);
+                    deleteButton.setPrefWidth(80);
+
+                    viewButton.setOnAction(event -> {
+                        Student student = getTableView().getItems().get(getIndex());
+                        if (student != null) {
+                        }
+                    });
+
+                    deleteButton.setOnAction(event -> {
+                        Student student = getTableView().getItems().get(getIndex());
+                        if (student != null) {
+                            deleteStudent(student);
+                        }
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        HBox buttonsBox = new HBox(10, viewButton, deleteButton);
+                        buttonsBox.setAlignment(Pos.CENTER);
+                        setGraphic(buttonsBox);
+                    }
+                }
+            });
+
+            Member_Information_TV.getColumns().add(actionColumn);
+        }
+    }
+    public void deleteStudent(Student selectedStudent) {
+        if(selectedStudent == null) {
+            return;
+        }
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+
+        int num = Member_Information_TV.getSelectionModel().getFocusedIndex();
+
+        if(num < 0) {
+            return;
+        }
+
+        //delete selected_student from table signupaccount in database
+        database.deleteStudent(selectedStudent);
+
+        //show table sign up account again
+        showMemberInformation();
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        SignUpAccount_TableView.getSelectionModel().clearSelection();
 
         currentPane = anchor_HomeScreen;
 
@@ -415,5 +581,6 @@ public class DashBoardController implements Initializable {
         pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
 
         showSignUpAccount();
+        showMemberInformation();
     }
 }
