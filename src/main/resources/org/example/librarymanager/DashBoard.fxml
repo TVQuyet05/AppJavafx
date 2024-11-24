@@ -223,9 +223,9 @@
                   </ImageView>
                </graphic>
             </Button>
-            <ScrollPane hbarPolicy="NEVER" layoutX="34.0" layoutY="191.0" prefHeight="410.4" prefWidth="739.2" vbarPolicy="NEVER" AnchorPane.topAnchor="191.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="33.0" layoutY="210.0" prefHeight="410.4" prefWidth="739.2" styleClass="table-container" vbarPolicy="NEVER" AnchorPane.topAnchor="210.0">
                <content>
-                  <VBox prefHeight="414.0" prefWidth="739.0">
+                  <VBox prefHeight="414.0" prefWidth="739.0" styleClass="table-container">
                      <children>
                         <TableView fx:id="Member_Information_TV" prefHeight="410.0" prefWidth="739.0" styleClass="table_view">
                            <columns>
@@ -242,11 +242,21 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <Label layoutX="226.0" layoutY="95.0" text="Member Information" textFill="#345494">
+            <Label layoutX="225.0" layoutY="69.0" text="Member Information" textFill="#345494">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
+            <TextField layoutX="33.0" layoutY="138.0" prefHeight="45.0" prefWidth="550.0" promptText="Search by name or ID" styleClass="text_field_search">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </TextField>
+            <Button layoutX="616.0" layoutY="138.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" styleClass="button_search2" stylesheets="@DashBoard.css" text="Search" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="anchor_deleteBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">

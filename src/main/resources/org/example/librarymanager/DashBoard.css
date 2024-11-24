@@ -215,5 +215,16 @@
     -fx-background-radius: 15; /* Bo tròn nội dung */
 }
 
-
+.button_search2 {
+    -fx-background-color: #000000;
+    -fx-cursor: hand;
+    -fx-background-radius: 8 ;
+}
+.text_field_search {
+    -fx-background-color: #ffffff;
+    -fx-cursor:hand;
+    -fx-border-color: #cacaca;
+    -fx-border-width: 0.5;
+    -fx-border-radius: 5;
+}
 

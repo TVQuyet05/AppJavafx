@@ -173,6 +173,18 @@ public class LibraryDatabase {
         return studentList;
     }
 
+    public void deleteStudent(Student student) {
+        String query = "DELETE FROM student WHERE studentNumber = ?";
+        try(PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, student.getStudentNumber());
+            statement.executeUpdate();
+
+            System.out.println("Delete student success!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void deleteSignUpAccount(Student student) {
         String query = "DELETE FROM signupaccount WHERE studentNumber = ?";

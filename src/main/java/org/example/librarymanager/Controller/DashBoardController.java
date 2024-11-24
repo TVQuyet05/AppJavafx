@@ -486,16 +486,16 @@ public class DashBoardController implements Initializable {
             TableColumn<Student, Void> actionColumn = new TableColumn<>("Action");
 
             actionColumn.setCellFactory(column -> new TableCell<>() {
-                private final Button editButton = new Button("Edit");
+                private final Button viewButton = new Button("View");
                 private final Button deleteButton = new Button("Delete");
 
                 {
-                    editButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-cursor: hand");
+                    viewButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-cursor: hand");
                     deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-cursor: hand");
-                    editButton.setPrefWidth(60);
+                    viewButton.setPrefWidth(70);
                     deleteButton.setPrefWidth(80);
 
-                    editButton.setOnAction(event -> {
+                    viewButton.setOnAction(event -> {
                         Student student = getTableView().getItems().get(getIndex());
                         if (student != null) {
                         }
@@ -504,6 +504,7 @@ public class DashBoardController implements Initializable {
                     deleteButton.setOnAction(event -> {
                         Student student = getTableView().getItems().get(getIndex());
                         if (student != null) {
+                            deleteStudent(student);
                         }
                     });
                 }
@@ -514,7 +515,7 @@ public class DashBoardController implements Initializable {
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        HBox buttonsBox = new HBox(10, editButton, deleteButton);
+                        HBox buttonsBox = new HBox(10, viewButton, deleteButton);
                         buttonsBox.setAlignment(Pos.CENTER);
                         setGraphic(buttonsBox);
                     }
@@ -523,6 +524,26 @@ public class DashBoardController implements Initializable {
 
             Member_Information_TV.getColumns().add(actionColumn);
         }
+    }
+    public void deleteStudent(Student selectedStudent) {
+        if(selectedStudent == null) {
+            return;
+        }
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+
+        int num = Member_Information_TV.getSelectionModel().getFocusedIndex();
+
+        if(num < 0) {
+            return;
+        }
+
+        //delete selected_student from table signupaccount in database
+        database.deleteStudent(selectedStudent);
+
+        //show table sign up account again
+        showMemberInformation();
+
     }
 
     @Override
