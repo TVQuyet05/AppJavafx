@@ -103,7 +103,9 @@ public class DetailBookController implements Initializable {
         // Cập nhật hình ảnh sách
         try {
             if (imageUrl != null && !imageUrl.isEmpty()) {
-                image_book.setImage(new javafx.scene.image.Image("file:" + imageUrl, true));
+                image_book.setImage(new javafx.scene.image.Image(imageUrl, true));
+
+                //image_book.setImage(new javafx.scene.image.Image("file:" + imageUrl, true));
             }
         } catch (Exception e) {
             System.out.println("Lỗi tải ảnh: " + e.getMessage());

@@ -342,6 +342,17 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label layoutX="14.0" layoutY="69.0" text="Borrowed Books:" textFill="#1735ab">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <TableView layoutX="8.0" layoutY="120.0" prefHeight="550.0" prefWidth="787.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="anchor_AddMemebers" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">

@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Service.GoogleBooksAPI;
 import org.example.librarymanager.Service.LibraryDatabase;
 
 import javafx.scene.image.Image;
@@ -30,6 +32,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,6 +53,12 @@ public class ViewAllBookController implements Initializable {
 
     @FXML
     private Button close;
+
+    @FXML
+    private TextField field_searchBook;
+
+    @FXML
+    private Button btn_searchBook;
 
 
     private void openBookDetail(String title, String author, String isbn,
@@ -94,7 +103,8 @@ public class ViewAllBookController implements Initializable {
         // Phần ảnh sách
         ImageView imageView = new ImageView();
         try {
-            String uri = "file:" + image;
+            //String uri = "file:" + image;
+            String uri = image;
             Image img = new Image(uri, true);
             imageView.setImage(img);
             imageView.setFitWidth(150);
@@ -173,6 +183,7 @@ public class ViewAllBookController implements Initializable {
         LibraryDatabase libraryDatabase = LibraryDatabase.getInstance();
         List<Book> books = libraryDatabase.getBooks();
 
+        flow_pane.getChildren().clear();
 
         flow_pane.setHgap(35);
         flow_pane.setVgap(20); // Khoảng cách dọc giữa các card
@@ -254,9 +265,57 @@ public class ViewAllBookController implements Initializable {
         });
     }
 
+
+    public void searchBookFromAPI() {
+        String bookTitle = field_searchBook.getText();
+
+        if(bookTitle == null) return;
+
+        GoogleBooksAPI booksAPI = new GoogleBooksAPI();
+
+        List<Book> listBookFromAPI = booksAPI.searchBooks(bookTitle);
+
+        flow_pane.getChildren().clear();
+
+        flow_pane.setHgap(35);
+        flow_pane.setVgap(20); // Khoảng cách dọc giữa các card
+        flow_pane.setMaxWidth(400);
+        flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
+
+        for (Book book : listBookFromAPI) {
+            Date date = book.getDate();
+            int year;
+
+            if (date == null) {
+                year = 2024; // Default year
+            } else {
+                // Use Calendar or LocalDate to extract the year
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                year = calendar.get(Calendar.YEAR);
+            }
+
+            HBox bookCard = createBookCard(
+                    book.getTitle(),
+                    book.getAuthor(),
+                    String.valueOf(book.getId()),
+                    year,
+                    book.getQuantity(),
+                    book.getGenre(),
+                    book.getDescription(),
+                    book.getImage()
+            );
+
+            flow_pane.getChildren().add(bookCard);
+        }
+
+        anchor.getChildren().clear();
+        anchor.getChildren().addAll(flow_pane);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         combobox_search.getItems().addAll("Local Library", "API");
-        ViewAllBook();
+        //ViewAllBook();
     }
 }

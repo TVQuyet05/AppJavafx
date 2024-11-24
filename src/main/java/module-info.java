@@ -3,6 +3,9 @@ module org.example.librarymanager {
     requires javafx.fxml;
     requires java.desktop;
     requires java.sql;
+    requires com.google.gson;
+    requires org.apache.httpcomponents.httpclient;
+    requires org.apache.httpcomponents.httpcore;
 
 
     opens org.example.librarymanager to javafx.fxml;
