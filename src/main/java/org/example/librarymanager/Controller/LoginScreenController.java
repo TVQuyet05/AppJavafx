@@ -39,9 +39,6 @@ public class LoginScreenController implements Initializable {
     private Button login;
 
     @FXML
-    private Button loginwithFace;
-
-    @FXML
     private Button minimize;
 
     @FXML

@@ -146,6 +146,45 @@ public class LibraryDatabase {
         return studentList;
     }
 
+    public ObservableList<Student> getAccStudent() {
+        ObservableList<Student> studentList = FXCollections.observableArrayList();
+        String query = "SELECT * FROM student";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                Student student = new Student(
+                        resultSet.getString("studentNumber"),
+                        resultSet.getString("password"),
+                        "",
+                        resultSet.getString("name"),
+                        resultSet.getString("class")
+                );
+                studentList.add(student);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(!studentList.isEmpty()) {
+            System.out.println("Get student success!");
+        }
+        return studentList;
+    }
+
+    public void deleteStudent(Student student) {
+        String query = "DELETE FROM student WHERE studentNumber = ?";
+        try(PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, student.getStudentNumber());
+            statement.executeUpdate();
+
+            System.out.println("Delete student success!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void deleteSignUpAccount(Student student) {
         String query = "DELETE FROM signupaccount WHERE studentNumber = ?";
