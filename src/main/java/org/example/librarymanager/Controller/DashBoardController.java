@@ -70,8 +70,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private Button searchBooks;
 
-    @FXML
-    private Button add_right;
 
     @FXML
     private Button issue_right;
