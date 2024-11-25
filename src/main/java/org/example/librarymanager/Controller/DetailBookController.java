@@ -16,11 +16,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.example.librarymanager.Model.Book;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static org.example.librarymanager.Util.getData.typeOfUser;
 
 public class DetailBookController implements Initializable {
 
@@ -55,10 +58,16 @@ public class DetailBookController implements Initializable {
     private Label publication_date_Book;
 
     @FXML
+    private Label path_ImageBook;
+
+    @FXML
     private ImageView qr_book;
 
     @FXML
     private Label status_book;
+
+    @FXML
+    private Button btn_addBookToLib;
 
     private double x = 0;
     private double y = 0;
@@ -90,6 +99,8 @@ public class DetailBookController implements Initializable {
         author_Book.setText(author);
         isbn_books.setText(isbn);
         publication_date_Book.setText(publicationDate);
+        path_ImageBook.setText(imageUrl);
+
         if (status != null && !status.isEmpty() && Integer.parseInt(status) > 0) {
             status_book.setText("Available");
         } else {
@@ -104,12 +115,44 @@ public class DetailBookController implements Initializable {
         try {
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 image_book.setImage(new javafx.scene.image.Image(imageUrl, true));
-
-                //image_book.setImage(new javafx.scene.image.Image("file:" + imageUrl, true));
             }
         } catch (Exception e) {
             System.out.println("Lỗi tải ảnh: " + e.getMessage());
         }
+    }
+
+    public void addBookToLibrary() throws IOException {
+
+        // Only manager can't add book to library
+        if(typeOfUser == "STUDENT") {
+            return;
+        }
+
+        Book newbook = new Book(isbn_books.getText(), name_Book.getText(), author_Book.getText(),
+                                category_book.getText(), publication_date_Book.getText(), description_book.getText(),
+                                0, path_ImageBook.getText());
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
+        Parent root = loader.load();
+
+        DashBoardController controller = loader.getController();
+
+        controller.addBooks();
+
+        controller.setInfoForBook(newbook);
+
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
+        stage.show();
+
+        Parent root2 = btn_addBookToLib.getParent();
+
+        root2.getScene().getWindow().hide();
+
     }
 
     @Override

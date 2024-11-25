@@ -30,9 +30,6 @@ import org.example.librarymanager.Service.LibraryDatabase;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -104,6 +101,15 @@ public class DashBoardController implements Initializable {
     private TextField textField_add_Date;
 
     @FXML
+    private TextField textField_add_ISBN;
+
+    @FXML
+    private TextField textField_add_Description;
+
+    @FXML
+    private TextField textField_add_Quantity;
+
+    @FXML
     private Label managerName;
 
     @FXML
@@ -131,6 +137,9 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane anchor_DashBoard;
+
+    @FXML
+    private AnchorPane anchor_memberInformation;
 
     @FXML
     private PieChart pie_chart_1;
@@ -168,6 +177,25 @@ public class DashBoardController implements Initializable {
     @FXML
     private TableColumn<?, ?> col_listAcc_pass;
 
+    //SingleTon Pattern
+//    private FXMLLoader dashBoardLoader;
+//    private static DashBoardController dashBoardController;
+//
+//    public void initializeDashBoard() throws IOException {
+//        if (dashBoardLoader == null) {
+//            // Load the FXML file once
+//            dashBoardLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
+//            dashBoardLoader.load();
+//            dashBoardController = dashBoardLoader.getController();
+//        }
+//    }
+//
+//    public static DashBoardController getDashBoardController() {
+//        dashBoardLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
+//        dashBoardLoader.load();
+//        dashBoardController = dashBoardLoader.getController();
+//        return dashBoardController;
+//    }
 
 
 
@@ -245,11 +273,17 @@ public class DashBoardController implements Initializable {
     }
 
     public void addBooks() {
+        System.out.println("Go to addBook AnchorPane successfully!");
+
         switchPain(anchor_AddBooks);
     }
 
     public void findBooks() {
         switchPain(anchor_FindBooks);
+    }
+
+    public void showInfoStudent() {
+        switchPain(anchor_memberInformation);
     }
 
 
@@ -297,22 +331,45 @@ public class DashBoardController implements Initializable {
         }
     }
 
+    public void setInfoForBook(Book bookFromAPI) {
+
+        textField_add_ISBN.setText(bookFromAPI.getId());
+        textField_add_BookName.setText(bookFromAPI.getTitle());
+        textField_add_AuthorName.setText(bookFromAPI.getAuthor());
+        textField_add_Genre.setText(bookFromAPI.getGenre());
+        textField_add_Date.setText(bookFromAPI.getDate());
+        textField_add_Description.setText(bookFromAPI.getDescription());
+        textField_add_Quantity.setText("Enter quantity of books");
+        textField_add_ImageBook.setText(bookFromAPI.getImage());
+
+        System.out.println("Set info of book from API successfully!");
+
+    }
 
     public void addBookToDatabase() {
         LibraryDatabase database = LibraryDatabase.getInstance();
-        Connection connect = database.getConnection();
 
+        String isbn = textField_add_ISBN.getText();
         String book_title = textField_add_BookName.getText();
         String author = textField_add_AuthorName.getText();
         String genre = textField_add_Genre.getText();
         String date_string = textField_add_Date.getText();
+        String description = textField_add_Description.getText();
+
+        int quantity = 0;
+        if(!textField_add_Quantity.getText().equals("Enter quantity of books")) {
+            quantity = Integer.parseInt(textField_add_Quantity.getText());
+        }
+
         String path_image = textField_add_ImageBook.getText();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date_sql = LocalDate.parse(date_string, formatter);
-        Date sqlDate = java.sql.Date.valueOf(date_sql);
+        if(quantity == 0) return; //Please fill quantity
 
-        Book newbook = new Book(book_title, author, genre, (java.sql.Date) sqlDate, path_image);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate date_sql = LocalDate.parse(date_string, formatter);
+//        Date sqlDate = java.sql.Date.valueOf(date_sql);
+
+        Book newbook = new Book(isbn, book_title, author, genre, date_string, description, quantity, path_image);
 
         database.addBook(newbook);
 
@@ -382,10 +439,6 @@ public class DashBoardController implements Initializable {
         }
     }
 
-
-
-
-
     public void acceptSignUp(Student selectedStudent) {
         if(selectedStudent == null) {
             return;
@@ -437,6 +490,7 @@ public class DashBoardController implements Initializable {
         // Create a new thread to open the second stage
         Thread viewAllBooksThread = new Thread(() -> {
             try {
+
                 // Load the FXML file
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
 
@@ -479,6 +533,7 @@ public class DashBoardController implements Initializable {
 
         // Start the thread to open the second stage
         viewAllBooksThread.start();
+
     }
 
 
@@ -492,9 +547,6 @@ public class DashBoardController implements Initializable {
         Member_Information_TV.prefHeightProperty().bind(
                 Bindings.size(Member_Information_TV.getItems()).multiply(Member_Information_TV.getFixedCellSize()).add(30)
         );
-
-
-
 
 
         // Đặt giá trị cho các cột
@@ -547,6 +599,7 @@ public class DashBoardController implements Initializable {
             Member_Information_TV.getColumns().add(actionColumn);
         }
     }
+
     public void deleteStudent(Student selectedStudent) {
         if(selectedStudent == null) {
             return;
@@ -568,8 +621,16 @@ public class DashBoardController implements Initializable {
 
     }
 
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+//        try {
+//            initializeDashBoard();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         SignUpAccount_TableView.getSelectionModel().clearSelection();
 

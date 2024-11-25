@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DetailBookController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DetailBookController">
    <children>
       <AnchorPane fx:id="anchor_detail_Books" prefHeight="700.0" prefWidth="1301.6000000000001" styleClass="detail_book_background" stylesheets="@DashBoard.css">
          <children>
@@ -121,6 +121,8 @@
                   </ImageView>
                </children>
             </AnchorPane>
+            <Button fx:id="btn_addBookToLib" layoutX="208.0" layoutY="643.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="40.0" prefWidth="177.0" text="Add Book To Library" />
+            <Label fx:id="path_ImageBook" layoutX="590.0" layoutY="450.0" text="Label" visible="false" />
          </children>
       </AnchorPane>
    </children>

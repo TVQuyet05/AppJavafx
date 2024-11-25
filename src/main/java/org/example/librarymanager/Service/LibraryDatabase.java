@@ -97,41 +97,26 @@ public class LibraryDatabase {
         }
     }
 
+
+    // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
 
-        int newBookId = 1;
-        String maxIdQuery = "SELECT MAX(book_id) FROM book";
-
-        // Lấy giá trị lớn nhất của book_id
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(maxIdQuery)) {
-
-            if (rs.next()) {
-                int maxBookId = rs.getInt(1); // Lấy giá trị từ cột đầu tiên
-                newBookId = maxBookId + 1;   // Tăng book_id lên 1
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return; // Dừng hàm nếu truy vấn max ID bị lỗi
-        }
-
-        // Câu lệnh thêm sách với cột mới: description và quantity
-        String query = "INSERT INTO book (book_title, author, genre, date, image, book_id, description, quantity) "
+        String query = "INSERT INTO book (book_id, book_title, author, genre, date, description, quantity, image) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, book.getTitle());
-            stmt.setString(2, book.getAuthor());
-            stmt.setString(3, book.getGenre());
-            stmt.setDate(4, new java.sql.Date(book.getDate().getTime()));
-            stmt.setString(5, book.getImage());
-            stmt.setInt(6, newBookId);
-            stmt.setString(7, book.getDescription()); // Thêm cột description
-            stmt.setInt(8, book.getQuantity());       // Thêm cột quantity
+            stmt.setString(1, book.getId());
+            stmt.setString(2, book.getTitle());
+            stmt.setString(3, book.getAuthor());
+            stmt.setString(4, book.getGenre());
+            stmt.setString(5, book.getDate());
+            stmt.setString(6, book.getDescription());
+            stmt.setInt(7, book.getQuantity());
+            stmt.setString(8, book.getImage());
 
             // Thực thi câu lệnh
             stmt.executeUpdate();
-            System.out.println("Add book success!");
+            System.out.println("Add book to database success!");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -264,11 +249,11 @@ public class LibraryDatabase {
         try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 Book book = new Book(
-                        resultSet.getInt("book_id"),
+                        resultSet.getString("book_id"),
                         resultSet.getString("book_title"),
                         resultSet.getString("author"),
                         resultSet.getString("genre"),
-                        resultSet.getDate("date"),
+                        resultSet.getString("date"),
                         resultSet.getString("description"),
                         resultSet.getInt("quantity"),
                         resultSet.getString("image"));
@@ -303,11 +288,11 @@ public class LibraryDatabase {
                 BorrowedBook borrowedBook = new BorrowedBook(
                         result.getString("studentNumber"),
                         result.getString("name"),
-                        result.getInt("book_id"),
+                        result.getString("book_id"),
                         result.getString("book_title"),
                         result.getString("author"),
                         result.getString("genre"),
-                        result.getDate("date"),
+                        result.getString("date"),
                         result.getString("image"),
                         result.getDate("borrow_date"),
                         result.getDate("due_date"),

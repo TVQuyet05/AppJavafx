@@ -32,6 +32,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -90,7 +91,8 @@ public class ViewAllBookController implements Initializable {
     }
 
 
-    public HBox createBookCard(String title, String author, String isbn, int year, int quantity, String category, String description, String image) {
+    public HBox createBookCard(String title, String author, String isbn, String publicationDate , int quantity, String category, String description, String image) {
+
         // Tạo HBox chính để chia sách và thông tin
         HBox bookCard = new HBox();
         bookCard.setSpacing(15);
@@ -103,9 +105,8 @@ public class ViewAllBookController implements Initializable {
         // Phần ảnh sách
         ImageView imageView = new ImageView();
         try {
-            //String uri = "file:" + image;
-            String uri = image;
-            Image img = new Image(uri, true);
+
+            Image img = new Image(image, true);
             imageView.setImage(img);
             imageView.setFitWidth(150);
             imageView.setFitHeight(200);
@@ -128,7 +129,7 @@ public class ViewAllBookController implements Initializable {
         authorLabel.setFont(Font.font("System", 14));
         authorLabel.setTextFill(Color.BLACK);
 
-        Label yearLabel = new Label(String.valueOf(year));
+        Label yearLabel = new Label(publicationDate);
         yearLabel.setFont(Font.font("System", 14));
         yearLabel.setTextFill(Color.GRAY);
 
@@ -163,7 +164,7 @@ public class ViewAllBookController implements Initializable {
             fadeTransition.setToValue(0.0);
             fadeTransition.setOnFinished(event1 -> {
                 // Sau khi hiệu ứng kết thúc, mở giao diện chi tiết sách
-                openBookDetail(title, author, isbn, String.valueOf(year),
+                openBookDetail(title, author, isbn, publicationDate,
                         String.valueOf(quantity), category, description, image);
 
                 // Khôi phục lại hiệu ứng FadeIn cho anchor hoặc container
@@ -181,6 +182,7 @@ public class ViewAllBookController implements Initializable {
 
     public void ViewAllBook() {
         LibraryDatabase libraryDatabase = LibraryDatabase.getInstance();
+
         List<Book> books = libraryDatabase.getBooks();
 
         flow_pane.getChildren().clear();
@@ -191,14 +193,12 @@ public class ViewAllBookController implements Initializable {
         flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
 
         for (Book book : books) {
-            Date date = book.getDate();
-            int year = date.getYear() + 1900;
 
             HBox bookCard = createBookCard(
                     book.getTitle(),
                     book.getAuthor(),
-                    String.valueOf(book.getId()),
-                    year,
+                    book.getId(),
+                    book.getDate(),
                     book.getQuantity(),
                     book.getGenre(),
                     book.getDescription(),
@@ -282,24 +282,14 @@ public class ViewAllBookController implements Initializable {
         flow_pane.setMaxWidth(400);
         flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
 
-        for (Book book : listBookFromAPI) {
-            Date date = book.getDate();
-            int year;
 
-            if (date == null) {
-                year = 2024; // Default year
-            } else {
-                // Use Calendar or LocalDate to extract the year
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                year = calendar.get(Calendar.YEAR);
-            }
+        for (Book book : listBookFromAPI) {
 
             HBox bookCard = createBookCard(
                     book.getTitle(),
                     book.getAuthor(),
-                    String.valueOf(book.getId()),
-                    year,
+                    book.getId(),
+                    book.getDate(),
                     book.getQuantity(),
                     book.getGenre(),
                     book.getDescription(),
@@ -316,6 +306,6 @@ public class ViewAllBookController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         combobox_search.getItems().addAll("Local Library", "API");
-        //ViewAllBook();
+        ViewAllBook();
     }
 }

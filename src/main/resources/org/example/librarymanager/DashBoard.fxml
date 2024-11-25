@@ -49,7 +49,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="borrowedBook" layoutX="342.0" layoutY="359.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="button-issue">
+      <Button fx:id="borrowedBook" layoutX="342.0" layoutY="359.0" mnemonicParsing="false" onAction="#borrowedBooks" prefHeight="60.0" prefWidth="60.0" styleClass="button-issue">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
@@ -66,7 +66,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button layoutX="205.0" layoutY="469.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="book-return" AnchorPane.bottomAnchor="163.0">
+      <Button layoutX="205.0" layoutY="469.0" mnemonicParsing="false" onAction="#showInfoStudent" prefHeight="60.0" prefWidth="60.0" styleClass="book-return" AnchorPane.bottomAnchor="163.0">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
@@ -185,7 +185,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_member_Information" layoutX="478.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_memberInformation" layoutX="478.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Button layoutX="640.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
@@ -320,7 +320,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_ReturnBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_borrowedBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="315.0" layoutY="113.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Return Book">
                <font>
@@ -507,36 +507,36 @@
       </AnchorPane>
       <AnchorPane fx:id="anchor_AddBooks" layoutX="486.0" layoutY="8.0" prefHeight="700.0" prefWidth="805.5000244140626" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="486.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="8.0">
          <children>
-            <Label layoutX="330.0" layoutY="114.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
+            <Label layoutX="330.0" layoutY="51.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Add Book">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Label layoutX="115.0" layoutY="225.0" text="Enter Image Book:" textFill="#345494">
+            <Label layoutX="120.0" layoutY="555.0" text="Enter Image Book:" textFill="#345494">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="115.0" layoutY="290.0" text="Enter Book Title:" textFill="#345494">
+            <Label layoutX="120.0" layoutY="176.0" text="Enter Book Title:" textFill="#345494">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="115.0" layoutY="355.0" text="Enter Author Name:" textFill="#345494">
+            <Label layoutX="120.0" layoutY="239.0" text="Enter Author Name:" textFill="#345494">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="115.0" layoutY="420.0" text="Enter Genre:" textFill="#345494">
+            <Label layoutX="120.0" layoutY="300.0" text="Enter Genre:" textFill="#345494">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <TextField fx:id="textField_add_ImageBook" layoutX="400.0" layoutY="217.0" prefHeight="50.0" prefWidth="260.0" promptText="232312" styleClass="add-textfield" AnchorPane.topAnchor="217.0" />
-            <TextField fx:id="textField_add_BookName" layoutX="400.0" layoutY="282.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. The Essential Rumi" styleClass="add-textfield" />
-            <TextField fx:id="textField_add_AuthorName" layoutX="400.0" layoutY="347.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Rumi" styleClass="add-textfield" />
-            <TextField fx:id="textField_add_Genre" layoutX="400.0" layoutY="412.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Love poems by Rumi" styleClass="add-textfield" />
-            <Button fx:id="add_right" layoutX="610.0" layoutY="568.0" mnemonicParsing="false" onAction="#addBookToDatabase" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
+            <TextField fx:id="textField_add_ImageBook" layoutX="405.0" layoutY="547.0" prefHeight="50.0" prefWidth="260.0" promptText="http://" styleClass="add-textfield" AnchorPane.topAnchor="547.0" />
+            <TextField fx:id="textField_add_BookName" layoutX="405.0" layoutY="168.0" prefHeight="50.0" prefWidth="260.0" promptText="Harry Potter" styleClass="add-textfield" />
+            <TextField fx:id="textField_add_AuthorName" layoutX="405.0" layoutY="231.0" prefHeight="50.0" prefWidth="260.0" promptText="J. K. Rowling" styleClass="add-textfield" />
+            <TextField fx:id="textField_add_Genre" layoutX="405.0" layoutY="292.0" prefHeight="50.0" prefWidth="260.0" promptText="Academic" styleClass="add-textfield" />
+            <Button fx:id="add_right" layoutX="663.0" layoutY="625.0" mnemonicParsing="false" onAction="#addBookToDatabase" prefHeight="45.0" prefWidth="110.0" styleClass="add-button-right" text="Add" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -577,15 +577,33 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label layoutX="115.0" layoutY="484.0" text="Enter Date Release:" textFill="#345494">
+            <Label layoutX="120.0" layoutY="363.0" text="Enter Date Release:" textFill="#345494">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <TextField fx:id="textField_add_Date" layoutX="400.0" layoutY="476.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Love poems by Rumi" styleClass="add-textfield" />
+            <TextField fx:id="textField_add_Date" layoutX="405.0" layoutY="355.0" prefHeight="50.0" prefWidth="260.0" promptText="1997" styleClass="add-textfield" />
+            <Label layoutX="120.0" layoutY="114.0" text="Enter Book ISBN:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_add_ISBN" layoutX="405.0" layoutY="106.0" prefHeight="50.0" prefWidth="260.0" promptText="123456789" styleClass="add-textfield" />
+            <Label layoutX="120.0" layoutY="427.0" text="Enter Description:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_add_Description" layoutX="405.0" layoutY="419.0" prefHeight="50.0" prefWidth="260.0" promptText="A adventure" styleClass="add-textfield" />
+            <Label layoutX="120.0" layoutY="490.0" text="Enter Quantity:" textFill="#345494">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_add_Quantity" layoutX="405.0" layoutY="482.0" prefHeight="50.0" prefWidth="260.0" promptText="99" styleClass="add-textfield" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="57.0" layoutY="16.0" text="Home Screen" textFill="#345494">
                <font>
