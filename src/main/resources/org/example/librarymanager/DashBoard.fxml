@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
+<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
    <children>
       <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
          <font>
@@ -127,7 +119,7 @@
             <Font name="Roboto" size="46.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="anchor_addMember" layoutX="478.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_addMember" layoutX="478.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Button layoutX="640.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
@@ -569,7 +561,7 @@
             <TextField fx:id="textField_add_Date" layoutX="400.0" layoutY="476.0" prefHeight="50.0" prefWidth="260.0" promptText="e.g. Love poems by Rumi" styleClass="add-textfield" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="57.0" layoutY="16.0" text="Home Screen" textFill="#345494">
                <font>
@@ -614,9 +606,9 @@
             </Button>
             <AnchorPane layoutX="300.0" layoutY="229.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
                <children>
-                  <Pane layoutX="32.0" layoutY="251.0" prefHeight="340.0" prefWidth="350.0" styleClass="pane_background" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0">
+                  <Pane layoutX="2.0" layoutY="251.0" prefHeight="340.0" prefWidth="352.0" styleClass="pane_background" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="2.0">
                      <children>
-                        <PieChart fx:id="pie_chart_1" layoutY="20.0" prefHeight="320.0" prefWidth="350.0">
+                        <PieChart fx:id="pie_chart_1" layoutX="-27.0" layoutY="20.0" prefHeight="320.0" prefWidth="377.0">
                            <styleClass>
                               <String fx:value="chart-legend" />
                               <String fx:value="chart-pie-label" />
@@ -629,19 +621,18 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutX="414.0" layoutY="250.0" prefHeight="340.0" prefWidth="350.0" styleClass="pane_background" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0">
+                  <Pane layoutX="414.0" layoutY="250.0" prefHeight="340.0" prefWidth="800.0" styleClass="pane_background" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="3.0">
                      <children>
-                        <PieChart fx:id="pie_chart_2" layoutY="20.0" prefHeight="320.0" prefWidth="350.0">
-                           <styleClass>
-                              <String fx:value="chart-legend" />
-                              <String fx:value="chart-pie-label" />
-                           </styleClass>
-                        </PieChart>
                         <Label layoutX="14.0" layoutY="14.0" text="Book Categories Distribution" textFill="#345494">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
+                        <VBox fx:id="chartContainer" layoutX="6.0" layoutY="57.0" prefHeight="276.0" prefWidth="720.0">
+                           <children>
+                              <PieChart fx:id="genrePieChart" prefHeight="276.0" prefWidth="712.0" />
+                           </children>
+                        </VBox>
                      </children>
                   </Pane>
                   <Pane layoutX="20.0" layoutY="59.0" prefHeight="130.0" prefWidth="250.0" styleClass="pane_background" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
@@ -651,7 +642,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="20.0" layoutY="60.0" text="1,233" textFill="#345494">
+                        <Label fx:id="totalBookVal" layoutX="20.0" layoutY="60.0" text="1,233" textFill="#345494">
                            <font>
                               <Font name="Dubai Bold" size="24.0" />
                            </font>
@@ -666,7 +657,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="20.0" layoutY="60.0" text="231" textFill="#345494">
+                        <Label fx:id="totalBorrowedBookVal" layoutX="20.0" layoutY="60.0" text="231" textFill="#345494">
                            <font>
                               <Font name="Dubai Bold" size="24.0" />
                            </font>
@@ -681,7 +672,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="20.0" layoutY="60.0" text="60" textFill="#345494">
+                        <Label fx:id="totalMemberVal" layoutX="20.0" layoutY="60.0" text="60" textFill="#345494">
                            <font>
                               <Font name="Dubai Bold" size="24.0" />
                            </font>

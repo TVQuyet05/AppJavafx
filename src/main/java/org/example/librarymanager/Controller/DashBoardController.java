@@ -2,10 +2,12 @@ package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -15,6 +17,8 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -27,6 +31,9 @@ import org.example.librarymanager.Service.LibraryDatabase;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -150,11 +157,142 @@ public class DashBoardController implements Initializable {
     @FXML
     private TableColumn<Student, String> col_signup_class;
 
+    @FXML
+    private  Label totalBookVal;
 
-
+    @FXML
+    private Label totalMemberVal;
+    @FXML
+    private Label totalBorrowedBookVal;
+    @FXML
+    private PieChart genrePieChart;
+    @FXML
+    private VBox chartContainer;
 
     private double x = 0;
     private double y = 0;
+    private void setGenrePieChart() {
+        String sql = "SELECT genre, SUM(quantity) AS total_quantity FROM book GROUP BY genre";
+        Connection connection = LibraryDatabase.getInstance().getConnection();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            int totalQuantity = 0;
+
+            // Tính tổng số lượng (quantity)
+            while (resultSet.next()) {
+                totalQuantity += resultSet.getInt("total_quantity");
+            }
+
+            // Đặt lại con trỏ ResultSet
+            resultSet.beforeFirst();
+
+            // Tạo dữ liệu cho PieChart
+            while (resultSet.next()) {
+                String genre = resultSet.getString("genre");
+                int genreQuantity = resultSet.getInt("total_quantity");
+
+                // Tính phần trăm
+                double percentage = (double) genreQuantity / totalQuantity * 100;
+
+                // Thêm dữ liệu vào PieChart
+                pieChartData.add(new PieChart.Data(genre + " (" + String.format("%.1f", percentage) + "%)", genreQuantity));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Cập nhật PieChart với dữ liệu mới
+        genrePieChart.setData(pieChartData);
+
+        // Xóa các thành phần cũ (PieChart và nhãn)
+        chartContainer.getChildren().clear();
+
+        // Thêm PieChart vào VBox
+        chartContainer.getChildren().add(genrePieChart);
+
+        // Tạo HBox để chứa nhãn
+        HBox labelContainer = new HBox();
+        labelContainer.setSpacing(10); // Khoảng cách giữa các nhãn
+        labelContainer.setAlignment(Pos.CENTER); // Căn giữa nhãn
+
+        // Thêm nhãn cho từng lát bánh
+        for (PieChart.Data data : pieChartData) {
+            // Tạo nhãn hiển thị thông tin
+            Label label = new Label(data.getName());
+            label.setStyle("--fx-font-size: 5px; -fx-font-weight: bold; -fx-text-fill: black;");
+            label.setWrapText(true); // Cho phép xuống dòng nếu tên quá dài
+            label.setPrefWidth(150);
+            // Thêm nhãn vào HBox
+            labelContainer.getChildren().add(label);
+        }
+
+        // Thêm HBox chứa nhãn vào VBox
+        //chartContainer.getChildren().add(labelContainer);
+
+    }
+    public void setTotalBorrowedBookVal(){
+        String sql = "SELECT COUNT(*) AS totalQuantity FROM borrowbook where return_date ='0000-00-00'";
+        Connection connect = LibraryDatabase.getInstance().getConnection();
+
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            ResultSet result = prepare.executeQuery();
+
+            if (result.next()) {
+
+                int totalQuantity = result.getInt("totalQuantity");
+
+
+                totalBorrowedBookVal.setText(String.valueOf(totalQuantity));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setTotalMemberVal(){
+        String sql = "SELECT COUNT(*) AS totalQuantity FROM student";
+        Connection connect = LibraryDatabase.getInstance().getConnection();
+
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            ResultSet result = prepare.executeQuery();
+
+            if (result.next()) {
+
+                int totalQuantity = result.getInt("totalQuantity");
+
+
+                totalMemberVal.setText(String.valueOf(totalQuantity));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void SetTotalBookVal() {
+        String sql = "SELECT SUM(quantity) AS totalQuantity FROM book";
+        Connection connect = LibraryDatabase.getInstance().getConnection();
+
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            ResultSet result = prepare.executeQuery();
+
+            if (result.next()) {
+
+                int totalQuantity = result.getInt("totalQuantity");
+
+
+                totalBookVal.setText(String.valueOf(totalQuantity));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void logout(javafx.event.ActionEvent actionEvent) {
         try {
@@ -393,9 +531,12 @@ public class DashBoardController implements Initializable {
         currentPane = anchor_HomeScreen;
 
         managerName.setText(nameOfUser);
+        setTotalMemberVal();
+        setTotalBorrowedBookVal();
+        SetTotalBookVal();
+        setGenrePieChart();
 
-        pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
-        pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
+
 
         showSignUpAccount();
     }
