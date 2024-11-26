@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
+<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
    <children>
       <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
          <font>
@@ -603,7 +593,7 @@
             <TextField fx:id="textField_add_Quantity" layoutX="405.0" layoutY="482.0" prefHeight="50.0" prefWidth="260.0" promptText="99" styleClass="add-textfield" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="57.0" layoutY="16.0" text="Home Screen" textFill="#345494">
                <font>
@@ -646,7 +636,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <AnchorPane layoutX="300.0" layoutY="229.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+            <AnchorPane layoutX="300.0" layoutY="229.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
                <children>
                   <Pane layoutX="32.0" layoutY="251.0" prefHeight="340.0" prefWidth="350.0" styleClass="pane_background" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0">
                      <children>

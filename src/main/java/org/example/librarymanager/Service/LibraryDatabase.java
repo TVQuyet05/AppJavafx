@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
+import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
@@ -265,6 +266,42 @@ public class LibraryDatabase {
             throw new RuntimeException(e);
         }
         return books;
+    }
+    public ObservableList<CommentBook> getCommentBook() {
+        ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
+
+
+        String query = "SELECT book.book_id AS id, book.book_title AS title, book.author AS author, " +
+                "reviewbook.comment AS comment, reviewbook.judge AS judge " +
+                "FROM book " +
+                "JOIN reviewbook ON book.book_id = reviewbook.book_id;";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet result = stmt.executeQuery();
+
+
+            while (result.next()) {
+                // Tạo đối tượng CommentBook từ dữ liệu truy vấn
+                CommentBook commentBook = new CommentBook(
+                        result.getString("id"),
+                        result.getString("title"),
+                        result.getString("author"),
+                        result.getString("comment"),
+                        result.getInt("judge")
+                );
+
+                // Thêm đối tượng vào danh sách
+                commentBookList.add(commentBook);
+            }
+
+            System.out.println("Get comment books successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error getting comment books", e);
+        }
+
+        return commentBookList;
     }
 
 

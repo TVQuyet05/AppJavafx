@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard_Student.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.StudentDashBoardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard_Student.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.StudentDashBoardController">
    <children>
       <AnchorPane fx:id="anchor_HomeScreen" layoutX="335.0" layoutY="8.0" prefHeight="700.0" prefWidth="950.0" styleClass="background" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="14.599999999999909" AnchorPane.topAnchor="8.0">
          <children>
@@ -53,7 +48,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <AnchorPane fx:id="homeScreen_std" layoutY="71.0" prefHeight="613.0" prefWidth="950.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane fx:id="homeScreen_std" layoutY="71.0" prefHeight="613.0" prefWidth="950.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
                   <ScrollPane hbarPolicy="NEVER" layoutX="696.0" layoutY="37.0" prefHeight="171.0" prefWidth="239.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="380.0" AnchorPane.leftAnchor="696.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0">
                     <content>
@@ -190,15 +185,15 @@
                   <FontAwesomeIcon fill="#345494" glyphName="BOOK" layoutX="34.0" layoutY="45.0" size="2em" wrappingWidth="12.0" AnchorPane.leftAnchor="40.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="commentBook_std" layoutX="10.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane fx:id="commentBook_std" layoutX="10.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
-                  <TableView layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
+                  <TableView fx:id="cmtBookTab" layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
                      <columns>
-                        <TableColumn prefWidth="71.20001602172852" text="ID" />
-                        <TableColumn prefWidth="212.8000030517578" text="Title" />
-                        <TableColumn minWidth="0.0" prefWidth="151.20001220703125" text="Author" />
-                        <TableColumn minWidth="0.0" prefWidth="287.9998779296875" text="Comment" />
-                        <TableColumn prefWidth="139.2000732421875" text="Judge" />
+                        <TableColumn fx:id="cmt_id_col" prefWidth="71.20001602172852" text="ID" />
+                        <TableColumn fx:id="cmt_title_col" prefWidth="212.8000030517578" text="Title" />
+                        <TableColumn fx:id="cmt_author_col" minWidth="0.0" prefWidth="151.20001220703125" text="Author" />
+                        <TableColumn fx:id="cmt_comment_col" minWidth="0.0" prefWidth="287.9998779296875" text="Comment" />
+                        <TableColumn fx:id="cmt_judge_col" prefWidth="139.2000732421875" text="Judge" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -214,14 +209,14 @@
             </AnchorPane>
             <AnchorPane fx:id="favouriteBook_std" layoutX="10.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
-                  <TableView layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
+                  <TableView fx:id="favBook" layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
                      <columns>
-                        <TableColumn prefWidth="63.200016021728516" text="ID" />
-                        <TableColumn prefWidth="249.59999084472656" text="Title" />
-                        <TableColumn minWidth="0.0" prefWidth="161.5999755859375" text="Author" />
-                        <TableColumn minWidth="0.0" prefWidth="140.79998779296875" text="Genre" />
-                        <TableColumn prefWidth="111.2000732421875" text="Date" />
-                        <TableColumn prefWidth="145.5999755859375" text="Action" />
+                        <TableColumn fx:id="fav_id_col" prefWidth="63.200016021728516" text="ID" />
+                        <TableColumn fx:id="fav_title_col" prefWidth="249.59999084472656" text="Title" />
+                        <TableColumn fx:id="fav_author_col" minWidth="0.0" prefWidth="161.5999755859375" text="Author" />
+                        <TableColumn fx:id="fav_genre_col" minWidth="0.0" prefWidth="140.79998779296875" text="Genre" />
+                        <TableColumn fx:id="fav_date_col" prefWidth="111.2000732421875" text="Date" />
+                        <TableColumn fx:id="fav_action_col" prefWidth="145.5999755859375" text="Action" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

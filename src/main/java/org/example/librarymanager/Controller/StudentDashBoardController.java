@@ -18,7 +18,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
+import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Service.LibraryDatabase;
 
 import java.io.IOException;
@@ -93,9 +95,35 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private TableColumn<BorrowedBook, Date> col_dueDate_std;
-
+    @FXML
+    private TableView<Book> favBook;
+    @FXML
+    private TableColumn <Book,String> fav_id_col;
+    @FXML
+    private TableColumn <Book,String> fav_author_col;
+    @FXML
+    private TableColumn <Book,String> fav_title_col;
+    @FXML
+    private TableColumn <Book,String> fav_genre_col;
+    @FXML
+    private TableColumn <Book,Date> fav_date_col;
+    @FXML
+    private TableColumn <Book,String> fav_action_col;
+    @FXML
+    private TableView <CommentBook> cmtBookTab;
+    @FXML
+    private TableColumn <CommentBook, String> cmt_id_col;
+    @FXML
+    private TableColumn <CommentBook, String> cmt_title_col;
+    @FXML
+    private TableColumn <CommentBook,String> cmt_author_col;
+    @FXML
+    private  TableColumn <CommentBook,String> cmt_comment_col;
+    @FXML
+    private  TableColumn <CommentBook,Integer> cmt_judge_col;
+    @FXML
     private AnchorPane currentPane = null;
-
+    private ObservableList<CommentBook> cmtBookList;
     double x = 0;
     double y = 0;
 
@@ -104,6 +132,19 @@ public class StudentDashBoardController implements Initializable {
         switchPain(homeScreen_std);
     }
 
+    public void showCommentBookForStudent() {
+
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        ObservableList<CommentBook> listCommentBook = database.getCommentBook();
+
+        cmt_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cmt_title_col.setCellValueFactory(new PropertyValueFactory<>("title"));
+        cmt_author_col.setCellValueFactory(new PropertyValueFactory<>("author"));
+        cmt_comment_col.setCellValueFactory(new PropertyValueFactory<>("comment"));
+        cmt_judge_col.setCellValueFactory(new PropertyValueFactory<>("judge"));
+
+        cmtBookTab.setItems(listCommentBook);
+    }
 
     public void logout(javafx.event.ActionEvent actionEvent) {
         try {
