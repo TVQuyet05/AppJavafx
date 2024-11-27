@@ -19,6 +19,7 @@ import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
 import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Service.LibraryDatabase;
+import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
 import java.net.URL;
@@ -131,8 +132,11 @@ public class StudentDashBoardController implements Initializable {
     public void showFavBook() {
         LibraryDatabase database = LibraryDatabase.getInstance();
 
-        // Lấy danh sách sách yêu thích từ database
-        ObservableList<Book> favBookList = database.getFavBook();
+
+        String studentNumber = getData.numberOfUser;
+
+        // Lấy danh sách sách yêu thích của học sinh hiện tại
+        ObservableList<Book> favBookList = database.getFavBook(studentNumber);
 
         // Thiết lập giá trị cho các cột TableView
         fav_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -192,17 +196,22 @@ public class StudentDashBoardController implements Initializable {
 
     public void showCommentBookForStudent() {
 
-        LibraryDatabase database = LibraryDatabase.getInstance();
-        ObservableList<CommentBook> listCommentBook = database.getCommentBook();
+        String studentNumber = getData.numberOfUser;
 
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        ObservableList<CommentBook> listCommentBook = database.getCommentBook(studentNumber);
+
+        // Thiết lập các cột trong TableView
         cmt_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         cmt_title_col.setCellValueFactory(new PropertyValueFactory<>("title"));
         cmt_author_col.setCellValueFactory(new PropertyValueFactory<>("author"));
         cmt_comment_col.setCellValueFactory(new PropertyValueFactory<>("comment"));
         cmt_judge_col.setCellValueFactory(new PropertyValueFactory<>("judge"));
 
+        // Gán danh sách vào TableView
         cmtBookTab.setItems(listCommentBook);
     }
+
 
     public void logout(javafx.event.ActionEvent actionEvent) {
         try {

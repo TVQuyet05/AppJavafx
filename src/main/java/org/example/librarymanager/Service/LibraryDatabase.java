@@ -267,18 +267,20 @@ public class LibraryDatabase {
         }
         return books;
     }
-    public ObservableList<CommentBook> getCommentBook() {
+    public ObservableList<CommentBook> getCommentBook(String studentNumber) {
         ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
 
 
         String query = "SELECT book.book_id AS id, book.book_title AS title, book.author AS author, " +
                 "reviewbook.comment AS comment, reviewbook.judge AS judge " +
                 "FROM book " +
-                "JOIN reviewbook ON book.book_id = reviewbook.book_id;";
+                "JOIN reviewbook ON book.book_id = reviewbook.book_id " +
+                "WHERE reviewbook.studentNumber = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            ResultSet result = stmt.executeQuery();
+            stmt.setString(1, studentNumber);
 
+            ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
                 // Tạo đối tượng CommentBook từ dữ liệu truy vấn
@@ -304,18 +306,21 @@ public class LibraryDatabase {
         return commentBookList;
     }
 
-    public ObservableList<Book> getFavBook() {
+
+    public ObservableList<Book> getFavBook(String studentNumber) {
         ObservableList<Book> favBookList = FXCollections.observableArrayList();
 
-        // Câu lệnh SQL để lấy thông tin sách yêu thích
+        // Cập nhật câu lệnh SQL để lấy sách yêu thích của học sinh hiện tại
         String query = "SELECT savebook.book_id, book.book_title, book.author, book.genre, book.date " +
                 "FROM savebook " +
-                "JOIN book ON savebook.book_id = book.book_id";
+                "JOIN book ON savebook.book_id = book.book_id " +
+                "WHERE savebook.studentNumber = ?";  // Thêm điều kiện để lọc sách yêu thích của học sinh
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, studentNumber);  // Sử dụng studentNumber của học sinh hiện tại
+
             ResultSet result = stmt.executeQuery();
 
-            // Duyệt qua từng dòng dữ liệu trong ResultSet
             while (result.next()) {
                 // Tạo đối tượng Book từ dữ liệu truy vấn
                 Book favBook = new Book(
@@ -336,12 +341,13 @@ public class LibraryDatabase {
             System.out.println("Get favorite books successfully!");
 
         } catch (SQLException e) {
-            e.printStackTrace(); // In chi tiết lỗi nếu có
-            throw new RuntimeException("Error getting favorite books", e); // Ném lỗi với thông báo
+            e.printStackTrace();
+            throw new RuntimeException("Error getting favorite books", e);
         }
 
         return favBookList;
     }
+
     public boolean deleteFavBook(String bookId) {
         String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";
 
