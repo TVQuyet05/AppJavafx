@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -130,6 +127,47 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     public void backHome(ActionEvent event) {
         switchPain(homeScreen_std);
+    }
+    public void showFavBook() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        // Lấy danh sách sách yêu thích từ database
+        ObservableList<Book> favBookList = database.getFavBook();
+
+        // Thiết lập giá trị cho các cột TableView
+        fav_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+        fav_title_col.setCellValueFactory(new PropertyValueFactory<>("title"));
+        fav_author_col.setCellValueFactory(new PropertyValueFactory<>("author"));
+        fav_genre_col.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        fav_date_col.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        // Nếu cần thêm hành động, sử dụng một cột với CellFactory
+        fav_action_col.setCellFactory(column -> new TableCell<>() {
+            private final Button actionButton = new Button("Xóa");
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    actionButton.setOnAction(event -> {
+                        Book book = getTableView().getItems().get(getIndex());
+                        // Xử lý hành động xóa hoặc logic khác
+                        System.out.println("Xóa sách: " + book.getTitle());
+                    });
+                    setGraphic(actionButton);
+                    setText(null);
+                }
+            }
+        });
+
+        // Gán danh sách vào TableView
+        favBook.setItems(favBookList);
+
+        System.out.println("Hiển thị danh sách sách yêu thích thành công!");
     }
 
     public void showCommentBookForStudent() {
@@ -287,7 +325,8 @@ public class StudentDashBoardController implements Initializable {
         currentPane = homeScreen_std;
 
         numberStudent.setText(numberOfUser);
-
+        showCommentBookForStudent();
         showBorrowedBookForStudent();
+        showFavBook();
     }
 }

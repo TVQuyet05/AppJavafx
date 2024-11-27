@@ -304,6 +304,44 @@ public class LibraryDatabase {
         return commentBookList;
     }
 
+    public ObservableList<Book> getFavBook() {
+        ObservableList<Book> favBookList = FXCollections.observableArrayList();
+
+        // Câu lệnh SQL để lấy thông tin sách yêu thích
+        String query = "SELECT savebook.book_id, book.book_title, book.author, book.genre, book.date " +
+                "FROM savebook " +
+                "JOIN book ON savebook.book_id = book.book_id";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet result = stmt.executeQuery();
+
+            // Duyệt qua từng dòng dữ liệu trong ResultSet
+            while (result.next()) {
+                // Tạo đối tượng Book từ dữ liệu truy vấn
+                Book favBook = new Book(
+                        result.getString("book_id"),
+                        result.getString("book_title"),
+                        result.getString("author"),
+                        result.getString("genre"),
+                        result.getString("date"),
+                        null, // Description không có trong truy vấn
+                        0,    // Quantity không có trong truy vấn
+                        null  // Image không có trong truy vấn
+                );
+
+                // Thêm đối tượng vào danh sách
+                favBookList.add(favBook);
+            }
+
+            System.out.println("Get favorite books successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // In chi tiết lỗi nếu có
+            throw new RuntimeException("Error getting favorite books", e); // Ném lỗi với thông báo
+        }
+
+        return favBookList;
+    }
 
     public ObservableList<BorrowedBook> getBorrowedBook() {
         ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
