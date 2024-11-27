@@ -278,7 +278,7 @@ public class LibraryDatabase {
                 "WHERE reviewbook.studentNumber = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, studentNumber);
+            stmt.setString(1, numberOfUser);
 
             ResultSet result = stmt.executeQuery();
 
@@ -317,7 +317,7 @@ public class LibraryDatabase {
                 "WHERE savebook.studentNumber = ?";  // Thêm điều kiện để lọc sách yêu thích của học sinh
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, studentNumber);  // Sử dụng studentNumber của học sinh hiện tại
+            stmt.setString(1, numberOfUser);  // Sử dụng studentNumber của học sinh hiện tại
 
             ResultSet result = stmt.executeQuery();
 

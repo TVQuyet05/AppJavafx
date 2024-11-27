@@ -207,7 +207,7 @@
                   <FontAwesomeIcon fill="#345494" glyphName="COMMENTS" layoutX="34.0" layoutY="45.0" size="2em" wrappingWidth="12.0" AnchorPane.leftAnchor="40.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="favouriteBook_std" layoutX="10.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane fx:id="favouriteBook_std" layoutX="10.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
                   <TableView fx:id="favBook" layoutX="426.0" layoutY="207.0" prefHeight="200.0" prefWidth="200.0" styleClass="table_view" stylesheets="@DashBoard_Student.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
                      <columns>
