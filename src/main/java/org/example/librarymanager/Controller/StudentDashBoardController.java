@@ -196,10 +196,10 @@ public class StudentDashBoardController implements Initializable {
 
     public void showCommentBookForStudent() {
 
-        String studentNumber = getData.numberOfUser;
+
 
         LibraryDatabase database = LibraryDatabase.getInstance();
-        ObservableList<CommentBook> listCommentBook = database.getCommentBook(studentNumber);
+        ObservableList<CommentBook> listCommentBook = database.getCommentBook(numberOfUser);
 
         // Thiết lập các cột trong TableView
         cmt_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));

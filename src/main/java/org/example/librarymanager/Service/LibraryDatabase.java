@@ -8,6 +8,7 @@ import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +43,115 @@ public class LibraryDatabase {
     }
 
     public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(url, user, password);
+                System.out.println("Re-establishing database connection.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
     }
+    public boolean saveBook(String studentNumber, String isbn) {
+        // Kiểm tra xem sinh viên đã lưu sách này chưa
+        String checkExistSQL = """
+    SELECT COUNT(*) FROM savebook 
+    WHERE studentNumber = ? AND book_id = ?
+    """;
+
+        // Chèn thông tin lưu sách nếu sinh viên chưa lưu sách này
+        String insertSaveSQL = """
+    INSERT INTO savebook (studentNumber, book_id) 
+    VALUES (?, ?)
+    """;
+
+        try (Connection conn = getConnection()) {
+            // Kiểm tra xem sinh viên đã lưu cuốn sách này chưa
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkExistSQL)) {
+                checkStmt.setString(1, studentNumber);
+                checkStmt.setString(2, isbn); // Kiểm tra theo studentNumber và book_id
+
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+
+                        return false;
+                    }
+                }
+            }
+
+            // Nếu sinh viên chưa lưu sách này, tiến hành lưu sách mới
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSaveSQL)) {
+                insertStmt.setString(1, studentNumber);
+                insertStmt.setString(2, isbn);
+
+                int rowsInserted = insertStmt.executeUpdate();
+                return rowsInserted > 0; // Nếu chèn thành công, trả về true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Nếu có lỗi xảy ra, trả về false
+    }
+
+
+
+
+    public boolean borrowBook(String studentNumber, String isbn) {
+        String insertBorrowSQL = """
+    INSERT INTO borrowbook (studentNumber, book_id, borrow_date, due_date, return_date) 
+    VALUES (?, ?, ?, ?, NULL)  
+    """;
+
+        String updateQuantitySQL = """
+    UPDATE book 
+    SET quantity = quantity - 1 
+    WHERE book_id = ? AND quantity > 0
+    """;
+
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false); // Bắt đầu giao dịch
+
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertBorrowSQL);
+                 PreparedStatement updateStmt = conn.prepareStatement(updateQuantitySQL)) {
+
+                // Tính toán ngày hiện tại và ngày hết hạn
+                LocalDate borrowDate = LocalDate.now();
+                LocalDate dueDate = borrowDate.plusDays(14);
+
+                // Chèn thông tin mượn sách
+                insertStmt.setString(1, studentNumber);
+                insertStmt.setString(2, isbn); // Sử dụng isbn trực tiếp làm book_id
+                insertStmt.setDate(3, Date.valueOf(borrowDate));
+                insertStmt.setDate(4, Date.valueOf(dueDate));
+
+                // Thực thi giảm số lượng sách
+                updateStmt.setString(1, isbn);
+                int rowsUpdated = updateStmt.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    int rowsInserted = insertStmt.executeUpdate();
+                    if (rowsInserted > 0) {
+                        conn.commit(); // Nếu cả hai hành động thành công, commit giao dịch
+                        return true;  // Mượn sách thành công
+                    }
+                }
+
+                conn.rollback(); // Nếu có lỗi xảy ra, rollback giao dịch
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback nếu có bất kỳ lỗi nào xảy ra trong block try
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Mượn sách thất bại
+    }
+
+
+
 
 
     public boolean authenticateStudent(String studentNumber, String password) {
@@ -278,7 +386,7 @@ public class LibraryDatabase {
                 "WHERE reviewbook.studentNumber = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, numberOfUser);
+            stmt.setString(1, studentNumber);
 
             ResultSet result = stmt.executeQuery();
 
@@ -317,7 +425,7 @@ public class LibraryDatabase {
                 "WHERE savebook.studentNumber = ?";  // Thêm điều kiện để lọc sách yêu thích của học sinh
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, numberOfUser);  // Sử dụng studentNumber của học sinh hiện tại
+            stmt.setString(1, studentNumber);  // Sử dụng studentNumber của học sinh hiện tại
 
             ResultSet result = stmt.executeQuery();
 
@@ -353,8 +461,7 @@ public class LibraryDatabase {
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, bookId);
-            stmt.setString(2, numberOfUser); // Sử dụng mã sinh viên hiện tại
-
+            stmt.setString(2, numberOfUser);
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0; // Trả về true nếu có dòng bị ảnh hưởng
         } catch (SQLException e) {
