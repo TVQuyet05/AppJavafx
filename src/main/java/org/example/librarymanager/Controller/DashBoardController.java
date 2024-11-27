@@ -172,7 +172,8 @@ public class DashBoardController implements Initializable {
     private double x = 0;
     private double y = 0;
     private void setGenrePieChart() {
-        String sql = "SELECT genre, SUM(quantity) AS total_quantity FROM book GROUP BY genre";
+        // Query để lấy tổng số lượng sách theo thể loại, sắp xếp giảm dần
+        String sql = "SELECT genre, SUM(quantity) AS total_quantity FROM book GROUP BY genre ORDER BY total_quantity DESC";
         Connection connection = LibraryDatabase.getInstance().getConnection();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
@@ -180,8 +181,10 @@ public class DashBoardController implements Initializable {
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             int totalQuantity = 0;
+            int count = 0;
+            int otherQuantity = 0;
 
-            // Tính tổng số lượng (quantity)
+            // Tính tổng số lượng (quantity) toàn bộ
             while (resultSet.next()) {
                 totalQuantity += resultSet.getInt("total_quantity");
             }
@@ -189,16 +192,29 @@ public class DashBoardController implements Initializable {
             // Đặt lại con trỏ ResultSet
             resultSet.beforeFirst();
 
-            // Tạo dữ liệu cho PieChart
+            // Duyệt qua từng thể loại
             while (resultSet.next()) {
                 String genre = resultSet.getString("genre");
                 int genreQuantity = resultSet.getInt("total_quantity");
 
-                // Tính phần trăm
-                double percentage = (double) genreQuantity / totalQuantity * 100;
+                if (count < 5) {
+                    // Tính phần trăm cho 5 thể loại đầu tiên
+                    double percentage = (double) genreQuantity / totalQuantity * 100;
 
-                // Thêm dữ liệu vào PieChart
-                pieChartData.add(new PieChart.Data(genre + " (" + String.format("%.1f", percentage) + "%)", genreQuantity));
+                    // Thêm dữ liệu vào PieChart
+                    pieChartData.add(new PieChart.Data(genre + " (" + String.format("%.1f", percentage) + "%)", genreQuantity));
+
+                    count++;
+                } else {
+                    // Cộng dồn các thể loại còn lại vào "Other"
+                    otherQuantity += genreQuantity;
+                }
+            }
+
+            // Thêm dữ liệu mục "Other" nếu có
+            if (otherQuantity > 0) {
+                double otherPercentage = (double) otherQuantity / totalQuantity * 100;
+                pieChartData.add(new PieChart.Data("Other (" + String.format("%.1f", otherPercentage) + "%)", otherQuantity));
             }
 
         } catch (SQLException e) {
@@ -213,86 +229,29 @@ public class DashBoardController implements Initializable {
 
         // Thêm PieChart vào VBox
         chartContainer.getChildren().add(genrePieChart);
-
-        // Tạo HBox để chứa nhãn
-        HBox labelContainer = new HBox();
-        labelContainer.setSpacing(10); // Khoảng cách giữa các nhãn
-        labelContainer.setAlignment(Pos.CENTER); // Căn giữa nhãn
-
-        // Thêm nhãn cho từng lát bánh
-        for (PieChart.Data data : pieChartData) {
-            // Tạo nhãn hiển thị thông tin
-            Label label = new Label(data.getName());
-            label.setStyle("--fx-font-size: 5px; -fx-font-weight: bold; -fx-text-fill: black;");
-            label.setWrapText(true); // Cho phép xuống dòng nếu tên quá dài
-            label.setPrefWidth(150);
-            // Thêm nhãn vào HBox
-            labelContainer.getChildren().add(label);
-        }
-
-        // Thêm HBox chứa nhãn vào VBox
-        //chartContainer.getChildren().add(labelContainer);
-
-    }
-    public void setTotalBorrowedBookVal(){
-        String sql = "SELECT COUNT(*) AS totalQuantity FROM borrowbook where return_date ='0000-00-00'";
-        Connection connect = LibraryDatabase.getInstance().getConnection();
-
-        try {
-            PreparedStatement prepare = connect.prepareStatement(sql);
-            ResultSet result = prepare.executeQuery();
-
-            if (result.next()) {
-
-                int totalQuantity = result.getInt("totalQuantity");
-
-
-                totalBorrowedBookVal.setText(String.valueOf(totalQuantity));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void setTotalMemberVal(){
-        String sql = "SELECT COUNT(*) AS totalQuantity FROM student";
-        Connection connect = LibraryDatabase.getInstance().getConnection();
-
-        try {
-            PreparedStatement prepare = connect.prepareStatement(sql);
-            ResultSet result = prepare.executeQuery();
-
-            if (result.next()) {
-
-                int totalQuantity = result.getInt("totalQuantity");
-
-
-                totalMemberVal.setText(String.valueOf(totalQuantity));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void SetTotalBookVal() {
-        String sql = "SELECT SUM(quantity) AS totalQuantity FROM book";
-        Connection connect = LibraryDatabase.getInstance().getConnection();
+    public void showNumberOfBorrowedBook() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalBorrowedBooks = database.getNumberOfBorrowedBook(); // Lấy số lượng sách mượn
 
-        try {
-            PreparedStatement prepare = connect.prepareStatement(sql);
-            ResultSet result = prepare.executeQuery();
-
-            if (result.next()) {
-
-                int totalQuantity = result.getInt("totalQuantity");
-
-
-                totalBookVal.setText(String.valueOf(totalQuantity));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        totalBorrowedBookVal.setText(String.valueOf(totalBorrowedBooks)); // Hiển thị lên Label
     }
 
+
+    public void showTotalBooks() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalBooks = database.getTotalBooks(); // Lấy tổng số sách từ database
+
+        totalBookVal.setText(String.valueOf(totalBooks)); // Hiển thị lên Label
+    }
+
+    public void showHomeScreenManager(){
+        showTotalBooks();
+        showNumberOfBorrowedBook();
+        showNumberOfMembers();
+        setGenrePieChart();
+    }
 
     public void logout(javafx.event.ActionEvent actionEvent) {
         try {
@@ -449,6 +408,13 @@ public class DashBoardController implements Initializable {
 
         SignUpAccount_TableView.setItems(listSignUpAccount);
     }
+    public void showNumberOfMembers() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalMembers = database.getNumberOfMembers(); // Lấy số lượng thành viên
+
+        totalMemberVal.setText(String.valueOf(totalMembers)); // Hiển thị lên Label
+    }
+
 
     public void acceptSignUp() {
 
@@ -531,10 +497,8 @@ public class DashBoardController implements Initializable {
         currentPane = anchor_HomeScreen;
 
         managerName.setText(nameOfUser);
-        setTotalMemberVal();
-        setTotalBorrowedBookVal();
-        SetTotalBookVal();
-        setGenrePieChart();
+
+        showHomeScreenManager();
 
 
 

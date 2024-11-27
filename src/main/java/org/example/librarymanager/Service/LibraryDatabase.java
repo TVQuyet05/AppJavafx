@@ -42,7 +42,58 @@ public class LibraryDatabase {
     public Connection getConnection() {
         return connection;
     }
+    public int getNumberOfMembers() {
+        String sql = "SELECT COUNT(*) AS totalQuantity FROM student";
+        Connection connect = getConnection(); // Sử dụng kết nối từ LibraryDatabase
 
+        try (PreparedStatement prepare = connect.prepareStatement(sql);
+             ResultSet result = prepare.executeQuery()) {
+
+            if (result.next()) {
+                return result.getInt("totalQuantity"); // Trả về tổng số thành viên
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0; // Trả về 0 nếu có lỗi
+    }
+    public int getTotalBooks() {
+        String sql = "SELECT SUM(quantity) AS totalQuantity FROM book";
+        Connection connect = getConnection(); // Kết nối từ LibraryDatabase
+
+        try (PreparedStatement prepare = connect.prepareStatement(sql);
+             ResultSet result = prepare.executeQuery()) {
+
+            if (result.next()) {
+                return result.getInt("totalQuantity"); // Trả về tổng số sách
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0; // Trả về 0 nếu có lỗi
+    }
+
+    public int getNumberOfBorrowedBook() {
+        String sql = "SELECT COUNT(*) AS totalQuantity FROM borrowbook WHERE return_date = '0000-00-00'";
+        Connection connect = getConnection(); // Sử dụng kết nối từ LibraryDatabase
+
+        try (PreparedStatement prepare = connect.prepareStatement(sql);
+             ResultSet result = prepare.executeQuery()) {
+
+            if (result.next()) {
+                return result.getInt("totalQuantity"); // Trả về tổng số sách đang mượn
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0; // Trả về 0 nếu có lỗi
+    }
 
     public boolean authenticateStudent(String studentNumber, String password) {
         String query = "SELECT * FROM student WHERE studentNumber = ? AND password = ?";
