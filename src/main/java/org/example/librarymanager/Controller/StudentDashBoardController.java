@@ -141,7 +141,7 @@ public class StudentDashBoardController implements Initializable {
         fav_genre_col.setCellValueFactory(new PropertyValueFactory<>("genre"));
         fav_date_col.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        // Nếu cần thêm hành động, sử dụng một cột với CellFactory
+        // Thêm cột hành động "Xóa"
         fav_action_col.setCellFactory(column -> new TableCell<>() {
             private final Button actionButton = new Button("Xóa");
 
@@ -155,8 +155,28 @@ public class StudentDashBoardController implements Initializable {
                 } else {
                     actionButton.setOnAction(event -> {
                         Book book = getTableView().getItems().get(getIndex());
-                        // Xử lý hành động xóa hoặc logic khác
-                        System.out.println("Xóa sách: " + book.getTitle());
+                        String bookId = book.getId(); // Lấy book_id để xóa trong database
+
+                        // Hiển thị hộp thoại xác nhận trước khi xóa
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                                "Bạn có chắc muốn xóa sách \"" + book.getTitle() + "\" khỏi danh sách yêu thích?",
+                                ButtonType.YES, ButtonType.NO);
+
+                        alert.showAndWait();
+
+                        if (alert.getResult() == ButtonType.YES) {
+                            // Xóa dữ liệu trong bảng savebook
+                            if (database.deleteFavBook(bookId)) {
+                                // Nếu xóa thành công, xóa sách khỏi TableView
+                                favBookList.remove(book);
+                                System.out.println("Đã xóa sách khỏi danh sách yêu thích: " + book.getTitle());
+                            } else {
+                                // Thông báo lỗi nếu không xóa được
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                                        "Không thể xóa sách khỏi cơ sở dữ liệu.", ButtonType.OK);
+                                errorAlert.show();
+                            }
+                        }
                     });
                     setGraphic(actionButton);
                     setText(null);

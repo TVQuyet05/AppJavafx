@@ -342,6 +342,20 @@ public class LibraryDatabase {
 
         return favBookList;
     }
+    public boolean deleteFavBook(String bookId) {
+        String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, numberOfUser); // Sử dụng mã sinh viên hiện tại
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu có dòng bị ảnh hưởng
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu xảy ra lỗi
+        }
+    }
 
     public ObservableList<BorrowedBook> getBorrowedBook() {
         ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
