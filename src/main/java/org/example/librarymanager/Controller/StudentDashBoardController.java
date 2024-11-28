@@ -1,6 +1,10 @@
 package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +28,7 @@ import org.example.librarymanager.Util.getData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -124,6 +129,72 @@ public class StudentDashBoardController implements Initializable {
     private ObservableList<CommentBook> cmtBookList;
     double x = 0;
     double y = 0;
+    @FXML
+    private TableView<Object[]> topBorrowTable;
+
+    @FXML
+    private TableColumn<Object[], Integer> rankColumn;
+
+    @FXML
+    private TableColumn<Object[], String> titleColumn;
+
+    @FXML
+    private TableColumn<Object[], String> authorColumn;
+
+    @FXML
+    private TableColumn<Object[], Integer> countColumn;
+    @FXML
+    private TableView<Object[]> borrowed_his_table;
+
+    @FXML
+    private TableColumn<Object[], String> BHidColumn;
+
+    @FXML
+    private TableColumn<Object[], String> BHtitleColumn;
+
+    @FXML
+    private TableColumn<Object[], String> BHauthorColumn;
+
+    @FXML
+    private TableColumn<Object[], String> BHtimeColumn;
+
+    public void showBorrowedHistoryTable() {
+        // Lấy mã sinh viên từ lớp getData
+        String studentNumber = getData.numberOfUser;
+
+        if (studentNumber == null || studentNumber.isEmpty()) {
+            System.out.println("No student is currently logged in.");
+            return;
+        }
+
+        // Khởi tạo các cột
+        BHidColumn.setCellValueFactory(data -> new SimpleStringProperty((String) data.getValue()[0]));
+        BHtitleColumn.setCellValueFactory(data -> new SimpleStringProperty((String) data.getValue()[1]));
+        BHauthorColumn.setCellValueFactory(data -> new SimpleStringProperty((String) data.getValue()[2]));
+        BHtimeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()[3].toString()));
+
+        // Lấy dữ liệu từ LibraryDatabase
+        LibraryDatabase db = LibraryDatabase.getInstance();
+        List<Object[]> data = db.setDataBorrowedHistoryTable(studentNumber);
+
+        // Thêm dữ liệu vào bảng
+        ObservableList<Object[]> observableList = FXCollections.observableArrayList(data);
+        borrowed_his_table.setItems(observableList);
+    }
+
+    public void showTopBorrowTable() {
+        List<Object[]> data = LibraryDatabase.getInstance().setDataTopBorrowTable(); // Gọi dữ liệu
+
+        ObservableList<Object[]> observableData = FXCollections.observableArrayList(data);
+
+        rankColumn.setCellValueFactory(rowData -> new SimpleIntegerProperty((Integer) rowData.getValue()[0]).asObject());
+        titleColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[1]));
+        authorColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[2]));
+        countColumn.setCellValueFactory(rowData -> new SimpleIntegerProperty((Integer) rowData.getValue()[3]).asObject());
+
+        topBorrowTable.setItems(observableData);
+    }
+
 
     @FXML
     public void backHome(ActionEvent event) {
@@ -357,5 +428,7 @@ public class StudentDashBoardController implements Initializable {
         showCommentBookForStudent();
         showBorrowedBookForStudent();
         showFavBook();
+        showTopBorrowTable();
+        showBorrowedHistoryTable();
     }
 }

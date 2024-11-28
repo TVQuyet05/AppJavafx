@@ -53,6 +53,34 @@ public class LibraryDatabase {
         }
         return connection;
     }
+    public List<Object[]> setDataTopBorrowTable() {
+        List<Object[]> topBorrowedBooks = new ArrayList<>();
+        String query = """
+        SELECT book.book_title, book.author, COUNT(borrowbook.book_id) AS borrow_count
+        FROM book
+        JOIN borrowbook ON book.book_id = borrowbook.book_id
+        GROUP BY book.book_title, book.author
+        ORDER BY borrow_count DESC
+        LIMIT 5
+    """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            int rank = 1; // Bắt đầu từ thứ hạng 1
+            while (rs.next()) {
+                Object[] row = { rank++, rs.getString("book_title"), rs.getString("author"), rs.getInt("borrow_count") };
+                topBorrowedBooks.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topBorrowedBooks;
+    }
+
     public boolean saveBook(String studentNumber, String isbn) {
         // Kiểm tra xem sinh viên đã lưu sách này chưa
         String checkExistSQL = """
@@ -355,7 +383,10 @@ public class LibraryDatabase {
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
         String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book";
-        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+        try (Connection conn = getConnection();
+             Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
             while (resultSet.next()) {
                 Book book = new Book(
                         resultSet.getString("book_id"),
@@ -375,6 +406,35 @@ public class LibraryDatabase {
         }
         return books;
     }
+    public List<Object[]> setDataBorrowedHistoryTable(String studentNumber) {
+        List<Object[]> borrowedBooks = new ArrayList<>();
+        String query = "SELECT b.book_id, b.book_title, b.author, br.borrow_date " +
+                "FROM borrowbook br " +
+                "JOIN book b ON br.book_id = b.book_id " +
+                "WHERE br.studentNumber = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, studentNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Object[] row = new Object[4];
+                row[0] = resultSet.getString("book_id");
+                row[1] = resultSet.getString("book_title");
+                row[2] = resultSet.getString("author");
+                row[3] = resultSet.getDate("borrow_date");
+                borrowedBooks.add(row);
+            }
+            System.out.println("Borrowed history data fetched successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return borrowedBooks;
+    }
+
     public ObservableList<CommentBook> getCommentBook(String studentNumber) {
         ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
 
