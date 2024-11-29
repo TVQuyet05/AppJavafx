@@ -156,7 +156,7 @@ public class StudentDashBoardController implements Initializable {
     private TableColumn<Object[], String> favAuthorColumn;
 
     @FXML
-    private TableColumn<Object[], Date> favTimeColumn;
+    private TableColumn<Object[], String> favTimeColumn;
 
     public void showTopFavTable(){
         List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
@@ -164,10 +164,7 @@ public class StudentDashBoardController implements Initializable {
         favIdColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[0]));
         favTitleColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[1]));
         favAuthorColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[2]));
-        favTimeColumn.setCellValueFactory(rowData -> {
-            java.sql.Date date = (java.sql.Date) rowData.getValue()[3];
-            return new SimpleObjectProperty<>(date);
-        });
+        favTimeColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[3]));
 
         top_fav_table.setItems(data);
     }

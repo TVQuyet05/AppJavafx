@@ -258,7 +258,7 @@ public class LibraryDatabase {
                 String id = rs.getString("book_id");
                 String title = rs.getString("book_title");
                 String author = rs.getString("author");
-                Date date = rs.getDate("date");
+                String date = rs.getString("date");
                 topFavBooks.add(new Object[]{id,title,author,date});
             }
         }
