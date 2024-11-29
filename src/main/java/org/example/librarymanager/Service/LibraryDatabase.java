@@ -184,6 +184,7 @@ public class LibraryDatabase {
 
     public boolean authenticateStudent(String studentNumber, String password) {
         String query = "SELECT * FROM student WHERE studentNumber = ? AND password = ?";
+        Connection connection = getConnection();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, studentNumber);
             stmt.setString(2, password);
@@ -210,6 +211,7 @@ public class LibraryDatabase {
 
     public boolean authenticateManager(String managerNumber, String password) {
         String query = "SELECT * FROM manager WHERE managerNumber = ? AND password = ?";
+        Connection connection = getConnection();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, managerNumber);
             stmt.setString(2, password);
@@ -269,7 +271,7 @@ public class LibraryDatabase {
     }
     // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
-
+        Connection connection = getConnection();
         String query = "INSERT INTO book (book_id, book_title, author, genre, date, description, quantity, image) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -294,6 +296,7 @@ public class LibraryDatabase {
 
     public void addStudentSignUp(Student student) {
         String query = "INSERT INTO signupaccount (studentNumber, password, name, class) VALUES (?, ?, ?, ?)";
+        Connection connection = getConnection();
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
             stmt.setString(2, student.getPassword());
@@ -310,7 +313,7 @@ public class LibraryDatabase {
 
     public ObservableList<Student> getSignUpAccount() {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
-
+        Connection connection = getConnection();
         String query = "SELECT * FROM signupaccount";
 
         try {
@@ -341,6 +344,7 @@ public class LibraryDatabase {
 
     public ObservableList<Student> getAccStudent() {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
+        Connection connection = getConnection();
         String query = "SELECT * FROM student";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -367,6 +371,7 @@ public class LibraryDatabase {
     }
 
     public void deleteStudent(Student student) {
+        Connection connection = getConnection();
         String query = "DELETE FROM student WHERE studentNumber = ?";
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, student.getStudentNumber());
@@ -381,6 +386,7 @@ public class LibraryDatabase {
 
     public void deleteSignUpAccount(Student student) {
         String query = "DELETE FROM signupaccount WHERE studentNumber = ?";
+        Connection connection = getConnection();
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
 
@@ -394,6 +400,7 @@ public class LibraryDatabase {
 
 
     public void addStudent(Student student) {
+        Connection connection = getConnection();
         String query = "INSERT INTO student (studentNumber, password, name, class, image) VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
@@ -442,7 +449,7 @@ public class LibraryDatabase {
     public ObservableList<CommentBook> getCommentBook(String studentNumber) {
         ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
 
-
+        Connection connection = getConnection();
         String query = "SELECT book.book_id AS id, book.book_title AS title, book.author AS author, " +
                 "reviewbook.comment AS comment, reviewbook.judge AS judge " +
                 "FROM book " +
@@ -481,7 +488,7 @@ public class LibraryDatabase {
 
     public ObservableList<Book> getFavBook(String studentNumber) {
         ObservableList<Book> favBookList = FXCollections.observableArrayList();
-
+        Connection connection = getConnection();
         // Cập nhật câu lệnh SQL để lấy sách yêu thích của học sinh hiện tại
         String query = "SELECT savebook.book_id, book.book_title, book.author, book.genre, book.date " +
                 "FROM savebook " +
@@ -522,7 +529,7 @@ public class LibraryDatabase {
 
     public boolean deleteFavBook(String bookId) {
         String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";
-
+        Connection connection = getConnection();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, bookId);
             stmt.setString(2, numberOfUser);

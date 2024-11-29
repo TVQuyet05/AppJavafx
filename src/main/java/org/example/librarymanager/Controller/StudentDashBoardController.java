@@ -165,9 +165,9 @@ public class StudentDashBoardController implements Initializable {
         favTitleColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[1]));
         favAuthorColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[2]));
         favTimeColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[3]));
-
         top_fav_table.setItems(data);
     }
+
     public void showTopBorrowTable() {
         List<Object[]> data = LibraryDatabase.getInstance().setDataTopBorrowTable(); // Gọi dữ liệu
 
