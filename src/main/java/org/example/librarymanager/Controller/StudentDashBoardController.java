@@ -144,44 +144,33 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     private TableColumn<Object[], Integer> countColumn;
     @FXML
-    private TableView<Object[]> borrowed_his_table;
+    private TableView<Object[]> top_fav_table;
 
     @FXML
-    private TableColumn<Object[], String> BHidColumn;
+    private TableColumn<Object[], String> favIdColumn;
 
     @FXML
-    private TableColumn<Object[], String> BHtitleColumn;
+    private TableColumn<Object[], String> favTitleColumn;
 
     @FXML
-    private TableColumn<Object[], String> BHauthorColumn;
+    private TableColumn<Object[], String> favAuthorColumn;
 
     @FXML
-    private TableColumn<Object[], String> BHtimeColumn;
+    private TableColumn<Object[], Date> favTimeColumn;
 
-    public void showBorrowedHistoryTable() {
-        // Lấy mã sinh viên từ lớp getData
-        String studentNumber = getData.numberOfUser;
+    public void showTopFavTable(){
+        List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
+        ObservableList<Object[]> data = FXCollections.observableArrayList(favBooks);
+        favIdColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[0]));
+        favTitleColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[1]));
+        favAuthorColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[2]));
+        favTimeColumn.setCellValueFactory(rowData -> {
+            java.sql.Date date = (java.sql.Date) rowData.getValue()[3];
+            return new SimpleObjectProperty<>(date);
+        });
 
-        if (studentNumber == null || studentNumber.isEmpty()) {
-            System.out.println("No student is currently logged in.");
-            return;
-        }
-
-        // Khởi tạo các cột
-        BHidColumn.setCellValueFactory(data -> new SimpleStringProperty((String) data.getValue()[0]));
-        BHtitleColumn.setCellValueFactory(data -> new SimpleStringProperty((String) data.getValue()[1]));
-        BHauthorColumn.setCellValueFactory(data -> new SimpleStringProperty((String) data.getValue()[2]));
-        BHtimeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()[3].toString()));
-
-        // Lấy dữ liệu từ LibraryDatabase
-        LibraryDatabase db = LibraryDatabase.getInstance();
-        List<Object[]> data = db.setDataBorrowedHistoryTable(studentNumber);
-
-        // Thêm dữ liệu vào bảng
-        ObservableList<Object[]> observableList = FXCollections.observableArrayList(data);
-        borrowed_his_table.setItems(observableList);
+        top_fav_table.setItems(data);
     }
-
     public void showTopBorrowTable() {
         List<Object[]> data = LibraryDatabase.getInstance().setDataTopBorrowTable(); // Gọi dữ liệu
 
@@ -429,6 +418,7 @@ public class StudentDashBoardController implements Initializable {
         showBorrowedBookForStudent();
         showFavBook();
         showTopBorrowTable();
-        showBorrowedHistoryTable();
+        showTopFavTable();
+
     }
 }

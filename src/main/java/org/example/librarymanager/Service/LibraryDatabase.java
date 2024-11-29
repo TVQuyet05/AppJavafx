@@ -234,7 +234,39 @@ public class LibraryDatabase {
         }
     }
 
-
+    public List<Object[]> getTopFavBook(){
+        List<Object[]> topFavBooks = new ArrayList<>();
+        String query = "SELECT book_id, book_title, author, date\n" +
+                "FROM (\n" +
+                "    SELECT \n" +
+                "        savebook.book_id, \n" +
+                "        COUNT(savebook.book_id) AS tong, \n" +
+                "        book.book_title, \n" +
+                "        book.author, \n" +
+                "        book.date\n" +
+                "    FROM savebook \n" +
+                "    JOIN book \n" +
+                "    ON savebook.book_id = book.book_id \n" +
+                "    GROUP BY savebook.book_id \n" +
+                "    ORDER BY tong DESC \n" +
+                "    LIMIT 5\n" +
+                ") AS subquery;";
+        try(Connection conn = getConnection();
+        PreparedStatement statement = conn.prepareStatement(query);
+        ResultSet rs = statement.executeQuery()){
+            while (rs.next()){
+                String id = rs.getString("book_id");
+                String title = rs.getString("book_title");
+                String author = rs.getString("author");
+                Date date = rs.getDate("date");
+                topFavBooks.add(new Object[]{id,title,author,date});
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();;
+        }
+        return topFavBooks;
+    }
     // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
 
@@ -405,34 +437,6 @@ public class LibraryDatabase {
             throw new RuntimeException(e);
         }
         return books;
-    }
-    public List<Object[]> setDataBorrowedHistoryTable(String studentNumber) {
-        List<Object[]> borrowedBooks = new ArrayList<>();
-        String query = "SELECT b.book_id, b.book_title, b.author, br.borrow_date " +
-                "FROM borrowbook br " +
-                "JOIN book b ON br.book_id = b.book_id " +
-                "WHERE br.studentNumber = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
-
-            preparedStatement.setString(1, studentNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Object[] row = new Object[4];
-                row[0] = resultSet.getString("book_id");
-                row[1] = resultSet.getString("book_title");
-                row[2] = resultSet.getString("author");
-                row[3] = resultSet.getDate("borrow_date");
-                borrowedBooks.add(row);
-            }
-            System.out.println("Borrowed history data fetched successfully!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return borrowedBooks;
     }
 
     public ObservableList<CommentBook> getCommentBook(String studentNumber) {
