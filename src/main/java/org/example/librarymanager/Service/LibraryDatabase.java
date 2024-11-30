@@ -526,6 +526,19 @@ public class LibraryDatabase {
 
         return favBookList;
     }
+    public boolean deleteComment(String bookId, String studentNumber) {
+        String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, studentNumber);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng bị xóa
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public boolean deleteFavBook(String bookId) {
         String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";

@@ -125,6 +125,8 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     private  TableColumn <CommentBook,Integer> cmt_judge_col;
     @FXML
+    private  TableColumn <CommentBook, String> commentActionColumn;
+    @FXML
     private AnchorPane currentPane = null;
     private ObservableList<CommentBook> cmtBookList;
     double x = 0;
@@ -157,6 +159,7 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private TableColumn<Object[], String> favTimeColumn;
+    @FXML
 
     public void showTopFavTable(){
         List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
@@ -252,11 +255,8 @@ public class StudentDashBoardController implements Initializable {
     }
 
     public void showCommentBookForStudent() {
-
-
-
         LibraryDatabase database = LibraryDatabase.getInstance();
-        ObservableList<CommentBook> listCommentBook = database.getCommentBook(numberOfUser);
+        ObservableList<CommentBook> listCommentBook = database.getCommentBook(getData.numberOfUser);
 
         // Thiết lập các cột trong TableView
         cmt_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -265,9 +265,56 @@ public class StudentDashBoardController implements Initializable {
         cmt_comment_col.setCellValueFactory(new PropertyValueFactory<>("comment"));
         cmt_judge_col.setCellValueFactory(new PropertyValueFactory<>("judge"));
 
+        // Thêm cột hành động "Xóa"
+        commentActionColumn.setCellFactory(column -> new TableCell<>() {
+            private final Button deleteButton = new Button("Xóa");
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    deleteButton.setOnAction(event -> {
+                        CommentBook commentBook = getTableView().getItems().get(getIndex());
+                        String bookId = commentBook.getId(); // Lấy ID sách
+                        String studentNumber = getData.numberOfUser; // Lấy số sinh viên từ getData
+
+                        // Hiển thị hộp thoại xác nhận trước khi xóa
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                                "Bạn có chắc muốn xóa bình luận về sách \"" + commentBook.getTitle() + "\"?",
+                                ButtonType.YES, ButtonType.NO);
+
+                        alert.showAndWait();
+
+                        if (alert.getResult() == ButtonType.YES) {
+                            // Thực hiện xóa bình luận
+                            if (database.deleteComment(bookId, studentNumber)) {
+                                // Nếu xóa thành công, cập nhật TableView
+                                listCommentBook.remove(commentBook);
+                                System.out.println("Đã xóa bình luận về sách: " + commentBook.getTitle());
+                            } else {
+                                // Thông báo lỗi nếu không xóa được
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                                        "Không thể xóa bình luận khỏi cơ sở dữ liệu.", ButtonType.OK);
+                                errorAlert.show();
+                            }
+                        }
+                    });
+                    setGraphic(deleteButton);
+                    setText(null);
+                }
+            }
+        });
+
         // Gán danh sách vào TableView
         cmtBookTab.setItems(listCommentBook);
+
+        System.out.println("Hiển thị danh sách bình luận thành công!");
     }
+
 
 
     public void logout(javafx.event.ActionEvent actionEvent) {
