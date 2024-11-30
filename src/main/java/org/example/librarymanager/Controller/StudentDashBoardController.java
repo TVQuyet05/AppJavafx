@@ -1,6 +1,10 @@
 package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,22 +12,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
+import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Service.LibraryDatabase;
+import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -93,16 +98,223 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private TableColumn<BorrowedBook, Date> col_dueDate_std;
-
+    @FXML
+    private TableView<Book> favBook;
+    @FXML
+    private TableColumn <Book,String> fav_id_col;
+    @FXML
+    private TableColumn <Book,String> fav_author_col;
+    @FXML
+    private TableColumn <Book,String> fav_title_col;
+    @FXML
+    private TableColumn <Book,String> fav_genre_col;
+    @FXML
+    private TableColumn <Book,Date> fav_date_col;
+    @FXML
+    private TableColumn <Book,String> fav_action_col;
+    @FXML
+    private TableView <CommentBook> cmtBookTab;
+    @FXML
+    private TableColumn <CommentBook, String> cmt_id_col;
+    @FXML
+    private TableColumn <CommentBook, String> cmt_title_col;
+    @FXML
+    private TableColumn <CommentBook,String> cmt_author_col;
+    @FXML
+    private  TableColumn <CommentBook,String> cmt_comment_col;
+    @FXML
+    private  TableColumn <CommentBook,Integer> cmt_judge_col;
+    @FXML
+    private  TableColumn <CommentBook, String> commentActionColumn;
+    @FXML
     private AnchorPane currentPane = null;
-
+    private ObservableList<CommentBook> cmtBookList;
     double x = 0;
     double y = 0;
+    @FXML
+    private TableView<Object[]> topBorrowTable;
+
+    @FXML
+    private TableColumn<Object[], Integer> rankColumn;
+
+    @FXML
+    private TableColumn<Object[], String> titleColumn;
+
+    @FXML
+    private TableColumn<Object[], String> authorColumn;
+
+    @FXML
+    private TableColumn<Object[], Integer> countColumn;
+    @FXML
+    private TableView<Object[]> top_fav_table;
+
+    @FXML
+    private TableColumn<Object[], String> favIdColumn;
+
+    @FXML
+    private TableColumn<Object[], String> favTitleColumn;
+
+    @FXML
+    private TableColumn<Object[], String> favAuthorColumn;
+
+    @FXML
+    private TableColumn<Object[], String> favTimeColumn;
+    @FXML
+
+    public void showTopFavTable(){
+        List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
+        ObservableList<Object[]> data = FXCollections.observableArrayList(favBooks);
+        favIdColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[0]));
+        favTitleColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[1]));
+        favAuthorColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[2]));
+        favTimeColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[3]));
+        top_fav_table.setItems(data);
+    }
+
+    public void showTopBorrowTable() {
+        List<Object[]> data = LibraryDatabase.getInstance().setDataTopBorrowTable(); // Gọi dữ liệu
+
+        ObservableList<Object[]> observableData = FXCollections.observableArrayList(data);
+
+        rankColumn.setCellValueFactory(rowData -> new SimpleIntegerProperty((Integer) rowData.getValue()[0]).asObject());
+        titleColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[1]));
+        authorColumn.setCellValueFactory(rowData -> new SimpleStringProperty((String) rowData.getValue()[2]));
+        countColumn.setCellValueFactory(rowData -> new SimpleIntegerProperty((Integer) rowData.getValue()[3]).asObject());
+
+        topBorrowTable.setItems(observableData);
+    }
+
 
     @FXML
     public void backHome(ActionEvent event) {
         switchPain(homeScreen_std);
     }
+    public void showFavBook() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+
+        String studentNumber = getData.numberOfUser;
+
+        // Lấy danh sách sách yêu thích của học sinh hiện tại
+        ObservableList<Book> favBookList = database.getFavBook(studentNumber);
+
+        // Thiết lập giá trị cho các cột TableView
+        fav_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+        fav_title_col.setCellValueFactory(new PropertyValueFactory<>("title"));
+        fav_author_col.setCellValueFactory(new PropertyValueFactory<>("author"));
+        fav_genre_col.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        fav_date_col.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        // Thêm cột hành động "Xóa"
+        fav_action_col.setCellFactory(column -> new TableCell<>() {
+            private final Button actionButton = new Button("Xóa");
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    actionButton.setOnAction(event -> {
+                        Book book = getTableView().getItems().get(getIndex());
+                        String bookId = book.getId(); // Lấy book_id để xóa trong database
+
+                        // Hiển thị hộp thoại xác nhận trước khi xóa
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                                "Bạn có chắc muốn xóa sách \"" + book.getTitle() + "\" khỏi danh sách yêu thích?",
+                                ButtonType.YES, ButtonType.NO);
+
+                        alert.showAndWait();
+
+                        if (alert.getResult() == ButtonType.YES) {
+                            // Xóa dữ liệu trong bảng savebook
+                            if (database.deleteFavBook(bookId)) {
+                                // Nếu xóa thành công, xóa sách khỏi TableView
+                                favBookList.remove(book);
+                                System.out.println("Đã xóa sách khỏi danh sách yêu thích: " + book.getTitle());
+                            } else {
+                                // Thông báo lỗi nếu không xóa được
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                                        "Không thể xóa sách khỏi cơ sở dữ liệu.", ButtonType.OK);
+                                errorAlert.show();
+                            }
+                        }
+                    });
+                    setGraphic(actionButton);
+                    setText(null);
+                }
+            }
+        });
+
+        // Gán danh sách vào TableView
+        favBook.setItems(favBookList);
+
+        System.out.println("Hiển thị danh sách sách yêu thích thành công!");
+    }
+
+    public void showCommentBookForStudent() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        ObservableList<CommentBook> listCommentBook = database.getCommentBook(getData.numberOfUser);
+
+        // Thiết lập các cột trong TableView
+        cmt_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cmt_title_col.setCellValueFactory(new PropertyValueFactory<>("title"));
+        cmt_author_col.setCellValueFactory(new PropertyValueFactory<>("author"));
+        cmt_comment_col.setCellValueFactory(new PropertyValueFactory<>("comment"));
+        cmt_judge_col.setCellValueFactory(new PropertyValueFactory<>("judge"));
+
+        // Thêm cột hành động "Xóa"
+        commentActionColumn.setCellFactory(column -> new TableCell<>() {
+            private final Button deleteButton = new Button("Xóa");
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    deleteButton.setOnAction(event -> {
+                        CommentBook commentBook = getTableView().getItems().get(getIndex());
+                        String bookId = commentBook.getId(); // Lấy ID sách
+                        String studentNumber = getData.numberOfUser; // Lấy số sinh viên từ getData
+
+                        // Hiển thị hộp thoại xác nhận trước khi xóa
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                                "Bạn có chắc muốn xóa bình luận về sách \"" + commentBook.getTitle() + "\"?",
+                                ButtonType.YES, ButtonType.NO);
+
+                        alert.showAndWait();
+
+                        if (alert.getResult() == ButtonType.YES) {
+                            // Thực hiện xóa bình luận
+                            if (database.deleteComment(bookId, studentNumber)) {
+                                // Nếu xóa thành công, cập nhật TableView
+                                listCommentBook.remove(commentBook);
+                                System.out.println("Đã xóa bình luận về sách: " + commentBook.getTitle());
+                            } else {
+                                // Thông báo lỗi nếu không xóa được
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                                        "Không thể xóa bình luận khỏi cơ sở dữ liệu.", ButtonType.OK);
+                                errorAlert.show();
+                            }
+                        }
+                    });
+                    setGraphic(deleteButton);
+                    setText(null);
+                }
+            }
+        });
+
+        // Gán danh sách vào TableView
+        cmtBookTab.setItems(listCommentBook);
+
+        System.out.println("Hiển thị danh sách bình luận thành công!");
+    }
+
 
 
     public void logout(javafx.event.ActionEvent actionEvent) {
@@ -230,7 +442,10 @@ public class StudentDashBoardController implements Initializable {
 
     }
 
-    public void returnBook() { switchPain(returnBooks_std); }
+    public void returnBook() {
+        switchPain(returnBooks_std);
+        showBorrowedBookForStudent();
+    }
 
     public void commentBook() {
         switchPain(commentBook_std);
@@ -238,6 +453,7 @@ public class StudentDashBoardController implements Initializable {
 
     public void favouriteBook() {
         switchPain(favouriteBook_std);
+        showFavBook();
     }
 
     @Override
@@ -246,7 +462,11 @@ public class StudentDashBoardController implements Initializable {
         currentPane = homeScreen_std;
 
         numberStudent.setText(numberOfUser);
+        showCommentBookForStudent();
+        //showBorrowedBookForStudent();
+        //showFavBook();
+        showTopBorrowTable();
+        showTopFavTable();
 
-        showBorrowedBookForStudent();
     }
 }

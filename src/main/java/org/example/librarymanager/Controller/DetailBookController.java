@@ -2,12 +2,14 @@ package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -17,6 +19,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Service.LibraryDatabase;
+import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,9 +72,61 @@ public class DetailBookController implements Initializable {
 
     @FXML
     private Button btn_addBookToLib;
-
+    @FXML
+    private Button save_book_button;
     private double x = 0;
     private double y = 0;
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    @FXML
+    private void setActionSaveButton() {
+
+        String studentNumber = getData.numberOfUser;
+        String isbn = isbn_books.getText();
+
+        // Gọi phương thức saveBook để lưu thông tin sách
+        boolean isSaved = LibraryDatabase.getInstance().saveBook(studentNumber, isbn);
+
+        // Hiển thị thông báo cho người dùng
+        if (isSaved) {
+            // Thông báo thành công
+            showAlert(Alert.AlertType.INFORMATION, "Success", "The book has been saved successfully!");
+        } else {
+            // Thông báo sách đã được lưu rồi
+            showAlert(Alert.AlertType.ERROR, "Error", "This book has already been saved!");
+        }
+
+    }
+
+
+
+    @FXML
+    private void setActionBorrowButton() {
+        button_borrow_book.setOnAction(event -> {
+            String studentNumber = getData.numberOfUser; // Lấy số sinh viên đang đăng nhập
+            String isbn = isbn_books.getText(); // Lấy mã ISBN từ giao diện (Label)
+
+            if (isbn != null && !isbn.isEmpty()) {
+                // Gọi hàm borrowBook để xử lý logic
+                boolean isSuccess = LibraryDatabase.getInstance().borrowBook(studentNumber, isbn);
+
+                // Hiển thị thông báo kết quả
+                if (isSuccess) {
+                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Mượn sách thành công!");
+
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Thất bại", "Mượn sách thất bại! Sách có thể đã hết.");
+                }
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Lỗi", "Không tìm thấy mã ISBN của sách!");
+            }
+        });
+    }
 
     public void backtoDashboard(javafx.event.ActionEvent actionEvent) {
         try {

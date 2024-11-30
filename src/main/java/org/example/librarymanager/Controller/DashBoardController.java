@@ -192,10 +192,13 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Label totalMemberVal;
+
     @FXML
     private Label totalBorrowedBookVal;
+
     @FXML
     private PieChart genrePieChart;
+
     @FXML
     private VBox chartContainer;
 

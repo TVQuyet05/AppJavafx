@@ -4,9 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
+import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Model.Student;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +43,143 @@ public class LibraryDatabase {
     }
 
     public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(url, user, password);
+                System.out.println("Re-establishing database connection.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
     }
+    public List<Object[]> setDataTopBorrowTable() {
+        List<Object[]> topBorrowedBooks = new ArrayList<>();
+        String query = """
+        SELECT book.book_title, book.author, COUNT(borrowbook.book_id) AS borrow_count
+        FROM book
+        JOIN borrowbook ON book.book_id = borrowbook.book_id
+        GROUP BY book.book_title, book.author
+        ORDER BY borrow_count DESC
+        LIMIT 5
+    """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            int rank = 1; // Bắt đầu từ thứ hạng 1
+            while (rs.next()) {
+                Object[] row = { rank++, rs.getString("book_title"), rs.getString("author"), rs.getInt("borrow_count") };
+                topBorrowedBooks.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topBorrowedBooks;
+    }
+
+    public boolean saveBook(String studentNumber, String isbn) {
+        // Kiểm tra xem sinh viên đã lưu sách này chưa
+        String checkExistSQL = """
+    SELECT COUNT(*) FROM savebook 
+    WHERE studentNumber = ? AND book_id = ?
+    """;
+
+        // Chèn thông tin lưu sách nếu sinh viên chưa lưu sách này
+        String insertSaveSQL = """
+    INSERT INTO savebook (studentNumber, book_id) 
+    VALUES (?, ?)
+    """;
+
+        try (Connection conn = getConnection()) {
+            // Kiểm tra xem sinh viên đã lưu cuốn sách này chưa
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkExistSQL)) {
+                checkStmt.setString(1, studentNumber);
+                checkStmt.setString(2, isbn); // Kiểm tra theo studentNumber và book_id
+
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+
+                        return false;
+                    }
+                }
+            }
+
+            // Nếu sinh viên chưa lưu sách này, tiến hành lưu sách mới
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSaveSQL)) {
+                insertStmt.setString(1, studentNumber);
+                insertStmt.setString(2, isbn);
+
+                int rowsInserted = insertStmt.executeUpdate();
+                return rowsInserted > 0; // Nếu chèn thành công, trả về true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Nếu có lỗi xảy ra, trả về false
+    }
+
+
+
+
+    public boolean borrowBook(String studentNumber, String isbn) {
+        String insertBorrowSQL = """
+                                INSERT INTO borrowbook (studentNumber, book_id, borrow_date, due_date, return_date) 
+                                VALUES (?, ?, ?, ?, NULL)
+                                """;
+
+        String updateQuantitySQL = """
+                                    UPDATE book 
+                                    SET quantity = quantity - 1 
+                                    WHERE book_id = ? AND quantity > 0
+                                    """;
+
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false); // Bắt đầu giao dịch
+
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertBorrowSQL);
+                 PreparedStatement updateStmt = conn.prepareStatement(updateQuantitySQL)) {
+
+                // Tính toán ngày hiện tại và ngày hết hạn
+                LocalDate borrowDate = LocalDate.now();
+                LocalDate dueDate = borrowDate.plusDays(14);
+
+                // Chèn thông tin mượn sách
+                insertStmt.setString(1, studentNumber);
+                insertStmt.setString(2, isbn); // Sử dụng isbn trực tiếp làm book_id
+                insertStmt.setDate(3, Date.valueOf(borrowDate));
+                insertStmt.setDate(4, Date.valueOf(dueDate));
+
+                // Thực thi giảm số lượng sách
+                updateStmt.setString(1, isbn);
+                int rowsUpdated = updateStmt.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    int rowsInserted = insertStmt.executeUpdate();
+                    if (rowsInserted > 0) {
+                        conn.commit(); // Nếu cả hai hành động thành công, commit giao dịch
+                        return true;  // Mượn sách thành công
+                    }
+                }
+
+                conn.rollback(); // Nếu có lỗi xảy ra, rollback giao dịch
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback nếu có bất kỳ lỗi nào xảy ra trong block try
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Mượn sách thất bại
+    }
+
+
+
 
     public int getNumberOfMembers() {
         String sql = "SELECT COUNT(*) AS totalQuantity FROM student";
@@ -99,6 +236,7 @@ public class LibraryDatabase {
 
     public boolean authenticateStudent(String studentNumber, String password) {
         String query = "SELECT * FROM student WHERE studentNumber = ? AND password = ?";
+        Connection connection = getConnection();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, studentNumber);
             stmt.setString(2, password);
@@ -125,6 +263,7 @@ public class LibraryDatabase {
 
     public boolean authenticateManager(String managerNumber, String password) {
         String query = "SELECT * FROM manager WHERE managerNumber = ? AND password = ?";
+        Connection connection = getConnection();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, managerNumber);
             stmt.setString(2, password);
@@ -149,10 +288,42 @@ public class LibraryDatabase {
         }
     }
 
-
+    public List<Object[]> getTopFavBook(){
+        List<Object[]> topFavBooks = new ArrayList<>();
+        String query = "SELECT book_id, book_title, author, date\n" +
+                "FROM (\n" +
+                "    SELECT \n" +
+                "        savebook.book_id, \n" +
+                "        COUNT(savebook.book_id) AS tong, \n" +
+                "        book.book_title, \n" +
+                "        book.author, \n" +
+                "        book.date\n" +
+                "    FROM savebook \n" +
+                "    JOIN book \n" +
+                "    ON savebook.book_id = book.book_id \n" +
+                "    GROUP BY savebook.book_id \n" +
+                "    ORDER BY tong DESC \n" +
+                "    LIMIT 5\n" +
+                ") AS subquery;";
+        try(Connection conn = getConnection();
+        PreparedStatement statement = conn.prepareStatement(query);
+        ResultSet rs = statement.executeQuery()){
+            while (rs.next()){
+                String id = rs.getString("book_id");
+                String title = rs.getString("book_title");
+                String author = rs.getString("author");
+                String date = rs.getString("date");
+                topFavBooks.add(new Object[]{id,title,author,date});
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();;
+        }
+        return topFavBooks;
+    }
     // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
-
+        Connection connection = getConnection();
         String query = "INSERT INTO book (book_id, book_title, author, genre, date, description, quantity, image) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -177,6 +348,7 @@ public class LibraryDatabase {
 
     public void addStudentSignUp(Student student) {
         String query = "INSERT INTO signupaccount (studentNumber, password, name, class) VALUES (?, ?, ?, ?)";
+        Connection connection = getConnection();
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
             stmt.setString(2, student.getPassword());
@@ -193,7 +365,7 @@ public class LibraryDatabase {
 
     public ObservableList<Student> getSignUpAccount() {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
-
+        Connection connection = getConnection();
         String query = "SELECT * FROM signupaccount";
 
         try {
@@ -224,6 +396,7 @@ public class LibraryDatabase {
 
     public ObservableList<Student> getAccStudent() {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
+        Connection connection = getConnection();
         String query = "SELECT * FROM student";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -250,6 +423,7 @@ public class LibraryDatabase {
     }
 
     public void deleteStudent(Student student) {
+        Connection connection = getConnection();
         String query = "DELETE FROM student WHERE studentNumber = ?";
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, student.getStudentNumber());
@@ -264,6 +438,7 @@ public class LibraryDatabase {
 
     public void deleteSignUpAccount(Student student) {
         String query = "DELETE FROM signupaccount WHERE studentNumber = ?";
+        Connection connection = getConnection();
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
 
@@ -277,6 +452,7 @@ public class LibraryDatabase {
 
 
     public void addStudent(Student student) {
+        Connection connection = getConnection();
         String query = "INSERT INTO student (studentNumber, password, name, class, image) VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
@@ -298,7 +474,10 @@ public class LibraryDatabase {
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
         String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book";
-        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+        try (Connection conn = getConnection();
+             Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
             while (resultSet.next()) {
                 Book book = new Book(
                         resultSet.getString("book_id"),
@@ -319,6 +498,113 @@ public class LibraryDatabase {
         return books;
     }
 
+    public ObservableList<CommentBook> getCommentBook(String studentNumber) {
+        ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
+
+        Connection connection = getConnection();
+        String query = "SELECT book.book_id AS id, book.book_title AS title, book.author AS author, " +
+                "reviewbook.comment AS comment, reviewbook.judge AS judge " +
+                "FROM book " +
+                "JOIN reviewbook ON book.book_id = reviewbook.book_id " +
+                "WHERE reviewbook.studentNumber = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, studentNumber);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                // Tạo đối tượng CommentBook từ dữ liệu truy vấn
+                CommentBook commentBook = new CommentBook(
+                        result.getString("id"),
+                        result.getString("title"),
+                        result.getString("author"),
+                        result.getString("comment"),
+                        result.getInt("judge")
+                );
+
+                // Thêm đối tượng vào danh sách
+                commentBookList.add(commentBook);
+            }
+
+            System.out.println("Get comment books successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error getting comment books", e);
+        }
+
+        return commentBookList;
+    }
+
+
+    public ObservableList<Book> getFavBook(String studentNumber) {
+        ObservableList<Book> favBookList = FXCollections.observableArrayList();
+        Connection connection = getConnection();
+        // Cập nhật câu lệnh SQL để lấy sách yêu thích của học sinh hiện tại
+        String query = "SELECT savebook.book_id, book.book_title, book.author, book.genre, book.date " +
+                "FROM savebook " +
+                "JOIN book ON savebook.book_id = book.book_id " +
+                "WHERE savebook.studentNumber = ?";  // Thêm điều kiện để lọc sách yêu thích của học sinh
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, studentNumber);  // Sử dụng studentNumber của học sinh hiện tại
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                // Tạo đối tượng Book từ dữ liệu truy vấn
+                Book favBook = new Book(
+                        result.getString("book_id"),
+                        result.getString("book_title"),
+                        result.getString("author"),
+                        result.getString("genre"),
+                        result.getString("date"),
+                        null, // Description không có trong truy vấn
+                        0,    // Quantity không có trong truy vấn
+                        null  // Image không có trong truy vấn
+                );
+
+                // Thêm đối tượng vào danh sách
+                favBookList.add(favBook);
+            }
+
+            System.out.println("Get favorite books successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error getting favorite books", e);
+        }
+
+        return favBookList;
+    }
+    public boolean deleteComment(String bookId, String studentNumber) {
+        String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, studentNumber);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng bị xóa
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteFavBook(String bookId) {
+        String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";
+        Connection connection = getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, numberOfUser);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu có dòng bị ảnh hưởng
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu xảy ra lỗi
+        }
+    }
 
     public ObservableList<BorrowedBook> getBorrowedBook() {
         ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
@@ -358,7 +644,7 @@ public class LibraryDatabase {
             System.out.println("Get borrowed book successfully!");
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return borrowedBookList;
