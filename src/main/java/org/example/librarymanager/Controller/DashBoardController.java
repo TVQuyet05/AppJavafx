@@ -4,6 +4,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,9 +20,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.scene.effect.GaussianBlur;
 import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
@@ -30,6 +33,12 @@ import org.example.librarymanager.Service.LibraryDatabase;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -177,31 +186,110 @@ public class DashBoardController implements Initializable {
     @FXML
     private TableColumn<?, ?> col_listAcc_pass;
 
-    //SingleTon Pattern
-//    private FXMLLoader dashBoardLoader;
-//    private static DashBoardController dashBoardController;
-//
-//    public void initializeDashBoard() throws IOException {
-//        if (dashBoardLoader == null) {
-//            // Load the FXML file once
-//            dashBoardLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
-//            dashBoardLoader.load();
-//            dashBoardController = dashBoardLoader.getController();
-//        }
-//    }
-//
-//    public static DashBoardController getDashBoardController() {
-//        dashBoardLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
-//        dashBoardLoader.load();
-//        dashBoardController = dashBoardLoader.getController();
-//        return dashBoardController;
-//    }
 
+    @FXML
+    private  Label totalBookVal;
 
-
+    @FXML
+    private Label totalMemberVal;
+    @FXML
+    private Label totalBorrowedBookVal;
+    @FXML
+    private PieChart genrePieChart;
+    @FXML
+    private VBox chartContainer;
 
     private double x = 0;
     private double y = 0;
+
+    private void setGenrePieChart() {
+        // Query để lấy tổng số lượng sách theo thể loại, sắp xếp giảm dần
+        String sql = "SELECT genre, SUM(quantity) AS total_quantity FROM book GROUP BY genre ORDER BY total_quantity DESC";
+        Connection connection = LibraryDatabase.getInstance().getConnection();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            int totalQuantity = 0;
+            int count = 0;
+            int otherQuantity = 0;
+
+            // Tính tổng số lượng (quantity) toàn bộ
+            while (resultSet.next()) {
+                totalQuantity += resultSet.getInt("total_quantity");
+            }
+
+            // Đặt lại con trỏ ResultSet
+            resultSet.beforeFirst();
+
+            // Duyệt qua từng thể loại
+            while (resultSet.next()) {
+                String genre = resultSet.getString("genre");
+                int genreQuantity = resultSet.getInt("total_quantity");
+
+                if (count < 5) {
+                    // Tính phần trăm cho 5 thể loại đầu tiên
+                    double percentage = (double) genreQuantity / totalQuantity * 100;
+
+                    // Thêm dữ liệu vào PieChart
+                    pieChartData.add(new PieChart.Data(genre + " (" + String.format("%.1f", percentage) + "%)", genreQuantity));
+
+                    count++;
+                } else {
+                    // Cộng dồn các thể loại còn lại vào "Other"
+                    otherQuantity += genreQuantity;
+                }
+            }
+
+            // Thêm dữ liệu mục "Other" nếu có
+            if (otherQuantity > 0) {
+                double otherPercentage = (double) otherQuantity / totalQuantity * 100;
+                pieChartData.add(new PieChart.Data("Other (" + String.format("%.1f", otherPercentage) + "%)", otherQuantity));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Cập nhật PieChart với dữ liệu mới
+        genrePieChart.setData(pieChartData);
+
+        // Xóa các thành phần cũ (PieChart và nhãn)
+        chartContainer.getChildren().clear();
+
+        // Thêm PieChart vào VBox
+        chartContainer.getChildren().add(genrePieChart);
+    }
+
+    public void showNumberOfBorrowedBook() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalBorrowedBooks = database.getNumberOfBorrowedBook(); // Lấy số lượng sách mượn
+
+        totalBorrowedBookVal.setText(String.valueOf(totalBorrowedBooks)); // Hiển thị lên Label
+    }
+
+
+    public void showTotalBooks() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalBooks = database.getTotalBooks(); // Lấy tổng số sách từ database
+
+        totalBookVal.setText(String.valueOf(totalBooks)); // Hiển thị lên Label
+    }
+
+    public void showNumberOfMembers() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalMembers = database.getNumberOfMembers(); // Lấy số lượng thành viên
+
+        totalMemberVal.setText(String.valueOf(totalMembers)); // Hiển thị lên Label
+    }
+
+    public void showHomeScreenManager(){
+        showTotalBooks();
+        showNumberOfBorrowedBook();
+        showNumberOfMembers();
+        setGenrePieChart();
+    }
 
     public void logout(javafx.event.ActionEvent actionEvent) {
         try {
@@ -348,6 +436,7 @@ public class DashBoardController implements Initializable {
 
     public void addBookToDatabase() {
         LibraryDatabase database = LibraryDatabase.getInstance();
+        Connection connect = database.getConnection();
 
         String isbn = textField_add_ISBN.getText();
         String book_title = textField_add_BookName.getText();
@@ -394,7 +483,7 @@ public class DashBoardController implements Initializable {
         col_signup_class.setCellValueFactory(new PropertyValueFactory<>("_class"));
 
         // Kiểm tra nếu cột "Action" chưa được thêm
-        if (Member_Information_TV.getColumns().stream().noneMatch(column -> column.getText().equals("Action"))) {
+        if (SignUpAccount_TableView.getColumns().stream().noneMatch(column -> column.getText().equals("Action"))) {
             TableColumn<Student, Void> actionColumn = new TableColumn<>("Action");
 
             actionColumn.setCellFactory(column -> new TableCell<>() {
@@ -638,10 +727,10 @@ public class DashBoardController implements Initializable {
 
         managerName.setText(nameOfUser);
 
-        pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
-        pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
+        showHomeScreenManager();
+
+        showMemberInformation();
 
         showSignUpAccount();
-        showMemberInformation();
     }
 }
