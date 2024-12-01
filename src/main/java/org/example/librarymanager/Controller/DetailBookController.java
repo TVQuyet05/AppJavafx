@@ -72,8 +72,16 @@ public class DetailBookController implements Initializable {
 
     @FXML
     private Button btn_addBookToLib;
+
     @FXML
     private Button save_book_button;
+
+    @FXML
+    private AnchorPane anchor_manager;
+
+    @FXML
+    private AnchorPane anchor_student;
+
     private double x = 0;
     private double y = 0;
 
@@ -210,8 +218,25 @@ public class DetailBookController implements Initializable {
 
     }
 
+
+
+    public void setupUIBasedOnRole() {
+        String role = SessionManager.getInstance().getRole();
+        if ("manager".equals(role)) {
+            System.out.println("La manager ne");
+           anchor_manager.setVisible(true);
+           btn_addBookToLib.setVisible(true);
+           anchor_student.setVisible(false);
+        } else if ("student".equals(role)) {
+            System.out.println("La hoc sinh ne");
+            anchor_manager.setVisible(false);
+            btn_addBookToLib.setVisible(false);
+            anchor_student.setVisible(true);
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        setupUIBasedOnRole();
     }
 }

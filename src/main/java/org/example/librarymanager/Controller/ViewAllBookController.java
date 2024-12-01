@@ -61,6 +61,10 @@ public class ViewAllBookController implements Initializable {
     @FXML
     private Button btn_searchBook;
 
+    @FXML
+    private String role;
+
+
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
@@ -302,6 +306,7 @@ public class ViewAllBookController implements Initializable {
         anchor.getChildren().clear();
         anchor.getChildren().addAll(flow_pane);
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

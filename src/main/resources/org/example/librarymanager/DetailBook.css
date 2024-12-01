@@ -20,6 +20,7 @@
     -fx-background-color: #000000;
     -fx-background-radius: 8px 8px 8px 8px;
     -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
 }
 .label_detailbook_status{
     -fx-background-color: #e0fae3;

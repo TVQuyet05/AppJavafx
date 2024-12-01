@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DetailBookController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DetailBookController">
    <children>
       <AnchorPane fx:id="anchor_detail_Books" prefHeight="700.0" prefWidth="1301.6000000000001" styleClass="detail_book_background" stylesheets="@DashBoard.css">
          <children>
-            <AnchorPane layoutX="90.6" layoutY="80.0" prefHeight="540.0" prefWidth="380.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="80.0">
+            <AnchorPane layoutX="100.0" layoutY="69.0" prefHeight="540.0" prefWidth="380.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="91.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="69.0">
                <children>
                   <ImageView fx:id="image_book" fitHeight="540.0" fitWidth="380.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <image>
@@ -85,29 +88,32 @@
                   <FontAwesomeIcon glyphName="CALENDAR" layoutX="368.0" layoutY="388.0" size="1.2em" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="590.0" layoutY="482.5999999999999" prefHeight="203.0" prefWidth="394.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="30.0">
+            <AnchorPane fx:id="anchor_student" layoutX="590.0" layoutY="482.5999999999999" prefHeight="203.0" prefWidth="394.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="30.0">
                <children>
-                  <Label layoutX="14.0" layoutY="34.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="40.0">
+                  <Label layoutX="14.0" layoutY="34.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="status_book" alignment="CENTER" layoutX="313.0" layoutY="36.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" stylesheets="@DetailBook.css" text="Available" textFill="#71717a" AnchorPane.rightAnchor="25.399999999999977">
+                  <Label fx:id="status_book" alignment="CENTER" layoutX="313.0" layoutY="36.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" stylesheets="@DetailBook.css" text="Available" textFill="#71717a" AnchorPane.rightAnchor="25.399999999999977" AnchorPane.topAnchor="20.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="button_borrow_book" layoutX="25.6" layoutY="139.0" mnemonicParsing="false" onAction="#setActionBorrowButton" prefHeight="40.0" prefWidth="346.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Borrow Book" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+                  <Button fx:id="button_borrow_book" layoutX="25.6" layoutY="139.0" mnemonicParsing="false" onAction="#setActionBorrowButton" prefHeight="40.0" prefWidth="343.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Borrow Book" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
                      <font>
                         <Font name="Segoe UI Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Label layoutX="21.0" layoutY="80.0" text="Rating:" textFill="#71717a">
+                  <Label layoutX="21.0" layoutY="80.0" text="Rating:" textFill="#71717a" AnchorPane.topAnchor="60.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="save_book_button" layoutX="27.0" layoutY="164.0" mnemonicParsing="false" onAction="#setActionSaveButton" prefHeight="25.0" prefWidth="334.0" text="Add to favorite" />
+                  <Button fx:id="save_book_button" layoutX="25.0" layoutY="153.0" mnemonicParsing="false" onAction="#setActionSaveButton" prefHeight="40.0" prefWidth="343.2" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Add to favorite">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Button>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="1001.0" layoutY="483.0" prefHeight="200.0" prefWidth="200.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="30.0">
@@ -119,8 +125,35 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <Button fx:id="btn_addBookToLib" layoutX="208.0" layoutY="643.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="40.0" prefWidth="177.0" text="Add Book To Library" />
+            <Button fx:id="btn_addBookToLib" layoutX="187.0" layoutY="642.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="40.0" prefWidth="220.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Add Book To Library" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
             <Label fx:id="path_ImageBook" layoutX="590.0" layoutY="450.0" text="Label" visible="false" />
+            <AnchorPane fx:id="anchor_manager" layoutX="590.0" layoutY="479.0" prefHeight="203.0" prefWidth="394.0" styleClass="detail_book" stylesheets="@DetailBook.css" visible="false" AnchorPane.bottomAnchor="30.399999999999977" AnchorPane.leftAnchor="590.0" AnchorPane.rightAnchor="315.6" AnchorPane.topAnchor="479.2">
+               <children>
+                  <Label layoutX="14.0" layoutY="34.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="40.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="status_book1" alignment="CENTER" layoutX="313.0" layoutY="36.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" stylesheets="@DetailBook.css" text="Available" textFill="#71717a" AnchorPane.rightAnchor="25.399999999999977" AnchorPane.topAnchor="40.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="30.400000000000002" layoutY="132.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="336.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Delete Book" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="130.0">
+                     <font>
+                        <Font name="Segoe UI Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="19.0" layoutY="92.0" text="Rating:" textFill="#71717a" AnchorPane.topAnchor="80.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>

@@ -86,6 +86,7 @@ public class LoginScreenController implements Initializable {
     @FXML
     private AnchorPane mess_Falied;
 
+
     @FXML
     private AnchorPane currentPane = null;
 
@@ -174,6 +175,7 @@ public class LoginScreenController implements Initializable {
             boolean checkStudent = database.authenticateStudent(field_number.getText(), field_password.getText());
 
             if (checkStudent) {
+                SessionManager.getInstance().setRole("student");
                 successful();
                 PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
                 pauseTransition.setOnFinished((pauseEvent) -> {
@@ -223,6 +225,7 @@ public class LoginScreenController implements Initializable {
                 boolean checkManager = database.authenticateManager(field_number.getText(), field_password.getText());
 
                 if(checkManager) {
+                    SessionManager.getInstance().setRole("manager");
                     successful();
                     PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
                     pauseTransition.setOnFinished((pauseEvent) -> {
