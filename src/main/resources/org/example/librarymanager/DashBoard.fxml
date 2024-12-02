@@ -247,12 +247,12 @@
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <TextField layoutX="33.0" layoutY="138.0" prefHeight="45.0" prefWidth="550.0" promptText="Search by name or ID" styleClass="text_field_search">
+            <TextField fx:id="textField_searchStudent" layoutX="33.0" layoutY="138.0" prefHeight="45.0" prefWidth="550.0" promptText="Search by name or ID" styleClass="text_field_search">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </TextField>
-            <Button layoutX="616.0" layoutY="138.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" styleClass="button_search2" stylesheets="@DashBoard.css" text="Search" textFill="WHITE">
+            <Button fx:id="btn_searchStudent" layoutX="616.0" layoutY="138.0" mnemonicParsing="false" onAction="#showMemberInformation" prefHeight="45.0" prefWidth="150.0" styleClass="button_search2" stylesheets="@DashBoard.css" text="Search" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -320,7 +320,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_borrowedBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_borrowedBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Button layoutX="639.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
@@ -609,7 +609,7 @@
             <TextField fx:id="textField_add_Quantity" layoutX="405.0" layoutY="482.0" prefHeight="50.0" prefWidth="260.0" promptText="99" styleClass="add-textfield" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Label layoutX="57.0" layoutY="16.0" text="Home Screen" textFill="#345494">
                <font>

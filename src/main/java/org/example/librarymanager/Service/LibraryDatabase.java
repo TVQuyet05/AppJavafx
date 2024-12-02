@@ -86,15 +86,15 @@ public class LibraryDatabase {
     public boolean saveBook(String studentNumber, String isbn) {
         // Kiểm tra xem sinh viên đã lưu sách này chưa
         String checkExistSQL = """
-    SELECT COUNT(*) FROM savebook 
-    WHERE studentNumber = ? AND book_id = ?
-    """;
+                                SELECT COUNT(*) FROM savebook 
+                                WHERE studentNumber = ? AND book_id = ?
+                                """;
 
         // Chèn thông tin lưu sách nếu sinh viên chưa lưu sách này
         String insertSaveSQL = """
-    INSERT INTO savebook (studentNumber, book_id) 
-    VALUES (?, ?)
-    """;
+                                INSERT INTO savebook (studentNumber, book_id) 
+                                VALUES (?, ?)
+                                """;
 
         try (Connection conn = getConnection()) {
             // Kiểm tra xem sinh viên đã lưu cuốn sách này chưa
@@ -124,7 +124,6 @@ public class LibraryDatabase {
 
         return false; // Nếu có lỗi xảy ra, trả về false
     }
-
 
 
 
@@ -326,8 +325,12 @@ public class LibraryDatabase {
     // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
         Connection connection = getConnection();
-        String query = "INSERT INTO book (book_id, book_title, author, genre, date, description, quantity, image) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        String query = "INSERT INTO book (book_id, book_title, author, genre, date, description, quantity, image) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE " +
+                "quantity = quantity + VALUES(quantity)";
+
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, book.getId());
             stmt.setString(2, book.getTitle());

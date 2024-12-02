@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -116,6 +117,9 @@ public class DashBoardController implements Initializable {
     private TextField textField_add_Quantity;
 
     @FXML
+    private TextField textField_searchStudent;
+
+    @FXML
     private Label managerName;
 
     @FXML
@@ -209,6 +213,9 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Button btn_showUnreturnedBook;
+
+    @FXML
+    private Button btn_searchStudent;
 
     @FXML
     private  Label totalBookVal;
@@ -453,7 +460,7 @@ public class DashBoardController implements Initializable {
         textField_add_Genre.setText(bookFromAPI.getGenre());
         textField_add_Date.setText(bookFromAPI.getDate());
         textField_add_Description.setText(bookFromAPI.getDescription());
-        textField_add_Quantity.setText("Enter quantity of books");
+        textField_add_Quantity.setText("0");
         textField_add_ImageBook.setText(bookFromAPI.getImage());
 
         System.out.println("Set info of book from API successfully!");
@@ -471,14 +478,20 @@ public class DashBoardController implements Initializable {
         String date_string = textField_add_Date.getText();
         String description = textField_add_Description.getText();
 
+        String text_quantity = textField_add_Quantity.getText();
         int quantity = 0;
-        if(!textField_add_Quantity.getText().equals("Enter quantity of books")) {
-            quantity = Integer.parseInt(textField_add_Quantity.getText());
+
+        if(!text_quantity.matches("\\d+")) {
+            //Please fill number
+            return;
         }
 
-        String path_image = textField_add_ImageBook.getText();
+        quantity = Integer.parseInt(text_quantity);
 
-        if(quantity == 0) return; //Please fill quantity
+        if(quantity <= 0) return; //Please fill quantity
+
+
+        String path_image = textField_add_ImageBook.getText();
 
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //        LocalDate date_sql = LocalDate.parse(date_string, formatter);
@@ -659,7 +672,25 @@ public class DashBoardController implements Initializable {
     public void showMemberInformation() {
         LibraryDatabase database = LibraryDatabase.getInstance();
         ObservableList<Student> listAccStd = database.getAccStudent();
-        Member_Information_TV.setItems(listAccStd);
+
+        // Wrap the original list in a FilteredList
+        FilteredList<Student> filteredList = new FilteredList<>(listAccStd, student -> true);
+
+        // Set the filtered list as the items for the TableView
+        Member_Information_TV.setItems(filteredList);
+
+        // Add a listener to the search button
+        btn_searchStudent.setOnAction(event -> {
+            String num_search = textField_searchStudent.getText();
+
+            // Update the filter predicate based on the search term
+            filteredList.setPredicate(student -> {
+                if (num_search == null || num_search.isEmpty()) {
+                    return true; // Show all students if the search term is empty
+                }
+                return student.getStudentNumber().equals(num_search);
+            });
+        });
 
         // Đặt chiều cao cố định cho từng dòng trong TableView
         Member_Information_TV.setFixedCellSize(60);
