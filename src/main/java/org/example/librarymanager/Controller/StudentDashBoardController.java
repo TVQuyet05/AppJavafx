@@ -444,7 +444,7 @@ public class StudentDashBoardController implements Initializable {
 
     public void returnBook() {
         switchPain(returnBooks_std);
-        showBorrowedBookForStudent();
+        //showBorrowedBookForStudent();
     }
 
     public void commentBook() {
@@ -453,7 +453,7 @@ public class StudentDashBoardController implements Initializable {
 
     public void favouriteBook() {
         switchPain(favouriteBook_std);
-        showFavBook();
+        //showFavBook();
     }
 
     @Override
@@ -463,8 +463,8 @@ public class StudentDashBoardController implements Initializable {
 
         numberStudent.setText(numberOfUser);
         showCommentBookForStudent();
-        //showBorrowedBookForStudent();
-        //showFavBook();
+        showBorrowedBookForStudent();
+        showFavBook();
         showTopBorrowTable();
         showTopFavTable();
 

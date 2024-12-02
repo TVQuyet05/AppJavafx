@@ -24,8 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javafx.scene.effect.GaussianBlur;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.BorrowedBook;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
 
@@ -36,9 +36,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -186,6 +183,32 @@ public class DashBoardController implements Initializable {
     @FXML
     private TableColumn<?, ?> col_listAcc_pass;
 
+    @FXML
+    private TableView<BorrowedBook> borrowedBookManager_TableView;
+
+    @FXML
+    private TableColumn<?, ?> col_stdNumber_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_stdName_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_bookTitle_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_genre_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_borrowedDate_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_dueDate_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_returnDate_mng;
+
+    @FXML
+    private Button btn_showUnreturnedBook;
 
     @FXML
     private  Label totalBookVal;
@@ -500,6 +523,7 @@ public class DashBoardController implements Initializable {
                     refuseButton.setPrefWidth(70);
 
                     acceptButton.setOnAction(event -> {
+                        getTableView().getSelectionModel().select(getIndex());
                         Student student = getTableView().getItems().get(getIndex());
                         if (student != null) {
                             acceptSignUp(student);
@@ -507,6 +531,7 @@ public class DashBoardController implements Initializable {
                     });
 
                     refuseButton.setOnAction(event -> {
+                        getTableView().getSelectionModel().select(getIndex());
                         Student student = getTableView().getItems().get(getIndex());
                         if (student != null) {
                             refuseSignUp(student);
@@ -554,6 +579,8 @@ public class DashBoardController implements Initializable {
 
         //show table sign up account again
         showSignUpAccount();
+
+        showMemberInformation();
 
     }
 
@@ -713,6 +740,27 @@ public class DashBoardController implements Initializable {
 
     }
 
+    public void showBorrowedBookForManager() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
+
+        btn_showUnreturnedBook.setOnAction(event -> {
+            listBorrowedBook.removeIf(borrowedBook ->
+                    borrowedBook.getReturn_date() != null);
+        });
+
+        col_stdNumber_mng.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+        col_stdName_mng.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        col_bookTitle_mng.setCellValueFactory(new PropertyValueFactory<>("title"));
+        col_genre_mng.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        col_borrowedDate_mng.setCellValueFactory(new PropertyValueFactory<>("borrow_date"));
+        col_dueDate_mng.setCellValueFactory(new PropertyValueFactory<>("due_date"));
+        col_returnDate_mng.setCellValueFactory(new PropertyValueFactory<>("return_date"));
+
+        borrowedBookManager_TableView.setItems(listBorrowedBook);
+    }
+
 
 
     @Override
@@ -735,5 +783,7 @@ public class DashBoardController implements Initializable {
         showMemberInformation();
 
         showSignUpAccount();
+
+        showBorrowedBookForManager();
     }
 }

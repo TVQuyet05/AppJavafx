@@ -53,6 +53,8 @@ public class LibraryDatabase {
         }
         return connection;
     }
+
+    
     public List<Object[]> setDataTopBorrowTable() {
         List<Object[]> topBorrowedBooks = new ArrayList<>();
         String query = """
@@ -217,7 +219,7 @@ public class LibraryDatabase {
     }
 
     public int getNumberOfBorrowedBook() {
-        String sql = "SELECT COUNT(*) AS totalQuantity FROM borrowbook WHERE return_date = '0000-00-00'";
+        String sql = "SELECT COUNT(*) AS totalQuantity FROM borrowbook WHERE return_date IS NULL";
         Connection connect = getConnection(); // Sử dụng kết nối từ LibraryDatabase
 
         try (PreparedStatement prepare = connect.prepareStatement(sql);
@@ -579,6 +581,7 @@ public class LibraryDatabase {
         return favBookList;
     }
     public boolean deleteComment(String bookId, String studentNumber) {
+        Connection connection = getConnection();
         String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, bookId);
@@ -607,6 +610,7 @@ public class LibraryDatabase {
     }
 
     public ObservableList<BorrowedBook> getBorrowedBook() {
+        Connection connection = getConnection();
         ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
 
         String query = "SELECT s.studentNumber as studentNumber, s.name as name, b.book_id as book_id, b.book_title as book_title," +
@@ -615,7 +619,7 @@ public class LibraryDatabase {
                         "FROM borrowbook bb " +
                         "JOIN student s ON bb.studentNumber = s.studentNumber " +
                         "JOIN book b ON bb.book_id = b.book_id " +
-                        "ORDER BY s.studentNumber;";
+                        "ORDER BY bb.due_date;";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
