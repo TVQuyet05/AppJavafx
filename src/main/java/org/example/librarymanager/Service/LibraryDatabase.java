@@ -527,6 +527,7 @@ public class LibraryDatabase {
         return favBookList;
     }
     public boolean deleteComment(String bookId, String studentNumber) {
+        Connection connection = getConnection();
         String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, bookId);
@@ -554,52 +555,56 @@ public class LibraryDatabase {
         }
     }
 
-    public ObservableList<BorrowedBook> getBorrowedBook() {
-        ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
-
-        String query = "SELECT s.studentNumber as studentNumber, s.name as name, b.book_id as book_id, b.book_title as book_title," +
-                        " b.author as author, b.genre as genre, b.date as date, b.image as image, bb.borrow_date as borrow_date," +
-                        " bb.due_date as due_date, NULLIF(bb.return_date, '0000-00-00') AS return_date " +
-                        "FROM borrowbook bb " +
-                        "JOIN student s ON bb.studentNumber = s.studentNumber " +
-                        "JOIN book b ON bb.book_id = b.book_id " +
-                        "ORDER BY s.studentNumber;";
-
-        try {
-            PreparedStatement stmt = connection.prepareStatement(query);
-
-            ResultSet result = stmt.executeQuery();
-
-            while(result.next()) {
-                BorrowedBook borrowedBook = new BorrowedBook(
-                        result.getString("studentNumber"),
-                        result.getString("name"),
-                        result.getString("book_id"),
-                        result.getString("book_title"),
-                        result.getString("author"),
-                        result.getString("genre"),
-                        result.getString("date"),
-                        result.getString("image"),
-                        result.getDate("borrow_date"),
-                        result.getDate("due_date"),
-                        result.getDate("return_date")
-
-                );
-
-                borrowedBookList.add(borrowedBook);
+    public ObservableList<BorrowedBook> getBorrowedBooksByStudent(String studentNumber) {
+        ObservableList<BorrowedBook> borrowedBooks = FXCollections.observableArrayList();
+        String query = "SELECT s.studentNumber, s.name, b.book_id, b.book_title, b.author, b.genre, b.date, b.image, " +
+                "bb.borrow_date, bb.due_date, NULLIF(bb.return_date, '0000-00-00') AS return_date " +
+                "FROM borrowbook bb " +
+                "JOIN student s ON bb.studentNumber = s.studentNumber " +
+                "JOIN book b ON bb.book_id = b.book_id " +
+                "WHERE s.studentNumber = ? AND bb.return_date IS NULL";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, studentNumber);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                borrowedBooks.add(new BorrowedBook(
+                        resultSet.getString("studentNumber"),
+                        resultSet.getString("name"),
+                        resultSet.getString("book_id"),
+                        resultSet.getString("book_title"),
+                        resultSet.getString("author"),
+                        resultSet.getString("genre"),
+                        resultSet.getString("date"),
+                        resultSet.getString("image"),
+                        resultSet.getDate("borrow_date"),
+                        resultSet.getDate("due_date"),
+                        resultSet.getDate("return_date")
+                ));
             }
-
-            System.out.println("Get borrowed book successfully!");
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        return borrowedBookList;
+        return borrowedBooks;
     }
 
 
 
+
+    public boolean insertReview(String bookId, String studentNumber, String comment, int judge) {
+        String insertReviewSQL = "INSERT INTO reviewBook (book_id, studentNumber, comment, judge) VALUES (?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(insertReviewSQL)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, studentNumber);
+            stmt.setString(3, comment);
+            stmt.setInt(4, judge);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 

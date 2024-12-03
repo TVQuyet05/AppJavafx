@@ -27,6 +27,7 @@ import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -159,6 +160,27 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private TableColumn<Object[], String> favTimeColumn;
+    @FXML
+    private TableColumn<BorrowedBook, String> returnActionColumn;
+    @FXML
+    private Button returnSubmitButton;
+    @FXML
+    private AnchorPane reviewAnchor;
+    @FXML
+    private TextField commentBoxTextField;
+    @FXML
+    private CheckBox oneJudge;
+    @FXML
+    private CheckBox twoJudge;
+    @FXML
+    private CheckBox threeJudge;
+    @FXML
+    private CheckBox fourJudge;
+    @FXML
+    private CheckBox fiveJudge;
+
+
+
     @FXML
 
     public void showTopFavTable(){
@@ -385,6 +407,12 @@ public class StudentDashBoardController implements Initializable {
         });
         fade.play();
     }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     public void openViewAllBooks() {
         try {
@@ -418,19 +446,62 @@ public class StudentDashBoardController implements Initializable {
             System.out.println("Error loading ViewAllBooks.fxml");
         }
     }
+    private BorrowedBook selectedBook;
+
+    private void showReviewForm(BorrowedBook book) {
+        selectedBook = book;
+        commentBoxTextField.clear();
+        oneJudge.setSelected(false);
+        twoJudge.setSelected(false);
+        threeJudge.setSelected(false);
+        fourJudge.setSelected(false);
+        fiveJudge.setSelected(false);
+        reviewAnchor.setVisible(true);
+    }
+    private int getSelectedJudge() {
+        if (oneJudge.isSelected()) return 1;
+        if (twoJudge.isSelected()) return 2;
+        if (threeJudge.isSelected()) return 3;
+        if (fourJudge.isSelected()) return 4;
+        if (fiveJudge.isSelected()) return 5;
+        return 0;
+    }
+
+    @FXML
+    private void handleReturnSubmit() {
+        String comment = commentBoxTextField.getText().trim();
+        int judge = getSelectedJudge();
+
+        if (judge == 0) {
+            showAlert("Error", "Please select a rating.");
+            return;
+        }
+
+        if (selectedBook == null) {
+            showAlert("Error", "No book selected for review.");
+            return;
+        }
+
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        boolean success = database.insertReview(
+                selectedBook.getId(),
+                selectedBook.getStudentNumber(),
+                comment,
+                judge
+        );
+
+        if (success) {
+            showAlert("Success", "Review submitted successfully.");
+            reviewAnchor.setVisible(false);
+            borrowedBookStudent_TableView.setVisible(true);
+        } else {
+            showAlert("Error", "Failed to submit review.");
+        }
+    }
 
     public void showBorrowedBookForStudent() {
         LibraryDatabase database = LibraryDatabase.getInstance();
-
-        ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
-
-        // remove borrowed book not of this student
-        listBorrowedBook.removeIf(borrowedBook ->
-                !borrowedBook.getStudentNumber().equals(numberOfUser));
-
-        // remove returned book of student
-        listBorrowedBook.removeIf(borrowedBook ->
-                borrowedBook.getReturn_date() != null);
+        ObservableList<BorrowedBook> listBorrowedBooks = database.getBorrowedBooksByStudent(numberOfUser);
 
         col_bookId_std.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_title_std.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -438,9 +509,48 @@ public class StudentDashBoardController implements Initializable {
         col_borrowDate_std.setCellValueFactory(new PropertyValueFactory<>("borrow_date"));
         col_dueDate_std.setCellValueFactory(new PropertyValueFactory<>("due_date"));
 
-        borrowedBookStudent_TableView.setItems(listBorrowedBook);
+        returnActionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button reviewButton = new Button("Review");
 
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    reviewButton.setOnAction(event ->
+                    {
+                        showReviewForm(getTableRow().getItem());
+                        borrowedBookStudent_TableView.setVisible(false);
+                    });
+                    setGraphic(reviewButton);
+                }
+            }
+        });
+
+        borrowedBookStudent_TableView.setItems(listBorrowedBooks);
     }
+    private void setupCheckBoxActions() {
+        CheckBox[] checkBoxes = {oneJudge, twoJudge, threeJudge, fourJudge, fiveJudge};
+
+        for (CheckBox checkBox : checkBoxes) {
+            checkBox.setOnAction(event -> {
+                // Nếu checkbox hiện tại được chọn
+                if (checkBox.isSelected()) {
+                    // Bỏ chọn tất cả các checkbox khác
+                    for (CheckBox otherCheckBox : checkBoxes) {
+                        if (otherCheckBox != checkBox) {
+                            if (otherCheckBox.isSelected()) {
+                                otherCheckBox.setSelected(false);
+                                showAlert("Error", "You can only select one rating.");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 
     public void returnBook() { switchPain(returnBooks_std); }
 
@@ -463,6 +573,7 @@ public class StudentDashBoardController implements Initializable {
         showFavBook();
         showTopBorrowTable();
         showTopFavTable();
+        setupCheckBoxActions();
 
     }
 }
