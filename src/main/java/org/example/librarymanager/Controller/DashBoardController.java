@@ -37,6 +37,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -225,6 +228,9 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Label totalBorrowedBookVal;
+
+    @FXML
+    private Label label_Today;
 
     @FXML
     private PieChart genrePieChart;
@@ -460,7 +466,7 @@ public class DashBoardController implements Initializable {
         textField_add_Genre.setText(bookFromAPI.getGenre());
         textField_add_Date.setText(bookFromAPI.getDate());
         textField_add_Description.setText(bookFromAPI.getDescription());
-        textField_add_Quantity.setText("0");
+        textField_add_Quantity.setText(String.valueOf(bookFromAPI.getQuantity()));
         textField_add_ImageBook.setText(bookFromAPI.getImage());
 
         System.out.println("Set info of book from API successfully!");
@@ -537,6 +543,8 @@ public class DashBoardController implements Initializable {
         String isbn = textField_add_ISBN.getText();
 
         database.deleteBook(isbn);
+
+        textField_add_Quantity.setText("0");
     }
 
     public void showSignUpAccount() {
@@ -717,14 +725,14 @@ public class DashBoardController implements Initializable {
 
         // Add a listener to the search button
         btn_searchStudent.setOnAction(event -> {
-            String num_search = textField_searchStudent.getText();
+            String text_search = textField_searchStudent.getText();
 
             // Update the filter predicate based on the search term
             filteredList.setPredicate(student -> {
-                if (num_search == null || num_search.isEmpty()) {
+                if (text_search == null || text_search.isEmpty()) {
                     return true; // Show all students if the search term is empty
                 }
-                return student.getStudentNumber().equals(num_search);
+                return student.getStudentNumber().equals(text_search) || student.getName().equals(text_search);
             });
         });
 
@@ -828,6 +836,18 @@ public class DashBoardController implements Initializable {
         borrowedBookManager_TableView.setItems(listBorrowedBook);
     }
 
+    public void updateLabelToday() {
+        LocalDate currentDate = LocalDate.now();
+        String dayOfWeek = currentDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String formattedDate = currentDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                + " " + currentDate.getDayOfMonth() + ", " + currentDate.getYear();
+
+        // Combine day and date
+        String labelText = dayOfWeek + ", " + formattedDate;
+
+        // Set the text of the label
+        label_Today.setText(labelText);
+    }
 
 
     @Override
@@ -839,11 +859,12 @@ public class DashBoardController implements Initializable {
 //            throw new RuntimeException(e);
 //        }
 
-        SignUpAccount_TableView.getSelectionModel().clearSelection();
+        //SignUpAccount_TableView.getSelectionModel().clearSelection();
 
         currentPane = anchor_HomeScreen;
 
         managerName.setText(nameOfUser);
+        updateLabelToday();
 
         showHomeScreenManager();
 
@@ -852,5 +873,6 @@ public class DashBoardController implements Initializable {
         showSignUpAccount();
 
         showBorrowedBookForManager();
+
     }
 }

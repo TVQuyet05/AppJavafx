@@ -521,16 +521,20 @@ public class LibraryDatabase {
         }
     }
 
-    public List<Book> searchBookInDatabase(String partialTitle) {
+
+    public List<Book> searchBookInDatabase(String searchTerm) {
         List<Book> books = new ArrayList<>();
         String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book " +
-                "WHERE book_title LIKE ?";
+                "WHERE book_title LIKE ? OR author LIKE ? OR genre LIKE ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Use the '%' wildcard for the LIKE operator to find partial matches
-            stmt.setString(1, "%" + partialTitle + "%");
+            String wildcardSearch = "%" + searchTerm + "%";
+            stmt.setString(1, wildcardSearch);
+            stmt.setString(2, wildcardSearch);
+            stmt.setString(3, wildcardSearch);
 
             try (ResultSet resultSet = stmt.executeQuery()) {
                 while (resultSet.next()) {

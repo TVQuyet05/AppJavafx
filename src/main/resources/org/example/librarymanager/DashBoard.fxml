@@ -752,7 +752,7 @@
          </children>
       </AnchorPane>
       <Line endX="384.7" layoutX="101.0" layoutY="595.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" AnchorPane.leftAnchor="0.0" />
-      <Label layoutX="53.0" layoutY="180.0" text="Tuesday, November 19, 2024 at 3:07 PM" textFill="#d7f1ff">
+      <Label fx:id="label_Today" layoutX="53.0" layoutY="180.0" text="Tuesday, November 19, 2024 at 3:07 PM" textFill="#d7f1ff">
          <font>
             <Font name="Open Sans" size="18.0" />
          </font>

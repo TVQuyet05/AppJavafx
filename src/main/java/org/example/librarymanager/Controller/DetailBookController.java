@@ -65,6 +65,9 @@ public class DetailBookController implements Initializable {
     private Label path_ImageBook;
 
     @FXML
+    private Label label_quantityBook;
+
+    @FXML
     private ImageView qr_book;
 
     @FXML
@@ -149,13 +152,15 @@ public class DetailBookController implements Initializable {
         }
     }
 
-    public void setBookDetails(String title, String author, String isbn, String publicationDate, String status, String category, String description, String imageUrl) {
+    public void setBookDetails(String title, String author, String isbn, String publicationDate, String status, String category, String description, String imageUrl, int quantityBook) {
         name_Book.setText(title);
         name_Book.setMaxHeight(80);
         author_Book.setText(author);
         isbn_books.setText(isbn);
         publication_date_Book.setText(publicationDate);
         path_ImageBook.setText(imageUrl);
+        label_quantityBook.setText(String.valueOf(quantityBook));
+
 
         if (status != null && !status.isEmpty() && Integer.parseInt(status) > 0) {
             status_book.setText("Available");
@@ -186,7 +191,7 @@ public class DetailBookController implements Initializable {
 
         Book newbook = new Book(isbn_books.getText(), name_Book.getText(), author_Book.getText(),
                                 category_book.getText(), publication_date_Book.getText(), description_book.getText(),
-                                0, path_ImageBook.getText());
+                                Integer.parseInt(label_quantityBook.getText()), path_ImageBook.getText());
 
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));

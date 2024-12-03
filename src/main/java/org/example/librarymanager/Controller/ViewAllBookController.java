@@ -64,13 +64,13 @@ public class ViewAllBookController implements Initializable {
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
-                                String category, String description, String imageUrl) {
+                                String category, String description, String imageUrl, int quantity) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DetailBook.fxml"));
             Parent root = loader.load();
 
             DetailBookController controller = loader.getController();
-            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl);
+            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl, quantity);
 
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
@@ -165,7 +165,7 @@ public class ViewAllBookController implements Initializable {
             fadeTransition.setOnFinished(event1 -> {
                 // Sau khi hiệu ứng kết thúc, mở giao diện chi tiết sách
                 openBookDetail(title, author, isbn, publicationDate,
-                        String.valueOf(quantity), category, description, image);
+                        String.valueOf(quantity), category, description, image, quantity);
 
                 // Khôi phục lại hiệu ứng FadeIn cho anchor hoặc container
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(400), anchor); // Hoặc flow_pane

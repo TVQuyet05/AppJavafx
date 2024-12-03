@@ -27,10 +27,9 @@ import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.*;
 
 import static org.example.librarymanager.Util.getData.numberOfUser;
 
@@ -59,6 +58,9 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private Label numberStudent;
+
+    @FXML
+    private Label label_Today;
 
     @FXML
     private Button returnBooks;
@@ -456,12 +458,26 @@ public class StudentDashBoardController implements Initializable {
         //showFavBook();
     }
 
+    public void updateLabelToday() {
+        LocalDate currentDate = LocalDate.now();
+        String dayOfWeek = currentDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String formattedDate = currentDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                + " " + currentDate.getDayOfMonth() + ", " + currentDate.getYear();
+
+        // Combine day and date
+        String labelText = dayOfWeek + ", " + formattedDate;
+
+        // Set the text of the label
+        label_Today.setText(labelText);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         currentPane = homeScreen_std;
-
         numberStudent.setText(numberOfUser);
+        updateLabelToday();
+
         showCommentBookForStudent();
         showBorrowedBookForStudent();
         showFavBook();
