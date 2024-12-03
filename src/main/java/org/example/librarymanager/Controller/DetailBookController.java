@@ -94,6 +94,7 @@ public class DetailBookController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
     @FXML
     private void setActionSaveButton() {
 
@@ -119,6 +120,12 @@ public class DetailBookController implements Initializable {
     @FXML
     private void setActionBorrowButton() {
         button_borrow_book.setOnAction(event -> {
+
+            if(status_book.getText().equals("Unavailable")) {
+                showAlert(Alert.AlertType.ERROR, "Error", "The book is not in the library or has been borrowed out.");
+                return;
+            }
+
             String studentNumber = getData.numberOfUser; // Lấy số sinh viên đang đăng nhập
             String isbn = isbn_books.getText(); // Lấy mã ISBN từ giao diện (Label)
 
@@ -131,7 +138,7 @@ public class DetailBookController implements Initializable {
                     showAlert(Alert.AlertType.INFORMATION, "Thành công", "Mượn sách thành công!");
 
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Thất bại", "Mượn sách thất bại! Sách có thể đã hết.");
+                    showAlert(Alert.AlertType.ERROR, "Thất bại", "Mượn sách thất bại! Bạn cần trả cuốn sách này trước khi mượn tiếp.");
                 }
             } else {
                 showAlert(Alert.AlertType.WARNING, "Lỗi", "Không tìm thấy mã ISBN của sách!");

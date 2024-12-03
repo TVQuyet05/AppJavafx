@@ -118,7 +118,17 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <ImageView fx:id="image_QRCode" fitHeight="225.0" fitWidth="225.0" layoutX="786.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="image_QRCode" fitHeight="225.0" fitWidth="225.0" layoutX="931.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="664.0" layoutY="507.0" prefHeight="40.0" prefWidth="262.0" text="Scan this QR code to">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="664.0" layoutY="556.0" prefHeight="36.0" prefWidth="270.0" text="read part of the book :">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

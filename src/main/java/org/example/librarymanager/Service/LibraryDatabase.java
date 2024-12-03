@@ -128,56 +128,79 @@ public class LibraryDatabase {
 
 
     public boolean borrowBook(String studentNumber, String isbn) {
-        String insertBorrowSQL = """
-                                INSERT INTO borrowbook (studentNumber, book_id, borrow_date, due_date, return_date) 
-                                VALUES (?, ?, ?, ?, NULL)
-                                """;
 
+        // SQL to check if the student already borrowed the book and not returned it
+        String checkIfBorrowedSQL = """
+        SELECT COUNT(*) FROM borrowbook 
+        WHERE studentNumber = ? AND book_id = ? AND return_date IS NULL
+    """;
+
+        // SQL to insert a new borrow record
+        String insertBorrowSQL = """
+        INSERT INTO borrowbook (studentNumber, book_id, borrow_date, due_date, return_date) 
+        VALUES (?, ?, ?, ?, NULL)
+    """;
+
+        // SQL to update the quantity of the book
         String updateQuantitySQL = """
-                                    UPDATE book 
-                                    SET quantity = quantity - 1 
-                                    WHERE book_id = ? AND quantity > 0
-                                    """;
+        UPDATE book 
+        SET quantity = quantity - 1 
+        WHERE book_id = ? AND quantity > 0
+    """;
 
         try (Connection conn = getConnection()) {
-            conn.setAutoCommit(false); // Bắt đầu giao dịch
+            conn.setAutoCommit(false); // Start transaction
 
-            try (PreparedStatement insertStmt = conn.prepareStatement(insertBorrowSQL);
-                 PreparedStatement updateStmt = conn.prepareStatement(updateQuantitySQL)) {
-
-                // Tính toán ngày hiện tại và ngày hết hạn
-                LocalDate borrowDate = LocalDate.now();
-                LocalDate dueDate = borrowDate.plusDays(14);
-
-                // Chèn thông tin mượn sách
-                insertStmt.setString(1, studentNumber);
-                insertStmt.setString(2, isbn); // Sử dụng isbn trực tiếp làm book_id
-                insertStmt.setDate(3, Date.valueOf(borrowDate));
-                insertStmt.setDate(4, Date.valueOf(dueDate));
-
-                // Thực thi giảm số lượng sách
-                updateStmt.setString(1, isbn);
-                int rowsUpdated = updateStmt.executeUpdate();
-
-                if (rowsUpdated > 0) {
-                    int rowsInserted = insertStmt.executeUpdate();
-                    if (rowsInserted > 0) {
-                        conn.commit(); // Nếu cả hai hành động thành công, commit giao dịch
-                        return true;  // Mượn sách thành công
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkIfBorrowedSQL)) {
+                // Check if the student has already borrowed the book and not returned it
+                checkStmt.setString(1, studentNumber);
+                checkStmt.setString(2, isbn);
+                try (ResultSet resultSet = checkStmt.executeQuery()) {
+                    if (resultSet.next() && resultSet.getInt(1) > 0) {
+                        // If the student has already borrowed the book and not returned it
+                        return false; // Return false, cannot borrow again
                     }
                 }
 
-                conn.rollback(); // Nếu có lỗi xảy ra, rollback giao dịch
-            } catch (SQLException e) {
-                conn.rollback(); // Rollback nếu có bất kỳ lỗi nào xảy ra trong block try
-                e.printStackTrace();
+                // Proceed with borrowing the book
+                try (PreparedStatement insertStmt = conn.prepareStatement(insertBorrowSQL);
+                     PreparedStatement updateStmt = conn.prepareStatement(updateQuantitySQL)) {
+
+                    // Calculate current date and due date
+                    LocalDate borrowDate = LocalDate.now();
+                    LocalDate dueDate = borrowDate.plusDays(14);
+
+                    // Insert borrow record
+                    insertStmt.setString(1, studentNumber);
+                    insertStmt.setString(2, isbn);
+                    insertStmt.setDate(3, Date.valueOf(borrowDate));
+                    insertStmt.setDate(4, Date.valueOf(dueDate));
+
+                    // Update book quantity
+                    updateStmt.setString(1, isbn);
+                    int rowsUpdated = updateStmt.executeUpdate();
+
+                    if (rowsUpdated > 0) {
+                        int rowsInserted = insertStmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                            conn.commit(); // Commit transaction if both actions succeed
+                            return true; // Book borrowed successfully
+                        }
+                    }
+
+                    conn.rollback(); // Rollback transaction if any action fails
+                } catch (SQLException e) {
+                    conn.rollback(); // Rollback transaction if an error occurs
+                    e.printStackTrace();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false; // Mượn sách thất bại
+        return false; // Borrow failed
     }
+
 
 
 
