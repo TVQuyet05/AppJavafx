@@ -469,7 +469,6 @@ public class DashBoardController implements Initializable {
 
     public void addBookToDatabase() {
         LibraryDatabase database = LibraryDatabase.getInstance();
-        Connection connect = database.getConnection();
 
         String isbn = textField_add_ISBN.getText();
         String book_title = textField_add_BookName.getText();
@@ -501,6 +500,43 @@ public class DashBoardController implements Initializable {
 
         database.addBook(newbook);
 
+    }
+
+    public void updateBookInDatabase() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        String isbn = textField_add_ISBN.getText();
+        String book_title = textField_add_BookName.getText();
+        String author = textField_add_AuthorName.getText();
+        String genre = textField_add_Genre.getText();
+        String date_string = textField_add_Date.getText();
+        String description = textField_add_Description.getText();
+
+        String text_quantity = textField_add_Quantity.getText();
+        int quantity = 0;
+
+        if(!text_quantity.matches("\\d+")) {
+            //Please fill number
+            return;
+        }
+
+        quantity = Integer.parseInt(text_quantity);
+
+        if(quantity <= 0) return; //Please fill quantity
+
+        String path_image = textField_add_ImageBook.getText();
+
+        Book updatedBook = new Book(isbn, book_title, author, genre, date_string, description, quantity, path_image);
+
+        database.updateBook(updatedBook);;
+    }
+
+    public void deleteBookInDatabase() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        String isbn = textField_add_ISBN.getText();
+
+        database.deleteBook(isbn);
     }
 
     public void showSignUpAccount() {

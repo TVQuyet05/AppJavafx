@@ -350,6 +350,52 @@ public class LibraryDatabase {
         }
     }
 
+    public void updateBook(Book book) {
+        Connection connection = getConnection();
+
+        String query = "UPDATE book SET book_title = ?, author = ?, genre = ?, date = ?, " +
+                "description = ?, quantity = ?, image = ? WHERE book_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getAuthor());
+            stmt.setString(3, book.getGenre());
+            stmt.setString(4, book.getDate());
+            stmt.setString(5, book.getDescription());
+            stmt.setInt(6, book.getQuantity());
+            stmt.setString(7, book.getImage());
+            stmt.setString(8, book.getId());
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Book updated successfully!");
+            } else {
+                System.out.println("No book found with the given ID.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteBook(String bookId) {
+        Connection connection = getConnection();
+
+        String query = "UPDATE book SET quantity = 0 WHERE book_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Book quantity set to 0 (deleted) successfully!");
+            } else {
+                System.out.println("No book found with the given ID.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void addStudentSignUp(Student student) {
         String query = "INSERT INTO signupaccount (studentNumber, password, name, class) VALUES (?, ?, ?, ?)";

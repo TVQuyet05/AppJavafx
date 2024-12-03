@@ -607,6 +607,16 @@
                </font>
             </Label>
             <TextField fx:id="textField_add_Quantity" layoutX="405.0" layoutY="482.0" prefHeight="50.0" prefWidth="260.0" promptText="99" styleClass="add-textfield" />
+            <Button layoutX="507.0" layoutY="626.0" mnemonicParsing="false" onAction="#updateBookInDatabase" prefHeight="44.0" prefWidth="97.0" styleClass="add-button-right" text="Update" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="352.0" layoutY="626.0" mnemonicParsing="false" onAction="#deleteBookInDatabase" prefHeight="44.0" prefWidth="107.0" styleClass="add-button-right" text="Delete" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="anchor_HomeScreen" layoutX="485.0" layoutY="8.0" prefHeight="700.0" prefWidth="800.0" styleClass="background_white" stylesheets="@DashBoard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
