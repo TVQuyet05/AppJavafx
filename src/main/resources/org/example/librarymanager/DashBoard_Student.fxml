@@ -203,7 +203,7 @@
                         <CheckBox fx:id="fourJudge" layoutX="122.0" layoutY="147.0" mnemonicParsing="false" text="4" />
                         <CheckBox fx:id="fiveJudge" layoutX="164.0" layoutY="147.0" mnemonicParsing="false" text="5" />
                         <Label layoutX="36.0" layoutY="117.0" text="Rate your book" />
-                        <Button fx:id="returnSubmitButton" layoutX="74.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleReturnSubmit" text="SUBMIT" />
+                        <Button fx:id="returnSubmitButton" layoutX="74.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleReturnSubmitButton" text="SUBMIT" />
                      </children>
                   </AnchorPane>
                </children>

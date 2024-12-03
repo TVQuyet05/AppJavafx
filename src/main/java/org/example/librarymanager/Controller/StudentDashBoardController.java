@@ -1,6 +1,7 @@
 package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -408,11 +409,15 @@ public class StudentDashBoardController implements Initializable {
         fade.play();
     }
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
+
 
     public void openViewAllBooks() {
         try {
@@ -448,7 +453,8 @@ public class StudentDashBoardController implements Initializable {
     }
     private BorrowedBook selectedBook;
 
-    private void showReviewForm(BorrowedBook book) {
+    // Hiển thị form review
+    public void showReviewForm(BorrowedBook book) {
         selectedBook = book;
         commentBoxTextField.clear();
         oneJudge.setSelected(false);
@@ -457,7 +463,10 @@ public class StudentDashBoardController implements Initializable {
         fourJudge.setSelected(false);
         fiveJudge.setSelected(false);
         reviewAnchor.setVisible(true);
+        borrowedBookStudent_TableView.setVisible(false);
     }
+
+    // Lấy giá trị đánh giá từ các CheckBox
     private int getSelectedJudge() {
         if (oneJudge.isSelected()) return 1;
         if (twoJudge.isSelected()) return 2;
@@ -467,9 +476,25 @@ public class StudentDashBoardController implements Initializable {
         return 0;
     }
 
+    // Nút xử lý trả sách và đánh giá
     @FXML
-    private void handleReturnSubmit() {
+    private void handleReturnSubmitButton(ActionEvent event) {
+        if (selectedBook == null) {
+            showAlert("Error", "No book selected for review.");
+            return;
+        }
+
+        // Kiểm tra nếu sách đã được trả
+        if (selectedBook.getReturn_date() != null) {
+            showAlert("Error", "This book has already been returned.");
+            return;
+        }
+
+        // Lấy comment và đánh giá
         String comment = commentBoxTextField.getText().trim();
+        if (comment.isEmpty()) {
+            comment = "No comment"; // Giá trị mặc định nếu người dùng không nhập
+        }
         int judge = getSelectedJudge();
 
         if (judge == 0) {
@@ -477,40 +502,57 @@ public class StudentDashBoardController implements Initializable {
             return;
         }
 
-        if (selectedBook == null) {
-            showAlert("Error", "No book selected for review.");
-            return;
-        }
-
         LibraryDatabase database = LibraryDatabase.getInstance();
-        boolean success = database.insertReview(
+
+        // Thêm đánh giá vào bảng commentBook và reviewBook
+        boolean reviewSuccess = database.insertReview(
                 selectedBook.getId(),
                 selectedBook.getStudentNumber(),
                 comment,
                 judge
         );
 
-        if (success) {
-            showAlert("Success", "Review submitted successfully.");
+        if (!reviewSuccess) {
+            showAlert("Error", "Failed to submit review.");
+            return;
+        }
+
+        // Cập nhật ngày trả sách
+        boolean returnSuccess = database.returnBook(
+                selectedBook.getStudentNumber(),
+                selectedBook.getId()
+        );
+
+        if (returnSuccess) {
+            showAlert("Success", "Book returned and review submitted successfully.");
             reviewAnchor.setVisible(false);
             borrowedBookStudent_TableView.setVisible(true);
+            refreshTable(); // Làm mới TableView
         } else {
-            showAlert("Error", "Failed to submit review.");
+            showAlert("Error", "Failed to update return information.");
         }
     }
 
+    // Làm mới bảng borrowedBookStudent_TableView
+    private void refreshTable() {
+        showBorrowedBookForStudent();
+    }
+
+    // Hiển thị danh sách sách đã mượn
     public void showBorrowedBookForStudent() {
         LibraryDatabase database = LibraryDatabase.getInstance();
         ObservableList<BorrowedBook> listBorrowedBooks = database.getBorrowedBooksByStudent(numberOfUser);
 
+        // Liên kết cột
         col_bookId_std.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_title_std.setCellValueFactory(new PropertyValueFactory<>("title"));
         col_author_std.setCellValueFactory(new PropertyValueFactory<>("author"));
         col_borrowDate_std.setCellValueFactory(new PropertyValueFactory<>("borrow_date"));
         col_dueDate_std.setCellValueFactory(new PropertyValueFactory<>("due_date"));
 
+        // Tạo nút "Return"
         returnActionColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button reviewButton = new Button("Review");
+            private final Button returnButton = new Button("Return");
 
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -518,40 +560,38 @@ public class StudentDashBoardController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    reviewButton.setOnAction(event ->
-                    {
-                        showReviewForm(getTableRow().getItem());
-                        borrowedBookStudent_TableView.setVisible(false);
+                    returnButton.setOnAction(event -> {
+                        BorrowedBook book = getTableView().getItems().get(getIndex());
+                        if (book.getReturn_date() != null) {
+                            showAlert("Error", "This book has already been returned.");
+                            return;
+                        }
+                        showReviewForm(book);
                     });
-                    setGraphic(reviewButton);
+                    setGraphic(returnButton);
                 }
             }
         });
 
         borrowedBookStudent_TableView.setItems(listBorrowedBooks);
     }
+
+    // Thiết lập hành động cho các CheckBox
     private void setupCheckBoxActions() {
         CheckBox[] checkBoxes = {oneJudge, twoJudge, threeJudge, fourJudge, fiveJudge};
 
         for (CheckBox checkBox : checkBoxes) {
             checkBox.setOnAction(event -> {
-                // Nếu checkbox hiện tại được chọn
                 if (checkBox.isSelected()) {
-                    // Bỏ chọn tất cả các checkbox khác
                     for (CheckBox otherCheckBox : checkBoxes) {
                         if (otherCheckBox != checkBox) {
-                            if (otherCheckBox.isSelected()) {
-                                otherCheckBox.setSelected(false);
-                                showAlert("Error", "You can only select one rating.");
-                            }
+                            otherCheckBox.setSelected(false); // Bỏ chọn các checkbox khác
                         }
                     }
                 }
             });
         }
     }
-
-
     public void returnBook() { switchPain(returnBooks_std); }
 
     public void commentBook() {

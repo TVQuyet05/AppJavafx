@@ -554,6 +554,31 @@ public class LibraryDatabase {
             return false; // Trả về false nếu xảy ra lỗi
         }
     }
+    public boolean returnBook(String studentNumber, String bookId) {
+        String updateBorrowQuery = "UPDATE borrowBook SET return_date = CURRENT_DATE WHERE studentNumber = ? AND book_id = ?";
+        String updateQuantityQuery = "UPDATE book SET quantity = quantity + 1 WHERE book_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement borrowStmt = connection.prepareStatement(updateBorrowQuery);
+             PreparedStatement quantityStmt = connection.prepareStatement(updateQuantityQuery)) {
+
+            // Cập nhật ngày trả sách
+            borrowStmt.setString(1, studentNumber);
+            borrowStmt.setString(2, bookId);
+            int rowsUpdated = borrowStmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                // Tăng số lượng sách
+                quantityStmt.setString(1, bookId);
+                quantityStmt.executeUpdate();
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public ObservableList<BorrowedBook> getBorrowedBooksByStudent(String studentNumber) {
         ObservableList<BorrowedBook> borrowedBooks = FXCollections.observableArrayList();
@@ -592,19 +617,34 @@ public class LibraryDatabase {
 
 
     public boolean insertReview(String bookId, String studentNumber, String comment, int judge) {
-        String insertReviewSQL = "INSERT INTO reviewBook (book_id, studentNumber, comment, judge) VALUES (?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(insertReviewSQL)) {
-            stmt.setString(1, bookId);
-            stmt.setString(2, studentNumber);
-            stmt.setString(3, comment);
-            stmt.setInt(4, judge);
-            return stmt.executeUpdate() > 0;
+        String reviewQuery = "INSERT INTO reviewBook (book_id, studentNumber, comment, judge) VALUES (?, ?, ?, ?)";
+        String updateReturnDateQuery = "UPDATE borrowBook SET return_date = NOW() WHERE book_id = ? AND studentNumber = ? AND return_date IS NULL";
+
+        try (Connection connection = getConnection();
+             PreparedStatement reviewStmt = connection.prepareStatement(reviewQuery);
+             PreparedStatement updateReturnDateStmt = connection.prepareStatement(updateReturnDateQuery)) {
+
+            // Thêm review vào bảng reviewBook
+            reviewStmt.setString(1, bookId);
+            reviewStmt.setString(2, studentNumber);
+            reviewStmt.setString(3, comment); // Thêm giá trị cho comment
+            reviewStmt.setInt(4, judge);
+            reviewStmt.executeUpdate();
+
+            // Cập nhật ngày trả sách vào bảng borrowBook (nếu chưa trả sách)
+            updateReturnDateStmt.setString(1, bookId);
+            updateReturnDateStmt.setString(2, studentNumber);
+            updateReturnDateStmt.executeUpdate();
+
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
+
+
 
 
 
