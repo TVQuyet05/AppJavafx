@@ -75,60 +75,50 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="368.0" layoutY="339.0" text="Publication Date" textFill="#71717a" AnchorPane.bottomAnchor="57.0">
+                  <Label layoutX="236.0" layoutY="340.0" text="Publication Date" textFill="#71717a" AnchorPane.bottomAnchor="56.0">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="publication_date_Book" layoutX="393.0" layoutY="370.0" text="2013" AnchorPane.bottomAnchor="18.799999999999955">
+                  <Label fx:id="publication_date_Book" layoutX="261.0" layoutY="371.0" text="2013" AnchorPane.bottomAnchor="18.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIcon glyphName="CALENDAR" layoutX="368.0" layoutY="388.0" size="1.2em" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="590.0" layoutY="482.5999999999999" prefHeight="203.0" prefWidth="394.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="30.0">
-               <children>
-                  <Label layoutX="14.0" layoutY="34.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="40.0">
+                  <FontAwesomeIcon glyphName="CALENDAR" layoutX="236.0" layoutY="390.0" size="1.2em" />
+                  <Label layoutX="459.0" layoutY="337.0" text="Status" textFill="#71717a" AnchorPane.leftAnchor="459.0" AnchorPane.topAnchor="337.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="status_book" alignment="CENTER" layoutX="313.0" layoutY="36.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" stylesheets="@DetailBook.css" text="Available" textFill="#71717a" AnchorPane.rightAnchor="25.399999999999977">
+                  <Label fx:id="status_book" alignment="CENTER" layoutX="439.0" layoutY="367.0" prefHeight="30.0" prefWidth="80.0" styleClass="label_detailbook_status" stylesheets="@DetailBook.css" text="Available" textFill="#71717a">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="button_borrow_book" layoutX="25.6" layoutY="139.0" mnemonicParsing="false" onAction="#setActionBorrowButton" prefHeight="40.0" prefWidth="346.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Borrow Book" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  <Label layoutX="21.0" layoutY="80.0" text="Rating:" textFill="#71717a">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="save_book_button" layoutX="27.0" layoutY="164.0" mnemonicParsing="false" onAction="#setActionSaveButton" prefHeight="25.0" prefWidth="334.0" text="Add to favorite" />
-                  <Label fx:id="label_quantityBook" layoutX="245.0" layoutY="38.0">
+                  <Label fx:id="label_quantityBook" layoutX="409.0" layoutY="370.0" prefHeight="27.0" prefWidth="37.0" textAlignment="RIGHT" visible="false">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="1001.0" layoutY="483.0" prefHeight="200.0" prefWidth="200.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="30.0">
-               <children>
-                  <ImageView fx:id="qr_book" fitHeight="200.0" fitWidth="200.0" layoutX="42.0" layoutY="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../../../Image/qrtest.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <Button fx:id="btn_addBookToLib" layoutX="208.0" layoutY="643.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="40.0" prefWidth="177.0" text="Add Book To Library" />
+            <AnchorPane layoutX="806.0" layoutY="471.0" prefHeight="200.0" prefWidth="200.0" styleClass="detail_book" stylesheets="@DetailBook.css" AnchorPane.bottomAnchor="42.0" />
+            <Button fx:id="btn_addBookToLib" layoutX="166.0" layoutY="641.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="49.0" prefWidth="262.0" text="Add/ Update/ Delete Book">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
             <Label fx:id="path_ImageBook" layoutX="590.0" layoutY="450.0" text="Label" visible="false" />
+            <Button fx:id="button_borrow_book" layoutX="109.0" layoutY="646.0" mnemonicParsing="false" onAction="#setActionBorrowButton" prefHeight="40.0" prefWidth="171.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Borrow Book">
+               <font>
+                  <Font name="Segoe UI Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="save_book_button" layoutX="312.0" layoutY="646.0" mnemonicParsing="false" onAction="#setActionSaveButton" prefHeight="40.0" prefWidth="171.0" styleClass="button_detailbook_borrowBook" text="Add to favorite">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

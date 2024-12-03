@@ -44,6 +44,12 @@ public class DetailBookController implements Initializable {
     private Button button_borrow_book;
 
     @FXML
+    private Button btn_addBookToLib;
+
+    @FXML
+    private Button save_book_button;
+
+    @FXML
     private Label category_book;
 
     @FXML
@@ -73,10 +79,6 @@ public class DetailBookController implements Initializable {
     @FXML
     private Label status_book;
 
-    @FXML
-    private Button btn_addBookToLib;
-    @FXML
-    private Button save_book_button;
     private double x = 0;
     private double y = 0;
 
@@ -160,6 +162,14 @@ public class DetailBookController implements Initializable {
         publication_date_Book.setText(publicationDate);
         path_ImageBook.setText(imageUrl);
         label_quantityBook.setText(String.valueOf(quantityBook));
+
+
+        if(typeOfUser.equals("STUDENT")) {
+            btn_addBookToLib.setVisible(false);
+        } else {
+            button_borrow_book.setVisible(false);
+            save_book_button.setVisible(false);
+        }
 
 
         if (status != null && !status.isEmpty() && Integer.parseInt(status) > 0) {
