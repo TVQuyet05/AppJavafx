@@ -45,7 +45,7 @@
          </font>
       </TextField>
       <ComboBox fx:id="combobox_search" layoutX="906.0" layoutY="90.0" prefHeight="40.0" prefWidth="200.0" promptText="Select" styleClass="combo-box" />
-      <Button fx:id="btn_searchBook" layoutX="1139.0" layoutY="90.0" mnemonicParsing="false" onAction="#searchBookFromAPI" prefHeight="40.0" prefWidth="135.0" styleClass="button_search" text="      Search" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.rightAnchor="40.0">
+      <Button fx:id="btn_searchBook" layoutX="1139.0" layoutY="90.0" mnemonicParsing="false" onAction="#searchBook" prefHeight="40.0" prefWidth="135.0" styleClass="button_search" text="      Search" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.rightAnchor="40.0">
          <graphic>
             <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="1.3em" />
          </graphic>

@@ -185,31 +185,49 @@ public class ViewAllBookController implements Initializable {
 
         List<Book> books = libraryDatabase.getBooks();
 
-        flow_pane.getChildren().clear();
+        showListBooks(books);
 
-        flow_pane.setHgap(35);
-        flow_pane.setVgap(20); // Khoảng cách dọc giữa các card
-        flow_pane.setMaxWidth(400);
-        flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
+    }
 
-        for (Book book : books) {
+    public void searchBookFromAPI() {
+        String bookTitle = field_searchBook.getText();
 
-            HBox bookCard = createBookCard(
-                    book.getTitle(),
-                    book.getAuthor(),
-                    book.getId(),
-                    book.getDate(),
-                    book.getQuantity(),
-                    book.getGenre(),
-                    book.getDescription(),
-                    book.getImage()
-            );
+        if(bookTitle == null) return;
 
-            flow_pane.getChildren().add(bookCard);
+        GoogleBooksAPI booksAPI = new GoogleBooksAPI();
+
+        List<Book> listBookFromAPI = booksAPI.searchBooks(bookTitle);
+
+        showListBooks(listBookFromAPI);
+    }
+
+    public void searchBookFromLibrary() {
+        String text_search = field_searchBook.getText();
+
+        //if(text_search == null) return;
+
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        List<Book> searchedBook = database.searchBookInDatabase(text_search);
+
+        showListBooks(searchedBook);
+    }
+
+    public void searchBook() {
+
+
+
+        String option_search = combobox_search.getSelectionModel().getSelectedItem();
+
+        if(option_search == null) return;
+
+        if(option_search.equals("API")) {
+            searchBookFromAPI();
         }
 
-        anchor.getChildren().clear();
-        anchor.getChildren().addAll(flow_pane);
+        if(option_search.equals("Local Library")) {
+            searchBookFromLibrary();
+        }
 
     }
 
@@ -266,14 +284,7 @@ public class ViewAllBookController implements Initializable {
     }
 
 
-    public void searchBookFromAPI() {
-        String bookTitle = field_searchBook.getText();
-
-        if(bookTitle == null) return;
-
-        GoogleBooksAPI booksAPI = new GoogleBooksAPI();
-
-        List<Book> listBookFromAPI = booksAPI.searchBooks(bookTitle);
+    public void showListBooks(List<Book> books) {
 
         flow_pane.getChildren().clear();
 
@@ -282,8 +293,7 @@ public class ViewAllBookController implements Initializable {
         flow_pane.setMaxWidth(400);
         flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
 
-
-        for (Book book : listBookFromAPI) {
+        for (Book book : books) {
 
             HBox bookCard = createBookCard(
                     book.getTitle(),
@@ -301,6 +311,7 @@ public class ViewAllBookController implements Initializable {
 
         anchor.getChildren().clear();
         anchor.getChildren().addAll(flow_pane);
+
     }
 
     @Override

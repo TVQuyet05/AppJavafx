@@ -521,6 +521,41 @@ public class LibraryDatabase {
         }
     }
 
+    public List<Book> searchBookInDatabase(String partialTitle) {
+        List<Book> books = new ArrayList<>();
+        String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book " +
+                "WHERE book_title LIKE ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Use the '%' wildcard for the LIKE operator to find partial matches
+            stmt.setString(1, "%" + partialTitle + "%");
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    Book book = new Book(
+                            resultSet.getString("book_id"),
+                            resultSet.getString("book_title"),
+                            resultSet.getString("author"),
+                            resultSet.getString("genre"),
+                            resultSet.getString("date"),
+                            resultSet.getString("description"),
+                            resultSet.getInt("quantity"),
+                            resultSet.getString("image"));
+                    books.add(book);
+                }
+
+                System.out.println("Search completed successfully!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
+
+
 
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
