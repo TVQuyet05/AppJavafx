@@ -6,6 +6,8 @@ module org.example.librarymanager {
     requires com.google.gson;
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
 
 
     opens org.example.librarymanager to javafx.fxml;

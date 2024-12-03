@@ -14,6 +14,8 @@ public class Book {
     private int quantity;
     private String image;
 
+    private String previewBookLink = "";
+
     public Book(String id, String title, String author, String genre, String date, String description, int quantity, String image) {
         this.id = id;
         this.title = title;
@@ -60,6 +62,9 @@ public class Book {
     public String getDescription() {return this.description;}
 
     public int getQuantity() {return this.quantity;}
+
+    public void setPreviewBookLink(String previewBookLink) {this.previewBookLink = previewBookLink;}
+    public String getPreviewBookLink() {return this.previewBookLink;}
 
 
 }

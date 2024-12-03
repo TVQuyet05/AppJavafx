@@ -1,5 +1,6 @@
 package org.example.librarymanager.Controller;
 
+import com.google.zxing.WriterException;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
@@ -64,13 +65,13 @@ public class ViewAllBookController implements Initializable {
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
-                                String category, String description, String imageUrl, int quantity) {
+                                String category, String description, String imageUrl, int quantity, String preLink) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DetailBook.fxml"));
             Parent root = loader.load();
 
             DetailBookController controller = loader.getController();
-            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl, quantity);
+            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl, quantity, preLink);
 
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
@@ -87,11 +88,13 @@ public class ViewAllBookController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (WriterException e) {
+            throw new RuntimeException(e);
         }
     }
 
 
-    public HBox createBookCard(String title, String author, String isbn, String publicationDate , int quantity, String category, String description, String image) {
+    public HBox createBookCard(String title, String author, String isbn, String publicationDate , int quantity, String category, String description, String image, String preLink) {
 
         // Tạo HBox chính để chia sách và thông tin
         HBox bookCard = new HBox();
@@ -165,7 +168,7 @@ public class ViewAllBookController implements Initializable {
             fadeTransition.setOnFinished(event1 -> {
                 // Sau khi hiệu ứng kết thúc, mở giao diện chi tiết sách
                 openBookDetail(title, author, isbn, publicationDate,
-                        String.valueOf(quantity), category, description, image, quantity);
+                        String.valueOf(quantity), category, description, image, quantity, preLink);
 
                 // Khôi phục lại hiệu ứng FadeIn cho anchor hoặc container
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(400), anchor); // Hoặc flow_pane
@@ -303,7 +306,8 @@ public class ViewAllBookController implements Initializable {
                     book.getQuantity(),
                     book.getGenre(),
                     book.getDescription(),
-                    book.getImage()
+                    book.getImage(),
+                    book.getPreviewBookLink()
             );
 
             flow_pane.getChildren().add(bookCard);

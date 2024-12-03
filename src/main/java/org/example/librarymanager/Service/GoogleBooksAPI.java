@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 public class GoogleBooksAPI {
     private static final String API_KEY = "AIzaSyBeCo-WPrgpecNunblU_8SsOaMcCmtJbzY";
     private static final String BASE_URL = "https://www.googleapis.com/books/v1/volumes?q=";
@@ -66,6 +68,9 @@ public class GoogleBooksAPI {
                 String imageUrl = volumeInfo.has("imageLinks") && volumeInfo.getAsJsonObject("imageLinks").has("thumbnail")
                         ? volumeInfo.getAsJsonObject("imageLinks").get("thumbnail").getAsString()
                         : "No image available";
+                String previewLink = volumeInfo.has("previewLink")
+                        ? volumeInfo.get("previewLink").getAsString()
+                        : "https://news.khangz.com/wp-content/uploads/2024/12/Chill-guy-la-gi-6.jpg";
 
 
                 imageUrl = imageUrl.replace("zoom=1", "zoom=3");
@@ -103,7 +108,9 @@ public class GoogleBooksAPI {
                 }
 
                 // Create a Book object and add it to the list
-                books.add(new Book(isbn, title, authors, genre, publishedDate, description, 0, imageUrl));
+                Book bookAPI = new Book(isbn, title, authors, genre, publishedDate, description, 0, imageUrl);
+                bookAPI.setPreviewBookLink(previewLink);
+                books.add(bookAPI);
             }
         }
     }
