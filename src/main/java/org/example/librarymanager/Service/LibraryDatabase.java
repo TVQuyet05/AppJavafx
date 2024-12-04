@@ -54,7 +54,7 @@ public class LibraryDatabase {
         return connection;
     }
 
-    
+
     public List<Object[]> setDataTopBorrowTable() {
         List<Object[]> topBorrowedBooks = new ArrayList<>();
         String query = """
@@ -222,6 +222,8 @@ public class LibraryDatabase {
 
         return 0; // Trả về 0 nếu có lỗi
     }
+
+
     public int getTotalBooks() {
         String sql = "SELECT SUM(quantity) AS totalQuantity FROM book";
         Connection connect = getConnection(); // Kết nối từ LibraryDatabase
@@ -239,6 +241,7 @@ public class LibraryDatabase {
 
         return 0; // Trả về 0 nếu có lỗi
     }
+
 
     public int getNumberOfBorrowedBook() {
         String sql = "SELECT COUNT(*) AS totalQuantity FROM borrowbook WHERE return_date IS NULL";
@@ -345,6 +348,7 @@ public class LibraryDatabase {
         }
         return topFavBooks;
     }
+
     // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
         Connection connection = getConnection();
@@ -651,6 +655,37 @@ public class LibraryDatabase {
     }
 
 
+    public boolean deleteComment(String bookId, String studentNumber) {
+        Connection connection = getConnection();
+        String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, studentNumber);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng bị xóa
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean deleteFavBook(String bookId) {
+        String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";
+        Connection connection = getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookId);
+            stmt.setString(2, numberOfUser);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu có dòng bị ảnh hưởng
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu xảy ra lỗi
+        }
+    }
+
+
     public ObservableList<Book> getFavBook(String studentNumber) {
         ObservableList<Book> favBookList = FXCollections.observableArrayList();
         Connection connection = getConnection();
@@ -691,32 +726,30 @@ public class LibraryDatabase {
 
         return favBookList;
     }
-    public boolean deleteComment(String bookId, String studentNumber) {
-        Connection connection = getConnection();
-        String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, bookId);
-            stmt.setString(2, studentNumber);
 
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng bị xóa
+    public boolean returnBook(String studentNumber, String bookId) {
+        String updateBorrowQuery = "UPDATE borrowBook SET return_date = CURRENT_DATE WHERE studentNumber = ? AND book_id = ?";
+        String updateQuantityQuery = "UPDATE book SET quantity = quantity + 1 WHERE book_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement borrowStmt = connection.prepareStatement(updateBorrowQuery);
+             PreparedStatement quantityStmt = connection.prepareStatement(updateQuantityQuery)) {
+
+            // Cập nhật ngày trả sách
+            borrowStmt.setString(1, studentNumber);
+            borrowStmt.setString(2, bookId);
+            int rowsUpdated = borrowStmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                // Tăng số lượng sách
+                quantityStmt.setString(1, bookId);
+                quantityStmt.executeUpdate();
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public boolean deleteFavBook(String bookId) {
-        String query = "DELETE FROM savebook WHERE book_id = ? AND studentnumber = ?";
-        Connection connection = getConnection();
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, bookId);
-            stmt.setString(2, numberOfUser);
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Trả về true nếu có dòng bị ảnh hưởng
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false; // Trả về false nếu xảy ra lỗi
         }
     }
 
@@ -725,12 +758,12 @@ public class LibraryDatabase {
         ObservableList<BorrowedBook> borrowedBookList = FXCollections.observableArrayList();
 
         String query = "SELECT s.studentNumber as studentNumber, s.name as name, b.book_id as book_id, b.book_title as book_title," +
-                        " b.author as author, b.genre as genre, b.date as date, b.image as image, bb.borrow_date as borrow_date," +
-                        " bb.due_date as due_date, NULLIF(bb.return_date, '0000-00-00') AS return_date " +
-                        "FROM borrowbook bb " +
-                        "JOIN student s ON bb.studentNumber = s.studentNumber " +
-                        "JOIN book b ON bb.book_id = b.book_id " +
-                        "ORDER BY bb.due_date;";
+                " b.author as author, b.genre as genre, b.date as date, b.image as image, bb.borrow_date as borrow_date," +
+                " bb.due_date as due_date, NULLIF(bb.return_date, '0000-00-00') AS return_date " +
+                "FROM borrowbook bb " +
+                "JOIN student s ON bb.studentNumber = s.studentNumber " +
+                "JOIN book b ON bb.book_id = b.book_id " +
+                "ORDER BY bb.due_date;";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -766,8 +799,32 @@ public class LibraryDatabase {
     }
 
 
+    public boolean insertReview(String bookId, String studentNumber, String comment, int judge) {
+        String reviewQuery = "INSERT INTO reviewBook (book_id, studentNumber, comment, judge) VALUES (?, ?, ?, ?)";
+        String updateReturnDateQuery = "UPDATE borrowBook SET return_date = NOW() WHERE book_id = ? AND studentNumber = ? AND return_date IS NULL";
 
+        try (Connection connection = getConnection();
+             PreparedStatement reviewStmt = connection.prepareStatement(reviewQuery);
+             PreparedStatement updateReturnDateStmt = connection.prepareStatement(updateReturnDateQuery)) {
 
+            // Thêm review vào bảng reviewBook
+            reviewStmt.setString(1, bookId);
+            reviewStmt.setString(2, studentNumber);
+            reviewStmt.setString(3, comment); // Thêm giá trị cho comment
+            reviewStmt.setInt(4, judge);
+            reviewStmt.executeUpdate();
+
+            // Cập nhật ngày trả sách vào bảng borrowBook (nếu chưa trả sách)
+            updateReturnDateStmt.setString(1, bookId);
+            updateReturnDateStmt.setString(2, studentNumber);
+            updateReturnDateStmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 

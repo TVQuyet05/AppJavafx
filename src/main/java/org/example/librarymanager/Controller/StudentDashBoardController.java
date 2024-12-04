@@ -5,6 +5,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +35,11 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
+import java.sql.Connection;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static org.example.librarymanager.Util.getData.numberOfUser;
 
@@ -161,7 +171,25 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private TableColumn<Object[], String> favTimeColumn;
+
     @FXML
+    private TableColumn<BorrowedBook, String> returnActionColumn;
+    @FXML
+    private Button returnSubmitButton;
+    @FXML
+    private AnchorPane reviewAnchor;
+    @FXML
+    private TextField commentBoxTextField;
+    @FXML
+    private CheckBox oneJudge;
+    @FXML
+    private CheckBox twoJudge;
+    @FXML
+    private CheckBox threeJudge;
+    @FXML
+    private CheckBox fourJudge;
+    @FXML
+    private CheckBox fiveJudge;
 
     public void showTopFavTable(){
         List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
@@ -191,6 +219,7 @@ public class StudentDashBoardController implements Initializable {
     public void backHome(ActionEvent event) {
         switchPain(homeScreen_std);
     }
+
     public void showFavBook() {
         LibraryDatabase database = LibraryDatabase.getInstance();
 
@@ -387,6 +416,16 @@ public class StudentDashBoardController implements Initializable {
         });
         fade.play();
     }
+    private void showAlert(String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
 
     public void openViewAllBooks() {
         try {
@@ -420,28 +459,154 @@ public class StudentDashBoardController implements Initializable {
             System.out.println("Error loading ViewAllBooks.fxml");
         }
     }
+    private BorrowedBook selectedBook;
 
-    public void showBorrowedBookForStudent() {
+    // Hiển thị form review
+    public void showReviewForm(BorrowedBook book) {
+        selectedBook = book;
+        commentBoxTextField.clear();
+        oneJudge.setSelected(false);
+        twoJudge.setSelected(false);
+        threeJudge.setSelected(false);
+        fourJudge.setSelected(false);
+        fiveJudge.setSelected(false);
+        reviewAnchor.setVisible(true);
+        borrowedBookStudent_TableView.setVisible(false);
+    }
+
+    // Lấy giá trị đánh giá từ các CheckBox
+    private int getSelectedJudge() {
+        if (oneJudge.isSelected()) return 1;
+        if (twoJudge.isSelected()) return 2;
+        if (threeJudge.isSelected()) return 3;
+        if (fourJudge.isSelected()) return 4;
+        if (fiveJudge.isSelected()) return 5;
+        return 0;
+    }
+
+    // Nút xử lý trả sách và đánh giá
+    @FXML
+    private void handleReturnSubmitButton(ActionEvent event) {
+        if (selectedBook == null) {
+            showAlert("Error", "No book selected for review.");
+            return;
+        }
+
+        // Kiểm tra nếu sách đã được trả
+        if (selectedBook.getReturn_date() != null) {
+            showAlert("Error", "This book has already been returned.");
+            return;
+        }
+
+        // Lấy comment và đánh giá
+        String comment = commentBoxTextField.getText().trim();
+        if (comment.isEmpty()) {
+            comment = "No comment"; // Giá trị mặc định nếu người dùng không nhập
+        }
+        int judge = getSelectedJudge();
+
+        if (judge == 0) {
+            showAlert("Error", "Please select a rating.");
+            return;
+        }
+
         LibraryDatabase database = LibraryDatabase.getInstance();
 
-        ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
+        // Thêm đánh giá vào bảng commentBook và reviewBook
+        boolean reviewSuccess = database.insertReview(
+                selectedBook.getId(),
+                selectedBook.getStudentNumber(),
+                comment,
+                judge
+        );
+
+        if (!reviewSuccess) {
+            showAlert("Error", "Failed to submit review.");
+            return;
+        }
+
+        // Cập nhật ngày trả sách
+        boolean returnSuccess = database.returnBook(
+                selectedBook.getStudentNumber(),
+                selectedBook.getId()
+        );
+
+        if (returnSuccess) {
+            showAlert("Success", "Book returned and review submitted successfully.");
+            reviewAnchor.setVisible(false);
+            borrowedBookStudent_TableView.setVisible(true);
+            refreshTable(); // Làm mới TableView
+        } else {
+            showAlert("Error", "Failed to update return information.");
+        }
+    }
+
+    // Làm mới bảng borrowedBookStudent_TableView
+    private void refreshTable() {
+        showBorrowedBookForStudent();
+    }
+
+    // Hiển thị danh sách sách đã mượn
+    public void showBorrowedBookForStudent() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        ObservableList<BorrowedBook> listBorrowedBooks = database.getBorrowedBook();
 
         // remove borrowed book not of this student
-        listBorrowedBook.removeIf(borrowedBook ->
+        listBorrowedBooks.removeIf(borrowedBook ->
                 !borrowedBook.getStudentNumber().equals(numberOfUser));
 
         // remove returned book of student
-        listBorrowedBook.removeIf(borrowedBook ->
+        listBorrowedBooks.removeIf(borrowedBook ->
                 borrowedBook.getReturn_date() != null);
 
+        // Liên kết cột
         col_bookId_std.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_title_std.setCellValueFactory(new PropertyValueFactory<>("title"));
         col_author_std.setCellValueFactory(new PropertyValueFactory<>("author"));
         col_borrowDate_std.setCellValueFactory(new PropertyValueFactory<>("borrow_date"));
         col_dueDate_std.setCellValueFactory(new PropertyValueFactory<>("due_date"));
 
-        borrowedBookStudent_TableView.setItems(listBorrowedBook);
+        // Tạo nút "Return"
+        returnActionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button returnButton = new Button("Return");
 
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    returnButton.setOnAction(event -> {
+                        BorrowedBook book = getTableView().getItems().get(getIndex());
+                        if (book.getReturn_date() != null) {
+                            showAlert("Error", "This book has already been returned.");
+                            return;
+                        }
+                        showReviewForm(book);
+                    });
+                    setGraphic(returnButton);
+                }
+            }
+        });
+
+        borrowedBookStudent_TableView.setItems(listBorrowedBooks);
+    }
+
+    // Thiết lập hành động cho các CheckBox
+    private void setupCheckBoxActions() {
+        CheckBox[] checkBoxes = {oneJudge, twoJudge, threeJudge, fourJudge, fiveJudge};
+
+        for (CheckBox checkBox : checkBoxes) {
+            checkBox.setOnAction(event -> {
+                if (checkBox.isSelected()) {
+                    for (CheckBox otherCheckBox : checkBoxes) {
+                        if (otherCheckBox != checkBox) {
+                            otherCheckBox.setSelected(false); // Bỏ chọn các checkbox khác
+                        }
+                    }
+                }
+            });
+        }
     }
 
     public void returnBook() {
@@ -450,6 +615,7 @@ public class StudentDashBoardController implements Initializable {
     }
 
     public void commentBook() {
+        showCommentBookForStudent();
         switchPain(commentBook_std);
     }
 

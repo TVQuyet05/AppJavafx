@@ -85,6 +85,11 @@ public class DetailBookController implements Initializable {
     @FXML
     private Label status_book;
 
+//    @FXML
+//    private Button btn_addBookToLib;
+//    @FXML
+//    private Button save_book_button;
+
     private double x = 0;
     private double y = 0;
 
