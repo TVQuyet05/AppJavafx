@@ -2,8 +2,11 @@ package org.example.librarymanager.Controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,10 +21,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.BorrowedBook;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
 
@@ -29,11 +34,16 @@ import org.example.librarymanager.Service.LibraryDatabase;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static org.example.librarymanager.Util.getData.nameOfUser;
 
 public class DashBoardController implements Initializable {
 
@@ -99,6 +109,21 @@ public class DashBoardController implements Initializable {
     private TextField textField_add_Date;
 
     @FXML
+    private TextField textField_add_ISBN;
+
+    @FXML
+    private TextField textField_add_Description;
+
+    @FXML
+    private TextField textField_add_Quantity;
+
+    @FXML
+    private TextField textField_searchStudent;
+
+    @FXML
+    private Label managerName;
+
+    @FXML
     private AnchorPane anchor_AddBooks;
 
     @FXML
@@ -114,8 +139,7 @@ public class DashBoardController implements Initializable {
     private AnchorPane anchor_deleteBooks;
 
     @FXML
-    private AnchorPane anchor_ReturnBooks;
-
+    private AnchorPane anchor_borrowedBooks;
 
     @FXML
     private AnchorPane mess_Success;
@@ -124,6 +148,9 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane anchor_DashBoard;
+
+    @FXML
+    private AnchorPane anchor_memberInformation;
 
     @FXML
     private PieChart pie_chart_1;
@@ -161,12 +188,145 @@ public class DashBoardController implements Initializable {
     @FXML
     private TableColumn<?, ?> col_listAcc_pass;
 
+    @FXML
+    private TableView<BorrowedBook> borrowedBookManager_TableView;
 
+    @FXML
+    private TableColumn<?, ?> col_stdNumber_mng;
 
+    @FXML
+    private TableColumn<?, ?> col_stdName_mng;
 
+    @FXML
+    private TableColumn<?, ?> col_bookTitle_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_genre_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_borrowedDate_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_dueDate_mng;
+
+    @FXML
+    private TableColumn<?, ?> col_returnDate_mng;
+
+    @FXML
+    private Button btn_showUnreturnedBook;
+
+    @FXML
+    private Button btn_searchStudent;
+
+    @FXML
+    private  Label totalBookVal;
+
+    @FXML
+    private Label totalMemberVal;
+
+    @FXML
+    private Label totalBorrowedBookVal;
+
+    @FXML
+    private Label label_Today;
+
+    @FXML
+    private PieChart genrePieChart;
+
+    @FXML
+    private VBox chartContainer;
 
     private double x = 0;
     private double y = 0;
+
+    private void setGenrePieChart() {
+        // Query để lấy tổng số lượng sách theo thể loại, sắp xếp giảm dần
+        String sql = "SELECT genre, SUM(quantity) AS total_quantity FROM book GROUP BY genre ORDER BY total_quantity DESC";
+        Connection connection = LibraryDatabase.getInstance().getConnection();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            int totalQuantity = 0;
+            int count = 0;
+            int otherQuantity = 0;
+
+            // Tính tổng số lượng (quantity) toàn bộ
+            while (resultSet.next()) {
+                totalQuantity += resultSet.getInt("total_quantity");
+            }
+
+            // Đặt lại con trỏ ResultSet
+            resultSet.beforeFirst();
+
+            // Duyệt qua từng thể loại
+            while (resultSet.next()) {
+                String genre = resultSet.getString("genre");
+                int genreQuantity = resultSet.getInt("total_quantity");
+
+                if (count < 5) {
+                    // Tính phần trăm cho 5 thể loại đầu tiên
+                    double percentage = (double) genreQuantity / totalQuantity * 100;
+
+                    // Thêm dữ liệu vào PieChart
+                    pieChartData.add(new PieChart.Data(genre + " (" + String.format("%.1f", percentage) + "%)", genreQuantity));
+
+                    count++;
+                } else {
+                    // Cộng dồn các thể loại còn lại vào "Other"
+                    otherQuantity += genreQuantity;
+                }
+            }
+
+            // Thêm dữ liệu mục "Other" nếu có
+            if (otherQuantity > 0) {
+                double otherPercentage = (double) otherQuantity / totalQuantity * 100;
+                pieChartData.add(new PieChart.Data("Other (" + String.format("%.1f", otherPercentage) + "%)", otherQuantity));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Cập nhật PieChart với dữ liệu mới
+        genrePieChart.setData(pieChartData);
+
+        // Xóa các thành phần cũ (PieChart và nhãn)
+        chartContainer.getChildren().clear();
+
+        // Thêm PieChart vào VBox
+        chartContainer.getChildren().add(genrePieChart);
+    }
+
+    public void showNumberOfBorrowedBook() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalBorrowedBooks = database.getNumberOfBorrowedBook(); // Lấy số lượng sách mượn
+
+        totalBorrowedBookVal.setText(String.valueOf(totalBorrowedBooks)); // Hiển thị lên Label
+    }
+
+
+    public void showTotalBooks() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalBooks = database.getTotalBooks(); // Lấy tổng số sách từ database
+
+        totalBookVal.setText(String.valueOf(totalBooks)); // Hiển thị lên Label
+    }
+
+    public void showNumberOfMembers() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        int totalMembers = database.getNumberOfMembers(); // Lấy số lượng thành viên
+
+        totalMemberVal.setText(String.valueOf(totalMembers)); // Hiển thị lên Label
+    }
+
+    public void showHomeScreenManager(){
+        showTotalBooks();
+        showNumberOfBorrowedBook();
+        showNumberOfMembers();
+        setGenrePieChart();
+    }
 
     public void logout(javafx.event.ActionEvent actionEvent) {
         try {
@@ -238,6 +398,8 @@ public class DashBoardController implements Initializable {
     }
 
     public void addBooks() {
+        System.out.println("Go to addBook AnchorPane successfully!");
+
         switchPain(anchor_AddBooks);
     }
 
@@ -245,13 +407,17 @@ public class DashBoardController implements Initializable {
         switchPain(anchor_FindBooks);
     }
 
+    public void showInfoStudent() {
+        switchPain(anchor_memberInformation);
+    }
+
 
     public void deleteBooks() {
         switchPain(anchor_deleteBooks);
     }
 
-    public void returnBooks() {
-        switchPain(anchor_ReturnBooks);
+    public void borrowedBooks() {
+        switchPain(anchor_borrowedBooks);
     }
 
     public void addMembers() {
@@ -290,25 +456,93 @@ public class DashBoardController implements Initializable {
         }
     }
 
+    public void setInfoForBook(Book bookFromAPI) {
+
+        textField_add_ISBN.setText(bookFromAPI.getId());
+        textField_add_BookName.setText(bookFromAPI.getTitle());
+        textField_add_AuthorName.setText(bookFromAPI.getAuthor());
+        textField_add_Genre.setText(bookFromAPI.getGenre());
+        textField_add_Date.setText(bookFromAPI.getDate());
+        textField_add_Description.setText(bookFromAPI.getDescription());
+        textField_add_Quantity.setText(String.valueOf(bookFromAPI.getQuantity()));
+        textField_add_ImageBook.setText(bookFromAPI.getImage());
+
+        System.out.println("Set info of book from API successfully!");
+
+    }
 
     public void addBookToDatabase() {
         LibraryDatabase database = LibraryDatabase.getInstance();
-        Connection connect = database.getConnection();
 
+        String isbn = textField_add_ISBN.getText();
         String book_title = textField_add_BookName.getText();
         String author = textField_add_AuthorName.getText();
         String genre = textField_add_Genre.getText();
         String date_string = textField_add_Date.getText();
+        String description = textField_add_Description.getText();
+
+        String text_quantity = textField_add_Quantity.getText();
+        int quantity = 0;
+
+        if(!text_quantity.matches("\\d+")) {
+            //Please fill number
+            return;
+        }
+
+        quantity = Integer.parseInt(text_quantity);
+
+        if(quantity <= 0) return; //Please fill quantity
+
+
         String path_image = textField_add_ImageBook.getText();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date_sql = LocalDate.parse(date_string, formatter);
-        Date sqlDate = java.sql.Date.valueOf(date_sql);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate date_sql = LocalDate.parse(date_string, formatter);
+//        Date sqlDate = java.sql.Date.valueOf(date_sql);
 
-        Book newbook = new Book(book_title, author, genre, (java.sql.Date) sqlDate, path_image);
+        Book newbook = new Book(isbn, book_title, author, genre, date_string, description, quantity, path_image);
 
         database.addBook(newbook);
 
+    }
+
+    public void updateBookInDatabase() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        String isbn = textField_add_ISBN.getText();
+        String book_title = textField_add_BookName.getText();
+        String author = textField_add_AuthorName.getText();
+        String genre = textField_add_Genre.getText();
+        String date_string = textField_add_Date.getText();
+        String description = textField_add_Description.getText();
+
+        String text_quantity = textField_add_Quantity.getText();
+        int quantity = 0;
+
+        if(!text_quantity.matches("\\d+")) {
+            //Please fill number
+            return;
+        }
+
+        quantity = Integer.parseInt(text_quantity);
+
+        if(quantity <= 0) return; //Please fill quantity
+
+        String path_image = textField_add_ImageBook.getText();
+
+        Book updatedBook = new Book(isbn, book_title, author, genre, date_string, description, quantity, path_image);
+
+        database.updateBook(updatedBook);;
+    }
+
+    public void deleteBookInDatabase() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        String isbn = textField_add_ISBN.getText();
+
+        database.deleteBook(isbn);
+
+        textField_add_Quantity.setText("0");
     }
 
     public void showSignUpAccount() {
@@ -330,7 +564,7 @@ public class DashBoardController implements Initializable {
         col_signup_class.setCellValueFactory(new PropertyValueFactory<>("_class"));
 
         // Kiểm tra nếu cột "Action" chưa được thêm
-        if (Member_Information_TV.getColumns().stream().noneMatch(column -> column.getText().equals("Action"))) {
+        if (SignUpAccount_TableView.getColumns().stream().noneMatch(column -> column.getText().equals("Action"))) {
             TableColumn<Student, Void> actionColumn = new TableColumn<>("Action");
 
             actionColumn.setCellFactory(column -> new TableCell<>() {
@@ -344,6 +578,7 @@ public class DashBoardController implements Initializable {
                     refuseButton.setPrefWidth(70);
 
                     acceptButton.setOnAction(event -> {
+                        getTableView().getSelectionModel().select(getIndex());
                         Student student = getTableView().getItems().get(getIndex());
                         if (student != null) {
                             acceptSignUp(student);
@@ -351,6 +586,7 @@ public class DashBoardController implements Initializable {
                     });
 
                     refuseButton.setOnAction(event -> {
+                        getTableView().getSelectionModel().select(getIndex());
                         Student student = getTableView().getItems().get(getIndex());
                         if (student != null) {
                             refuseSignUp(student);
@@ -375,16 +611,14 @@ public class DashBoardController implements Initializable {
         }
     }
 
-
-
-
-
     public void acceptSignUp(Student selectedStudent) {
         if(selectedStudent == null) {
             return;
         }
 
         LibraryDatabase database = LibraryDatabase.getInstance();
+
+        Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
 
         int num = SignUpAccount_TableView.getSelectionModel().getFocusedIndex();
 
@@ -393,22 +627,24 @@ public class DashBoardController implements Initializable {
         }
 
         //add selected_student to table student in database
-        database.addStudent(selectedStudent);
+        database.addStudent(selected_student);
 
         //delete selected_student from table signupaccount in database
-        database.deleteSignUpAccount(selectedStudent);
+        database.deleteSignUpAccount(selected_student);
 
         //show table sign up account again
         showSignUpAccount();
 
+        showMemberInformation();
+
     }
 
-    public void refuseSignUp(Student selectedStudent) {
-        if(selectedStudent == null) {
-            return;
-        }
+    public void refuseSignUp(Student student_selected) {
+        if(student_selected == null) return;
+
         LibraryDatabase database = LibraryDatabase.getInstance();
 
+        Student selected_student = SignUpAccount_TableView.getSelectionModel().getSelectedItem();
 
         int num = SignUpAccount_TableView.getSelectionModel().getFocusedIndex();
 
@@ -417,7 +653,7 @@ public class DashBoardController implements Initializable {
         }
 
         //delete selected_student from table signupaccount in database
-        database.deleteSignUpAccount(selectedStudent);
+        database.deleteSignUpAccount(selected_student);
 
         //show table sign up account again
         showSignUpAccount();
@@ -425,52 +661,84 @@ public class DashBoardController implements Initializable {
     }
 
     public void openViewAllBooks() {
-        try {
-            SignUpAccount_TableView.getSelectionModel().clearSelection();
-            // Load the FXML file
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
+        // Create a new thread to open the second stage
+        Thread viewAllBooksThread = new Thread(() -> {
+            try {
 
-            // Create a new Scene
-            Scene scene = new Scene(root);
+                // Load the FXML file
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
 
-            Stage stage = new Stage();
+                // Create a new Scene
+                Scene scene = new Scene(root);
 
-            // Add mouse event handlers for dragging the window
-            root.setOnMousePressed((MouseEvent event) -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
+                // Use Platform.runLater to update the JavaFX UI
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = new Stage();
 
-            root.setOnMouseDragged((MouseEvent event) -> {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            });
+                        // Add mouse event handlers for dragging the window
+                        root.setOnMousePressed((MouseEvent event) -> {
+                            x = event.getSceneX();
+                            y = event.getSceneY();
+                        });
 
-            // Set the stage to be transparent
-            stage.initStyle(StageStyle.TRANSPARENT);
+                        root.setOnMouseDragged((MouseEvent event) -> {
+                            stage.setX(event.getScreenX() - x);
+                            stage.setY(event.getScreenY() - y);
+                        });
 
-            // Set the scene and display the stage
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading ViewAllBooks.fxml");
-        }
+                        // Set the stage to be transparent
+                        stage.initStyle(StageStyle.TRANSPARENT);
+
+                        // Set the scene and display the stage
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error displaying ViewAllBooks stage.");
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error loading ViewAllBooks.fxml");
+            }
+        });
+
+        // Start the thread to open the second stage
+        viewAllBooksThread.start();
+
     }
+
 
     public void showMemberInformation() {
         LibraryDatabase database = LibraryDatabase.getInstance();
         ObservableList<Student> listAccStd = database.getAccStudent();
-        Member_Information_TV.setItems(listAccStd);
+
+        // Wrap the original list in a FilteredList
+        FilteredList<Student> filteredList = new FilteredList<>(listAccStd, student -> true);
+
+        // Set the filtered list as the items for the TableView
+        Member_Information_TV.setItems(filteredList);
+
+        // Add a listener to the search button
+        btn_searchStudent.setOnAction(event -> {
+            String text_search = textField_searchStudent.getText();
+
+            // Update the filter predicate based on the search term
+            filteredList.setPredicate(student -> {
+                if (text_search == null || text_search.isEmpty()) {
+                    return true; // Show all students if the search term is empty
+                }
+                return student.getStudentNumber().equals(text_search) || student.getName().equals(text_search);
+            });
+        });
 
         // Đặt chiều cao cố định cho từng dòng trong TableView
         Member_Information_TV.setFixedCellSize(60);
         Member_Information_TV.prefHeightProperty().bind(
                 Bindings.size(Member_Information_TV.getItems()).multiply(Member_Information_TV.getFixedCellSize()).add(30)
         );
-
-
-
 
 
         // Đặt giá trị cho các cột
@@ -523,6 +791,7 @@ public class DashBoardController implements Initializable {
             Member_Information_TV.getColumns().add(actionColumn);
         }
     }
+
     public void deleteStudent(Student selectedStudent) {
         if(selectedStudent == null) {
             return;
@@ -544,15 +813,112 @@ public class DashBoardController implements Initializable {
 
     }
 
+    public void showBorrowedBookForManager() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
+
+        btn_showUnreturnedBook.setOnAction(event -> {
+            listBorrowedBook.removeIf(borrowedBook ->
+                    borrowedBook.getReturn_date() != null);
+        });
+
+        col_stdNumber_mng.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+        col_stdName_mng.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        col_bookTitle_mng.setCellValueFactory(new PropertyValueFactory<>("title"));
+        col_genre_mng.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        col_borrowedDate_mng.setCellValueFactory(new PropertyValueFactory<>("borrow_date"));
+        col_dueDate_mng.setCellValueFactory(new PropertyValueFactory<>("due_date"));
+        col_returnDate_mng.setCellValueFactory(new PropertyValueFactory<>("return_date"));
+
+        borrowedBookManager_TableView.setItems(listBorrowedBook);
+    }
+
+    public void updateLabelToday() {
+        LocalDate currentDate = LocalDate.now();
+        String dayOfWeek = currentDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String formattedDate = currentDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                + " " + currentDate.getDayOfMonth() + ", " + currentDate.getYear();
+
+        // Combine day and date
+        String labelText = dayOfWeek + ", " + formattedDate;
+
+        // Set the text of the label
+        label_Today.setText(labelText);
+    }
+    public void profile() {
+        // Create a new thread to open the second stage
+        Thread viewAllBooksThread = new Thread(() -> {
+            try {
+
+                // Load the FXML file
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/Profile.fxml")));
+
+                // Create a new Scene
+                Scene scene = new Scene(root);
+
+                // Use Platform.runLater to update the JavaFX UI
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = new Stage();
+
+                        // Add mouse event handlers for dragging the window
+                        root.setOnMousePressed((MouseEvent event) -> {
+                            x = event.getSceneX();
+                            y = event.getSceneY();
+                        });
+
+                        root.setOnMouseDragged((MouseEvent event) -> {
+                            stage.setX(event.getScreenX() - x);
+                            stage.setY(event.getScreenY() - y);
+                        });
+
+                        // Set the stage to be transparent
+                        stage.initStyle(StageStyle.TRANSPARENT);
+
+                        // Set the scene and display the stage
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error displaying ProFile stage.");
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error loading ProFile.fxml");
+            }
+        });
+
+        // Start the thread to open the second stage
+        viewAllBooksThread.start();
+
+    }
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+//        try {
+//            initializeDashBoard();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
         SignUpAccount_TableView.getSelectionModel().clearSelection();
 
         currentPane = anchor_HomeScreen;
-        pie_chart_1.getData().addAll(new PieChart.Data("Borrowed Books", 40), new PieChart.Data("Available Books", 60));
-        pie_chart_2.getData().addAll(new PieChart.Data("Fiction", 40), new PieChart.Data("Non-Fiction", 30), new PieChart.Data("History", 20), new PieChart.Data("Science", 10));
+
+        managerName.setText(nameOfUser);
+
+        showHomeScreenManager();
+
+        showMemberInformation();
 
         showSignUpAccount();
-        showMemberInformation();
+
+        showBorrowedBookForManager();
     }
 }

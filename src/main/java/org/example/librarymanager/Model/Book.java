@@ -5,16 +5,20 @@ import java.time.LocalDate;
 
 public class Book {
 
-    private final String title;
-    private final String author;
-    private final String genre;
-    private final String image;
-    private final Date date;
-    private  int id;
-    private  String description;
-    private  int quantity;
+    private String id;
+    private String title;
+    private String author;
+    private String genre;
+    private String date;
+    private String description;
+    private int quantity;
+    private String image;
 
-    public Book(int id, String title, String author, String genre, Date date, String description, int quantity, String image) {
+    private String previewBookLink = "";
+
+    private double avgJudge;
+
+    public Book(String id, String title, String author, String genre, String date, String description, int quantity, String image) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -25,7 +29,8 @@ public class Book {
         this.image = image;
     }
 
-    public Book(String title, String author, String genre, Date date, String image) {
+    public Book(String id, String title, String author, String genre, String date, String image) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
@@ -33,7 +38,23 @@ public class Book {
         this.date = date;
     }
 
+    public Book() {
 
+    }
+
+    public Book(String id, String title, String author) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+    }
+
+    public Book(String id, String title, String image, double avgJudge) {
+        this.id = id;
+        this.title = title;
+        this.image = image;
+        this.avgJudge = avgJudge;
+    }
+    public String getId() {return this.id;}
 
     public String getTitle() {return this.title;}
 
@@ -43,15 +64,15 @@ public class Book {
 
     public String getImage() {return this.image;}
 
-    public Date getDate() {return this.date;}
-
-    public int getId() {return this.id;}
+    public String getDate() {return this.date;}
 
     public String getDescription() {return this.description;}
 
     public int getQuantity() {return this.quantity;}
 
+    public void setPreviewBookLink(String previewBookLink) {this.previewBookLink = previewBookLink;}
+    public String getPreviewBookLink() {return this.previewBookLink;}
 
-
+    public double getAvgJudge() { return avgJudge; }
 
 }

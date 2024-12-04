@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="viewAllBooks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="background" stylesheets="@ViewAllBooks.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ViewAllBookController">
+<AnchorPane fx:id="viewAllBooks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" styleClass="background" stylesheets="@ViewAllBooks.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ViewAllBookController">
    <children>
       <ScrollPane hbarPolicy="NEVER" layoutY="154.4" prefHeight="550.0" prefWidth="1300.0" styleClass="background" stylesheets="@ViewAllBooks.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
          <content>
@@ -39,13 +39,13 @@
          </graphic>
       </Button>
       <Line endX="1200.0927734375" endY="1.0000076293945312" layoutX="115.0" layoutY="153.0" startX="-100.0" strokeWidth="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="151.58578646183014" />
-      <TextField layoutX="34.0" layoutY="90.0" prefHeight="40.0" prefWidth="849.0" promptText="Search for books....." styleClass="text_field_search" AnchorPane.leftAnchor="40.0">
+      <TextField fx:id="field_searchBook" layoutX="34.0" layoutY="90.0" prefHeight="40.0" prefWidth="849.0" promptText="Search for books....." styleClass="text_field_search" AnchorPane.leftAnchor="40.0">
          <font>
             <Font size="13.0" />
          </font>
       </TextField>
       <ComboBox fx:id="combobox_search" layoutX="906.0" layoutY="90.0" prefHeight="40.0" prefWidth="200.0" promptText="Select" styleClass="combo-box" />
-      <Button layoutX="1139.0" layoutY="90.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" styleClass="button_search" text="      Search" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.rightAnchor="40.0">
+      <Button fx:id="btn_searchBook" layoutX="1139.0" layoutY="90.0" mnemonicParsing="false" onAction="#searchBook" prefHeight="40.0" prefWidth="135.0" styleClass="button_search" text="      Search" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.rightAnchor="40.0">
          <graphic>
             <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="1.3em" />
          </graphic>

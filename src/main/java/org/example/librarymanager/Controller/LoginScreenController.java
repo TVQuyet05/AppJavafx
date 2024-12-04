@@ -33,7 +33,7 @@ public class LoginScreenController implements Initializable {
     private Button close;
 
     @FXML
-    private Hyperlink forgotPassword;
+    private Hyperlink forgotfield_password;
 
     @FXML
     private Button login;
@@ -42,7 +42,7 @@ public class LoginScreenController implements Initializable {
     private Button minimize;
 
     @FXML
-    private PasswordField passWord;
+    private TextField field_password;
 
     @FXML
     private Button register;
@@ -66,7 +66,7 @@ public class LoginScreenController implements Initializable {
     private Button signUp;
 
     @FXML
-    private TextField studentNumber;
+    private TextField field_number;
 
     @FXML
     private AnchorPane signUp_Anchor;
@@ -165,16 +165,15 @@ public class LoginScreenController implements Initializable {
     public void login() throws IOException {
         try {
 
-//            // Test connect database
             LibraryDatabase database = LibraryDatabase.getInstance();
-            Connection connect = database.getConnection();
 
-            boolean checkStudent = database.authenticateStudent(studentNumber.getText(), passWord.getText());
-//            boolean checkStudent = true;
+
+            boolean checkStudent = database.authenticateStudent(field_number.getText(), field_password.getText());
+
             if (checkStudent) {
                 successful();
                 PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
-                pauseTransition.setOnFinished(pauseEvent -> {
+                pauseTransition.setOnFinished((pauseEvent) -> {
                     Parent root1 = login.getParent().getParent();
 
                     FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
@@ -184,8 +183,7 @@ public class LoginScreenController implements Initializable {
                         login.getScene().getWindow().hide();
 
                         try {
-                            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard.fxml")));
-
+                            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard_Student.fxml")));
 
                             Stage stage = new Stage();
                             Scene scene = new Scene(root);
@@ -218,19 +216,70 @@ public class LoginScreenController implements Initializable {
                 });
                 pauseTransition.play();
             } else {
-                GaussianBlur gaussianBlur = new GaussianBlur();
-                gaussianBlur.setRadius(25.0);
-                currentPane.setEffect(gaussianBlur);
-                mess_Falied.setVisible(true);
 
-                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+                boolean checkManager = database.authenticateManager(field_number.getText(), field_password.getText());
 
-                pauseTransition.setOnFinished(event -> {
-                    currentPane.setEffect(null);
-                    mess_Falied.setVisible(false);
-                });
+                if(checkManager) {
+                    successful();
+                    PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+                    pauseTransition.setOnFinished((pauseEvent) -> {
+                        Parent root1 = login.getParent().getParent();
 
-                pauseTransition.play();
+                        FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
+                        fadeIn2.setFromValue(1.0);
+                        fadeIn2.setToValue(0.0);
+                        fadeIn2.setOnFinished(event -> {
+                            login.getScene().getWindow().hide();
+
+                            try {
+                                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/DashBoard.fxml")));
+
+                                Stage stage = new Stage();
+                                Scene scene = new Scene(root);
+
+                                root.setOnMousePressed((MouseEvent mouseEvent) -> {
+                                    x = mouseEvent.getSceneX();
+                                    y = mouseEvent.getSceneY();
+                                });
+
+                                root.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                                    stage.setX(mouseEvent.getScreenX() - x);
+                                    stage.setY(mouseEvent.getScreenY() - y);
+                                });
+
+                                FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
+                                fadeIn.setFromValue(0.0);
+                                fadeIn.setToValue(1.0);
+
+                                stage.initStyle(StageStyle.TRANSPARENT);
+                                stage.setScene(scene);
+                                stage.show();
+                                fadeIn.play();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        fadeIn2.play();
+                    });
+                    pauseTransition.play();
+                }
+                else {
+                    GaussianBlur gaussianBlur = new GaussianBlur();
+                    gaussianBlur.setRadius(25.0);
+                    currentPane.setEffect(gaussianBlur);
+                    mess_Falied.setVisible(true);
+
+                    PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+
+                    pauseTransition.setOnFinished(event -> {
+                        currentPane.setEffect(null);
+                        mess_Falied.setVisible(false);
+                    });
+
+                    pauseTransition.play();
+                }
             }
 
         } catch (Exception e) {
@@ -243,10 +292,10 @@ public class LoginScreenController implements Initializable {
 
         String student_number = register_Users.getText();
         String name = register_Name.getText();
-        String password = register_Pass.getText();
+        String field_password = register_Pass.getText();
         String _class = register_Class.getText();
 
-        Student student = new Student(student_number, password, "", name, _class);
+        Student student = new Student(student_number, field_password, "", name, _class);
 
         database.addStudentSignUp(student);
 
@@ -272,11 +321,11 @@ public class LoginScreenController implements Initializable {
         switchPain(signIn_Anchor);
     }
 
-    public void forgotPassword() {
+    public void forgotfield_password() {
         switchPain(forgot_Anchor);
     }
 
-    public void forgotPassword_SignIn() {
+    public void forgotfield_password_SignIn() {
         switchPain(signIn_Anchor);
     }
 

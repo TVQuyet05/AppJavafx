@@ -1,5 +1,6 @@
 package org.example.librarymanager.Controller;
 
+import com.google.zxing.WriterException;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -23,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Service.GoogleBooksAPI;
 import org.example.librarymanager.Service.LibraryDatabase;
 
 import javafx.scene.image.Image;
@@ -30,6 +33,8 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -51,16 +56,22 @@ public class ViewAllBookController implements Initializable {
     @FXML
     private Button close;
 
+    @FXML
+    private TextField field_searchBook;
+
+    @FXML
+    private Button btn_searchBook;
+
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
-                                String category, String description, String imageUrl) {
+                                String category, String description, String imageUrl, int quantity, String preLink) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DetailBook.fxml"));
             Parent root = loader.load();
 
             DetailBookController controller = loader.getController();
-            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl);
+            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl, quantity, preLink);
 
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
@@ -77,11 +88,14 @@ public class ViewAllBookController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (WriterException e) {
+            throw new RuntimeException(e);
         }
     }
 
 
-    public HBox createBookCard(String title, String author, String isbn, int year, int quantity, String category, String description, String image) {
+    public HBox createBookCard(String title, String author, String isbn, String publicationDate , int quantity, String category, String description, String image, String preLink) {
+
         // Tạo HBox chính để chia sách và thông tin
         HBox bookCard = new HBox();
         bookCard.setSpacing(15);
@@ -94,8 +108,8 @@ public class ViewAllBookController implements Initializable {
         // Phần ảnh sách
         ImageView imageView = new ImageView();
         try {
-            String uri = "file:" + image;
-            Image img = new Image(uri, true);
+
+            Image img = new Image(image, true);
             imageView.setImage(img);
             imageView.setFitWidth(150);
             imageView.setFitHeight(200);
@@ -118,7 +132,7 @@ public class ViewAllBookController implements Initializable {
         authorLabel.setFont(Font.font("System", 14));
         authorLabel.setTextFill(Color.BLACK);
 
-        Label yearLabel = new Label(String.valueOf(year));
+        Label yearLabel = new Label(publicationDate);
         yearLabel.setFont(Font.font("System", 14));
         yearLabel.setTextFill(Color.GRAY);
 
@@ -153,8 +167,8 @@ public class ViewAllBookController implements Initializable {
             fadeTransition.setToValue(0.0);
             fadeTransition.setOnFinished(event1 -> {
                 // Sau khi hiệu ứng kết thúc, mở giao diện chi tiết sách
-                openBookDetail(title, author, isbn, String.valueOf(year),
-                        String.valueOf(quantity), category, description, image);
+                openBookDetail(title, author, isbn, publicationDate,
+                        String.valueOf(quantity), category, description, image, quantity, preLink);
 
                 // Khôi phục lại hiệu ứng FadeIn cho anchor hoặc container
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(400), anchor); // Hoặc flow_pane
@@ -171,34 +185,52 @@ public class ViewAllBookController implements Initializable {
 
     public void ViewAllBook() {
         LibraryDatabase libraryDatabase = LibraryDatabase.getInstance();
+
         List<Book> books = libraryDatabase.getBooks();
 
+        showListBooks(books);
 
-        flow_pane.setHgap(35);
-        flow_pane.setVgap(20); // Khoảng cách dọc giữa các card
-        flow_pane.setMaxWidth(400);
-        flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
+    }
 
-        for (Book book : books) {
-            Date date = book.getDate();
-            int year = date.getYear() + 1900;
+    public void searchBookFromAPI() {
+        String bookTitle = field_searchBook.getText();
 
-            HBox bookCard = createBookCard(
-                    book.getTitle(),
-                    book.getAuthor(),
-                    String.valueOf(book.getId()),
-                    year,
-                    book.getQuantity(),
-                    book.getGenre(),
-                    book.getDescription(),
-                    book.getImage()
-            );
+        if(bookTitle == null) return;
 
-            flow_pane.getChildren().add(bookCard);
+        GoogleBooksAPI booksAPI = new GoogleBooksAPI();
+
+        List<Book> listBookFromAPI = booksAPI.searchBooks(bookTitle);
+
+        showListBooks(listBookFromAPI);
+    }
+
+    public void searchBookFromLibrary() {
+        String text_search = field_searchBook.getText();
+
+        //if(text_search == null) return;
+
+        LibraryDatabase database = LibraryDatabase.getInstance();
+
+        List<Book> searchedBook = database.searchBookInDatabase(text_search);
+
+        showListBooks(searchedBook);
+    }
+
+    public void searchBook() {
+
+
+
+        String option_search = combobox_search.getSelectionModel().getSelectedItem();
+
+        if(option_search == null) return;
+
+        if(option_search.equals("API")) {
+            searchBookFromAPI();
         }
 
-        anchor.getChildren().clear();
-        anchor.getChildren().addAll(flow_pane);
+        if(option_search.equals("Local Library")) {
+            searchBookFromLibrary();
+        }
 
     }
 
@@ -252,6 +284,38 @@ public class ViewAllBookController implements Initializable {
                 restoreTransition.play();
             }
         });
+    }
+
+
+    public void showListBooks(List<Book> books) {
+
+        flow_pane.getChildren().clear();
+
+        flow_pane.setHgap(35);
+        flow_pane.setVgap(20); // Khoảng cách dọc giữa các card
+        flow_pane.setMaxWidth(400);
+        flow_pane.setStyle("-fx-padding: 10;"); // Căn chỉnh padding tổng thể
+
+        for (Book book : books) {
+
+            HBox bookCard = createBookCard(
+                    book.getTitle(),
+                    book.getAuthor(),
+                    book.getId(),
+                    book.getDate(),
+                    book.getQuantity(),
+                    book.getGenre(),
+                    book.getDescription(),
+                    book.getImage(),
+                    book.getPreviewBookLink()
+            );
+
+            flow_pane.getChildren().add(bookCard);
+        }
+
+        anchor.getChildren().clear();
+        anchor.getChildren().addAll(flow_pane);
+
     }
 
     @Override
