@@ -282,12 +282,12 @@ public class StudentDashBoardController implements Initializable {
 
         // Thêm cột hành động "Xóa"
         fav_action_col.setCellFactory(column -> new TableCell<>() {
-            private final Button actionButton = new Button("Xóa");
+            private final Button actionButton = new Button("Delete");
 
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
+                actionButton.setStyle("-fx-background-color: red; -fx-cursor: hand;");
                 if (empty) {
                     setGraphic(null);
                     setText(null);
@@ -342,17 +342,18 @@ public class StudentDashBoardController implements Initializable {
 
         // Thêm cột hành động "Xóa"
         commentActionColumn.setCellFactory(column -> new TableCell<>() {
-            private final Button deleteButton = new Button("Xóa");
+            private final Button deleteButton = new Button("Delete");
 
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
+                deleteButton.setStyle("-fx-background-color: red; -fx-cursor: hand;");
                 if (empty) {
                     setGraphic(null);
                     setText(null);
                 } else {
                     deleteButton.setOnAction(event -> {
+
                         CommentBook commentBook = getTableView().getItems().get(getIndex());
                         String bookId = commentBook.getId(); // Lấy ID sách
                         String studentNumber = getData.numberOfUser; // Lấy số sinh viên từ getData
@@ -616,6 +617,7 @@ public class StudentDashBoardController implements Initializable {
 
             @Override
             protected void updateItem(String item, boolean empty) {
+                returnButton.setStyle("-fx-background-color: green; -fx-cursor: hand");
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
