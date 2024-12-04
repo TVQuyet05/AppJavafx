@@ -586,7 +586,7 @@ public class LibraryDatabase {
 
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book";
+        String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book LIMIT 20";
         try (Connection conn = getConnection();
              Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
