@@ -848,6 +848,7 @@ public class DashBoardController implements Initializable {
         // Set the text of the label
         label_Today.setText(labelText);
     }
+
     public void profile() {
         // Create a new thread to open the second stage
         Thread viewAllBooksThread = new Thread(() -> {
@@ -914,6 +915,7 @@ public class DashBoardController implements Initializable {
         currentPane = anchor_HomeScreen;
 
         managerName.setText(nameOfUser);
+        updateLabelToday();
 
         showHomeScreenManager();
 
