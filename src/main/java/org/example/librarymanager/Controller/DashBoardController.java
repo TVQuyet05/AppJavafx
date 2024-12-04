@@ -94,6 +94,9 @@ public class DashBoardController implements Initializable {
     private Button setting;
 
     @FXML
+    private Button btn_historyBook;
+
+    @FXML
     private TextField textField_add_AuthorName;
 
     @FXML
@@ -725,7 +728,7 @@ public class DashBoardController implements Initializable {
         btn_searchStudent.setOnAction(event -> {
             String text_search = textField_searchStudent.getText();
 
-            // Update the filter predicate based on the search term
+            // Update the filter predicate based on the search termz`
             filteredList.setPredicate(student -> {
                 if (text_search == null || text_search.isEmpty()) {
                     return true; // Show all students if the search term is empty
@@ -818,11 +821,82 @@ public class DashBoardController implements Initializable {
 
         ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
 
+        // Xử lý khi bấm nút btn_showUnreturnedBook
         btn_showUnreturnedBook.setOnAction(event -> {
-            listBorrowedBook.removeIf(borrowedBook ->
-                    borrowedBook.getReturn_date() != null);
+            // Loại bỏ sách đã trả khỏi danh sách
+            listBorrowedBook.removeIf(borrowedBook -> borrowedBook.getReturn_date() != null);
+
+            // Cập nhật lại danh sách trong TableView
+            borrowedBookManager_TableView.setItems(null); // Reset tạm thời để làm mới
+            borrowedBookManager_TableView.setItems(listBorrowedBook);
+
+            // Ẩn cột return_date
+            col_returnDate_mng.setVisible(false);
+
+            // Tạo cột action nếu chưa tồn tại
+            if (borrowedBookManager_TableView.getColumns().stream()
+                    .noneMatch(col -> col.getText().equals("Action"))) {
+                TableColumn<BorrowedBook, Void> col_action = new TableColumn<>("Action");
+                col_action.setCellFactory(param -> new TableCell<>() {
+                    private final Button btnGetBook = new Button("Get");
+
+                    {
+                        btnGetBook.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-cursor: hand");
+                        btnGetBook.setOnAction(event -> {
+                            BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
+                            if (borrowedBook != null) {
+                                String studentNumber = borrowedBook.getStudentNumber();
+                                String bookId = borrowedBook.getId();
+
+                                // Gọi phương thức trả sách
+                                boolean isReturned = database.returnBook(studentNumber, bookId);
+
+                                if (isReturned) {
+                                    // Thông báo trả sách thành công
+                                    System.out.println("Sách đã được trả: " + borrowedBook.getTitle());
+
+                                    // Cập nhật lại danh sách sau khi trả sách
+                                    listBorrowedBook.remove(borrowedBook);
+                                    borrowedBookManager_TableView.setItems(null);
+                                    borrowedBookManager_TableView.setItems(listBorrowedBook);
+                                } else {
+                                    // Thông báo lỗi
+                                    System.out.println("Trả sách không thành công!");
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btnGetBook);
+                        }
+                    }
+                });
+
+                // Thêm cột action vào TableView
+                borrowedBookManager_TableView.getColumns().add(col_action);
+            }
         });
 
+        // Xử lý khi bấm nút historyBook
+        btn_historyBook.setOnAction(event -> {
+            // Hiển thị lại danh sách đầy đủ (bao gồm sách đã trả)
+            listBorrowedBook.clear();
+            listBorrowedBook.addAll(database.getBorrowedBook());
+
+            // Hiển thị cột return_date
+            col_returnDate_mng.setVisible(true);
+
+            // Xóa cột action (nếu có)
+            borrowedBookManager_TableView.getColumns().removeIf(col -> col.getText().equals("Action"));
+        });
+
+        // Thiết lập giá trị cho các cột
         col_stdNumber_mng.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
         col_stdName_mng.setCellValueFactory(new PropertyValueFactory<>("studentName"));
         col_bookTitle_mng.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -831,8 +905,11 @@ public class DashBoardController implements Initializable {
         col_dueDate_mng.setCellValueFactory(new PropertyValueFactory<>("due_date"));
         col_returnDate_mng.setCellValueFactory(new PropertyValueFactory<>("return_date"));
 
+        // Gán danh sách vào TableView
         borrowedBookManager_TableView.setItems(listBorrowedBook);
     }
+
+
 
     public void updateLabelToday() {
         LocalDate currentDate = LocalDate.now();

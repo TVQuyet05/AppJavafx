@@ -293,6 +293,9 @@
                   <TableColumn fx:id="col_dueDate_mng" prefWidth="94.0" text="Due Date" />
                   <TableColumn fx:id="col_returnDate_mng" prefWidth="105.0" text="Return Date" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
             <Label layoutX="14.0" layoutY="65.0" prefHeight="53.0" prefWidth="260.0" text="Borrowed Book:">
                <font>
@@ -304,7 +307,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button layoutX="423.0" layoutY="67.0" mnemonicParsing="false" onAction="#showBorrowedBookForManager" prefHeight="50.0" prefWidth="150.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="History Borrow" textFill="WHITE">
+            <Button fx:id="btn_historyBook" layoutX="423.0" layoutY="67.0" mnemonicParsing="false" onAction="#showBorrowedBookForManager" prefHeight="50.0" prefWidth="150.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="History Borrow" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -393,12 +396,12 @@
             <TextField fx:id="textField_add_Quantity" layoutX="405.0" layoutY="482.0" prefHeight="50.0" prefWidth="260.0" promptText="99" styleClass="add-textfield" />
             <Button layoutX="507.0" layoutY="626.0" mnemonicParsing="false" onAction="#updateBookInDatabase" prefHeight="44.0" prefWidth="97.0" styleClass="add-button-right" text="Update" textFill="WHITE">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Button>
             <Button layoutX="352.0" layoutY="626.0" mnemonicParsing="false" onAction="#deleteBookInDatabase" prefHeight="44.0" prefWidth="107.0" styleClass="add-button-right" text="Delete" textFill="WHITE">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Button>
          </children>

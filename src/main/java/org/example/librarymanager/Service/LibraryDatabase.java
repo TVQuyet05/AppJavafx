@@ -723,7 +723,7 @@ public class LibraryDatabase {
     }
 
     public boolean returnBook(String studentNumber, String bookId) {
-        String updateBorrowQuery = "UPDATE borrowBook SET return_date = CURRENT_DATE WHERE studentNumber = ? AND book_id = ?";
+        String updateBorrowQuery = "UPDATE borrowBook SET return_date = CURRENT_DATE WHERE studentNumber = ? AND book_id = ? AND return_date IS NULL";
         String updateQuantityQuery = "UPDATE book SET quantity = quantity + 1 WHERE book_id = ?";
 
         try (Connection connection = getConnection();
