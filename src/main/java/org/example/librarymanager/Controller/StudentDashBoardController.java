@@ -207,26 +207,27 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     private void showRecommendedBooks() {
         LibraryDatabase database = LibraryDatabase.getInstance();
-        String studentNumber = getData.numberOfUser; // Mã sinh viên đăng nhập
+        String studentNumber = getData.numberOfUser;
 
-        // Lấy danh sách 3 quyển sách được gợi ý
         List<Book> recommendedBooks = database.getRecommendedBooks(studentNumber);
 
-        // Hiển thị sách vào giao diện
+        // Kiểm tra số lượng sách gợi ý
         if (recommendedBooks.size() > 0) {
             Book book1 = recommendedBooks.get(0);
-            recommendedBookImg1.setImage(new Image(book1.getImage())); // Đường dẫn ảnh
-            recommendedLabel1.setText(book1.getTitle()); // Tiêu đề
+            recommendedLabel1.setText(book1.getTitle());
+            recommendedBookImg1.setImage(new Image(book1.getImage())); // Đường dẫn ảnh từ database
         }
+
         if (recommendedBooks.size() > 1) {
             Book book2 = recommendedBooks.get(1);
-            recommendedBookImg2.setImage(new Image(book2.getImage()));
             recommendedLabel2.setText(book2.getTitle());
+            recommendedBookImg2.setImage(new Image(book2.getImage()));
         }
+
         if (recommendedBooks.size() > 2) {
             Book book3 = recommendedBooks.get(2);
-            recommendedBookImg3.setImage(new Image(book3.getImage()));
             recommendedLabel3.setText(book3.getTitle());
+            recommendedBookImg3.setImage(new Image(book3.getImage()));
         }
     }
 
