@@ -16,6 +16,8 @@ public class Book {
 
     private String previewBookLink = "";
 
+    private double avgJudge;
+
     public Book(String id, String title, String author, String genre, String date, String description, int quantity, String image) {
         this.id = id;
         this.title = title;
@@ -46,7 +48,12 @@ public class Book {
         this.author = author;
     }
 
-
+    public Book(String id, String title, String image, double avgJudge) {
+        this.id = id;
+        this.title = title;
+        this.image = image;
+        this.avgJudge = avgJudge;
+    }
     public String getId() {return this.id;}
 
     public String getTitle() {return this.title;}
@@ -66,5 +73,6 @@ public class Book {
     public void setPreviewBookLink(String previewBookLink) {this.previewBookLink = previewBookLink;}
     public String getPreviewBookLink() {return this.previewBookLink;}
 
+    public double getAvgJudge() { return avgJudge; }
 
 }

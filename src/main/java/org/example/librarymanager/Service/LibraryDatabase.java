@@ -348,7 +348,6 @@ public class LibraryDatabase {
         }
         return topFavBooks;
     }
-
     // xử lý th nếu add trùng sách (isbn) thì cộng vào quantity.
     public void addBook(Book book) {
         Connection connection = getConnection();
@@ -548,20 +547,16 @@ public class LibraryDatabase {
         }
     }
 
-
-    public List<Book> searchBookInDatabase(String searchTerm) {
+    public List<Book> searchBookInDatabase(String partialTitle) {
         List<Book> books = new ArrayList<>();
         String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book " +
-                "WHERE book_title LIKE ? OR author LIKE ? OR genre LIKE ?";
+                "WHERE book_title LIKE ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Use the '%' wildcard for the LIKE operator to find partial matches
-            String wildcardSearch = "%" + searchTerm + "%";
-            stmt.setString(1, wildcardSearch);
-            stmt.setString(2, wildcardSearch);
-            stmt.setString(3, wildcardSearch);
+            stmt.setString(1, "%" + partialTitle + "%");
 
             try (ResultSet resultSet = stmt.executeQuery()) {
                 while (resultSet.next()) {
@@ -590,7 +585,7 @@ public class LibraryDatabase {
 
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book LIMIT 20";
+        String query = "SELECT book_id, book_title, author, genre, date, description, quantity, image FROM book";
         try (Connection conn = getConnection();
              Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -826,7 +821,59 @@ public class LibraryDatabase {
         }
     }
 
+    public List<Book> getRecommendedBooks(String studentNumber) {
+        // Truy vấn SQL
+        String query = """
+        WITH TopGenre AS (
+            SELECT b.genre, COUNT(*) AS count_genre
+            FROM savebook s
+            JOIN book b ON s.book_id = b.book_id
+            WHERE s.studentNumber = ?
+            GROUP BY b.genre
+            ORDER BY count_genre DESC
+            LIMIT 1
+        )
+        SELECT b.book_id, b.book_title, b.image, AVG(r.judge) AS avg_judge
+        FROM book b
+        LEFT JOIN reviewbook r ON b.book_id = r.book_id
+        WHERE b.genre = (SELECT genre FROM TopGenre)
+          AND b.book_id NOT IN (
+              SELECT book_id
+              FROM savebook
+              WHERE studentNumber = ?
+          )
+        GROUP BY b.book_id
+        ORDER BY avg_judge DESC
+        LIMIT 3
+    """;
 
+        List<Book> recommendedBooks = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set tham số cho câu truy vấn
+            stmt.setString(1, studentNumber);  // Sinh viên đang đăng nhập
+            stmt.setString(2, studentNumber);  // Sinh viên đang đăng nhập
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Lấy danh sách sách gợi ý
+                while (rs.next()) {
+                    Book book = new Book(
+                            rs.getString("book_id"),    // ID sách
+                            rs.getString("book_title"), // Tên sách
+                            rs.getString("image"),      // Đường dẫn ảnh
+                            rs.getDouble("avg_judge")   // Điểm đánh giá trung bình
+                    );
+                    recommendedBooks.add(book);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return recommendedBooks;
+    }
 
 
 

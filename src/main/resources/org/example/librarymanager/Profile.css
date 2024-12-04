@@ -1,0 +1,40 @@
+.profile {
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-border-color: #D3D3D3;
+    -fx-border-width: 1.2px;
+    -fx-background-color: transparent;
+}
+
+.profile_background  {
+    -fx-background-color: #ffffff;
+}
+
+.button_Update{
+    -fx-background-color: #000000;
+    -fx-background-radius: 8px 8px 8px 8px;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
+
+.text_field {
+    -fx-cursor: hand;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #000000;
+    -fx-background-color: transparent;
+}
+
+.close-btn{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.close-btn:hover{
+    -fx-background-color: #f13f57;
+}
+.minimize-btn{
+    -fx-background-color : transparent;
+    -fx-cursor: hand;
+}
+.minimize-btn:hover{
+    -fx-background-color: #dddddd;
+}

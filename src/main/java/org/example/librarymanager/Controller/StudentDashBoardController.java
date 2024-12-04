@@ -1,6 +1,7 @@
 package org.example.librarymanager.Controller;
-
+import javafx.scene.image.Image;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,10 +16,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -185,6 +188,18 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     private CheckBox twoJudge;
     @FXML
+    private ImageView recommendedBookImg1;
+    @FXML
+    private ImageView recommendedBookImg2;
+    @FXML
+    private ImageView recommendedBookImg3;
+    @FXML
+    private Label recommendedLabel3;
+    @FXML
+    private Label recommendedLabel2;
+    @FXML
+    private Label recommendedLabel1;
+    @FXML
     private CheckBox threeJudge;
     @FXML
     private CheckBox fourJudge;
@@ -219,6 +234,35 @@ public class StudentDashBoardController implements Initializable {
     public void backHome(ActionEvent event) {
         switchPain(homeScreen_std);
     }
+
+
+    @FXML
+    private void showRecommendedBooks() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        String studentNumber = getData.numberOfUser;
+
+        List<Book> recommendedBooks = database.getRecommendedBooks(studentNumber);
+
+        // Kiểm tra số lượng sách gợi ý
+        if (recommendedBooks.size() > 0) {
+            Book book1 = recommendedBooks.get(0);
+            recommendedLabel1.setText(book1.getTitle());
+            recommendedBookImg1.setImage(new Image(book1.getImage())); // Đường dẫn ảnh từ database
+        }
+
+        if (recommendedBooks.size() > 1) {
+            Book book2 = recommendedBooks.get(1);
+            recommendedLabel2.setText(book2.getTitle());
+            recommendedBookImg2.setImage(new Image(book2.getImage()));
+        }
+
+        if (recommendedBooks.size() > 2) {
+            Book book3 = recommendedBooks.get(2);
+            recommendedLabel3.setText(book3.getTitle());
+            recommendedBookImg3.setImage(new Image(book3.getImage()));
+        }
+    }
+
 
     public void showFavBook() {
         LibraryDatabase database = LibraryDatabase.getInstance();
@@ -637,10 +681,61 @@ public class StudentDashBoardController implements Initializable {
         label_Today.setText(labelText);
     }
 
+    public void profile() {
+        // Create a new thread to open the second stage
+        Thread viewAllBooksThread = new Thread(() -> {
+            try {
+
+                // Load the FXML file
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/Profile.fxml")));
+
+                // Create a new Scene
+                Scene scene = new Scene(root);
+
+                // Use Platform.runLater to update the JavaFX UI
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = new Stage();
+
+                        // Add mouse event handlers for dragging the window
+                        root.setOnMousePressed((MouseEvent event) -> {
+                            x = event.getSceneX();
+                            y = event.getSceneY();
+                        });
+
+                        root.setOnMouseDragged((MouseEvent event) -> {
+                            stage.setX(event.getScreenX() - x);
+                            stage.setY(event.getScreenY() - y);
+                        });
+
+                        // Set the stage to be transparent
+                        stage.initStyle(StageStyle.TRANSPARENT);
+
+                        // Set the scene and display the stage
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error displaying ProFile stage.");
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error loading ProFile.fxml");
+            }
+        });
+
+        // Start the thread to open the second stage
+        viewAllBooksThread.start();
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         currentPane = homeScreen_std;
+
         numberStudent.setText(numberOfUser);
         updateLabelToday();
 
@@ -649,6 +744,6 @@ public class StudentDashBoardController implements Initializable {
         //showFavBook();
         showTopBorrowTable();
         showTopFavTable();
-
+        showRecommendedBooks();
     }
 }

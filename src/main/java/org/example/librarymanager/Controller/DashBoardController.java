@@ -848,6 +848,56 @@ public class DashBoardController implements Initializable {
         // Set the text of the label
         label_Today.setText(labelText);
     }
+    public void profile() {
+        // Create a new thread to open the second stage
+        Thread viewAllBooksThread = new Thread(() -> {
+            try {
+
+                // Load the FXML file
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/Profile.fxml")));
+
+                // Create a new Scene
+                Scene scene = new Scene(root);
+
+                // Use Platform.runLater to update the JavaFX UI
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = new Stage();
+
+                        // Add mouse event handlers for dragging the window
+                        root.setOnMousePressed((MouseEvent event) -> {
+                            x = event.getSceneX();
+                            y = event.getSceneY();
+                        });
+
+                        root.setOnMouseDragged((MouseEvent event) -> {
+                            stage.setX(event.getScreenX() - x);
+                            stage.setY(event.getScreenY() - y);
+                        });
+
+                        // Set the stage to be transparent
+                        stage.initStyle(StageStyle.TRANSPARENT);
+
+                        // Set the scene and display the stage
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error displaying ProFile stage.");
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error loading ProFile.fxml");
+            }
+        });
+
+        // Start the thread to open the second stage
+        viewAllBooksThread.start();
+
+    }
+
 
 
     @Override
@@ -859,12 +909,11 @@ public class DashBoardController implements Initializable {
 //            throw new RuntimeException(e);
 //        }
 
-        //SignUpAccount_TableView.getSelectionModel().clearSelection();
+        SignUpAccount_TableView.getSelectionModel().clearSelection();
 
         currentPane = anchor_HomeScreen;
 
         managerName.setText(nameOfUser);
-        updateLabelToday();
 
         showHomeScreenManager();
 
@@ -873,6 +922,5 @@ public class DashBoardController implements Initializable {
         showSignUpAccount();
 
         showBorrowedBookForManager();
-
     }
 }
