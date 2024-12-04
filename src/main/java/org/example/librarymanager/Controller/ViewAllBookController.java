@@ -71,7 +71,13 @@ public class ViewAllBookController implements Initializable {
             Parent root = loader.load();
 
             DetailBookController controller = loader.getController();
-            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl, quantity, preLink);
+
+            String typeBook = "API";
+            if(preLink.isEmpty()) {
+                typeBook = "Local";
+            }
+
+            controller.setBookDetails(title, author, isbn, publicationDate, status, category, description, imageUrl, quantity, preLink, typeBook);
 
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);

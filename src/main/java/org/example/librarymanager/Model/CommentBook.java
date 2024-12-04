@@ -5,7 +5,8 @@ public class CommentBook extends  Book{
     private int judge;
     private String comment;
     private String studentNumber;
-    private String name;
+    private String studentName;
+
     public CommentBook(String id, String title, String author, String genre, String date,
                        String description, int quantity, String image, String comment, Integer judge) {
         super(id, title, author, genre, date, description, quantity, image);  // Gọi constructor của lớp cha Book
@@ -19,6 +20,11 @@ public class CommentBook extends  Book{
         this.judge = judge;
     }
 
+    public CommentBook(String studentName, String comment, int judge) {
+        this.studentName = studentName;
+        this.comment = comment;
+        this.judge = judge;
+    }
 
     public int getJudge(){
         return this.judge;
@@ -27,8 +33,8 @@ public class CommentBook extends  Book{
         return  this.comment;
     }
 
-    public String getName() {
-        return name;
+    public String getStudentName() {
+        return studentName;
     }
 
     public String getStudentNumber() {

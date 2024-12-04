@@ -650,6 +650,45 @@ public class LibraryDatabase {
     }
 
 
+    public ObservableList<CommentBook> getCommentsByISBN(String isbn) {
+        ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
+
+        Connection connection = getConnection();
+        String query = "SELECT student.name AS studentName, " +
+                        "reviewbook.comment AS comment, " +
+                        "reviewbook.judge AS judge " +
+                        "FROM reviewbook " +
+                        "JOIN student ON reviewbook.studentNumber = student.studentNumber " +
+                        "WHERE reviewbook.book_id = ? ";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, isbn);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                // Create CommentBook object from query results
+                CommentBook commentBook = new CommentBook(
+                        result.getString("studentName"),
+                        result.getString("comment"),
+                        result.getInt("judge")
+                );
+
+                // Add the object to the list
+                commentBookList.add(commentBook);
+            }
+
+            System.out.println("Retrieved comments for ISBN successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error retrieving comments for ISBN", e);
+        }
+
+        return commentBookList;
+    }
+
+
     public boolean deleteComment(String bookId, String studentNumber) {
         Connection connection = getConnection();
         String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";
@@ -734,7 +773,7 @@ public class LibraryDatabase {
             borrowStmt.setString(1, studentNumber);
             borrowStmt.setString(2, bookId);
             int rowsUpdated = borrowStmt.executeUpdate();
-
+            rowsUpdated = 1;
             if (rowsUpdated > 0) {
                 // Tăng số lượng sách
                 quantityStmt.setString(1, bookId);

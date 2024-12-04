@@ -578,18 +578,17 @@ public class StudentDashBoardController implements Initializable {
 
         if (returnSuccess) {
             showAlert("Success", "Book returned and review submitted successfully.");
-            reviewAnchor.setVisible(false);
-            borrowedBookStudent_TableView.setVisible(true);
-            refreshTable(); // Làm mới TableView
         } else {
             showAlert("Error", "Failed to update return information.");
-        }
-    }
 
-    // Làm mới bảng borrowedBookStudent_TableView
-    private void refreshTable() {
+        }
+
+        reviewAnchor.setVisible(false);
+        //System.out.println("set visible reviewAnchor");
+        borrowedBookStudent_TableView.setVisible(true);
         showBorrowedBookForStudent();
     }
+
 
     // Hiển thị danh sách sách đã mượn
     public void showBorrowedBookForStudent() {

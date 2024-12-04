@@ -3,6 +3,7 @@ package org.example.librarymanager.Controller;
 import com.google.zxing.WriterException;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -10,9 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
+import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Service.LibraryDatabase;
 import org.example.librarymanager.Service.QRCodeBook;
 import org.example.librarymanager.Util.getData;
@@ -39,6 +40,9 @@ public class DetailBookController implements Initializable {
 
     @FXML
     private Label author_Book;
+
+    @FXML
+    private Label lable_typeOfBook;
 
     @FXML
     private Button back_to_Dashboard;
@@ -84,6 +88,18 @@ public class DetailBookController implements Initializable {
 
     @FXML
     private Label status_book;
+
+    @FXML
+    private TableView<CommentBook> tableView_commentForBook;
+
+    @FXML
+    private TableColumn<?, ?> col_stdName_cmtBook;
+
+    @FXML
+    private TableColumn<?, ?> col_comment_cmtBook;
+
+    @FXML
+    private TableColumn<?, ?> col_judge_cmtBook;
 
 //    @FXML
 //    private Button btn_addBookToLib;
@@ -172,7 +188,9 @@ public class DetailBookController implements Initializable {
         }
     }
 
-    public void setBookDetails(String title, String author, String isbn, String publicationDate, String status, String category, String description, String imageUrl, int quantityBook, String preLink) throws IOException, WriterException {
+    public void setBookDetails(String title, String author, String isbn, String publicationDate, String status,
+                               String category, String description, String imageUrl, int quantityBook, String preLink,
+                               String typeBook) throws IOException, WriterException {
         name_Book.setText(title);
         name_Book.setMaxHeight(80);
         author_Book.setText(author);
@@ -180,6 +198,20 @@ public class DetailBookController implements Initializable {
         publication_date_Book.setText(publicationDate);
         path_ImageBook.setText(imageUrl);
         label_quantityBook.setText(String.valueOf(quantityBook));
+        lable_typeOfBook.setText(typeBook);
+
+        if(lable_typeOfBook.getText().equals("Local")) {
+            tableView_commentForBook.setVisible(true);
+
+            LibraryDatabase database = LibraryDatabase.getInstance();
+            ObservableList<CommentBook> listComment = database.getCommentsByISBN(isbn_books.getText());
+
+            col_stdName_cmtBook.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+            col_comment_cmtBook.setCellValueFactory(new PropertyValueFactory<>("comment"));
+            col_judge_cmtBook.setCellValueFactory(new PropertyValueFactory<>("judge"));
+            tableView_commentForBook.setItems(listComment);
+
+        }
 
         //String preLink = "https://news.khangz.com/wp-content/uploads/2024/12/Chill-guy-la-gi-6.jpg";
         if(!preLink.equals("")) {
