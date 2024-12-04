@@ -595,6 +595,7 @@ public class StudentDashBoardController implements Initializable {
     public void returnBook() { switchPain(returnBooks_std); }
 
     public void commentBook() {
+        showCommentBookForStudent();
         switchPain(commentBook_std);
     }
 
@@ -608,7 +609,7 @@ public class StudentDashBoardController implements Initializable {
         currentPane = homeScreen_std;
 
         numberStudent.setText(numberOfUser);
-        showCommentBookForStudent();
+        //showCommentBookForStudent();
         showBorrowedBookForStudent();
         showFavBook();
         showTopBorrowTable();
