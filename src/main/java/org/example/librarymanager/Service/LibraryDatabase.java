@@ -664,6 +664,49 @@ public class LibraryDatabase {
 
         return favBookList;
     }
+    public List<Book> getRecommendedBooks(String studentNumber) {
+        String query = """
+        WITH favorite_genre AS (
+            SELECT b.genre, COUNT(*) AS genre_count
+            FROM savebook s
+            JOIN book b ON s.book_id = b.book_id
+            WHERE s.studentNumber = ?
+            GROUP BY b.genre
+            ORDER BY genre_count DESC
+            LIMIT 1
+        )
+        SELECT b.book_id, b.book_title, b.image, AVG(r.judge) AS avg_judge
+        FROM book b
+        JOIN favorite_genre fg ON b.genre = fg.genre
+        LEFT JOIN reviewbook r ON b.book_id = r.book_id
+        GROUP BY b.book_id, b.book_title, b.image
+        ORDER BY avg_judge DESC
+        LIMIT 3;
+    """;
+
+        List<Book> recommendedBooks = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, studentNumber);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Book book = new Book(
+                            rs.getString("book_id"),
+                            rs.getString("book_title"),
+                            rs.getString("image"),
+                            rs.getDouble("avg_judge")
+                    );
+                    recommendedBooks.add(book);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return recommendedBooks;
+    }
+
     public boolean deleteComment(String bookId, String studentNumber) {
         Connection connection = getConnection();
         String query = "DELETE FROM reviewbook WHERE book_id = ? AND studentNumber = ?";

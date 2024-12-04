@@ -1,5 +1,5 @@
 package org.example.librarymanager.Controller;
-
+import javafx.scene.image.Image;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -11,10 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -161,6 +163,18 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     private TableColumn<Object[], String> favTimeColumn;
     @FXML
+    private ImageView recommendedBookImg1;
+    @FXML
+    private ImageView recommendedBookImg2;
+    @FXML
+    private ImageView recommendedBookImg3;
+    @FXML
+    private Label recommendedLabel3;
+    @FXML
+    private Label recommendedLabel2;
+    @FXML
+    private Label recommendedLabel1;
+    @FXML
 
     public void showTopFavTable(){
         List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
@@ -190,6 +204,32 @@ public class StudentDashBoardController implements Initializable {
     public void backHome(ActionEvent event) {
         switchPain(homeScreen_std);
     }
+    @FXML
+    private void showRecommendedBooks() {
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        String studentNumber = getData.numberOfUser; // Mã sinh viên đăng nhập
+
+        // Lấy danh sách 3 quyển sách được gợi ý
+        List<Book> recommendedBooks = database.getRecommendedBooks(studentNumber);
+
+        // Hiển thị sách vào giao diện
+        if (recommendedBooks.size() > 0) {
+            Book book1 = recommendedBooks.get(0);
+            recommendedBookImg1.setImage(new Image(book1.getImage())); // Đường dẫn ảnh
+            recommendedLabel1.setText(book1.getTitle()); // Tiêu đề
+        }
+        if (recommendedBooks.size() > 1) {
+            Book book2 = recommendedBooks.get(1);
+            recommendedBookImg2.setImage(new Image(book2.getImage()));
+            recommendedLabel2.setText(book2.getTitle());
+        }
+        if (recommendedBooks.size() > 2) {
+            Book book3 = recommendedBooks.get(2);
+            recommendedBookImg3.setImage(new Image(book3.getImage()));
+            recommendedLabel3.setText(book3.getTitle());
+        }
+    }
+
     public void showFavBook() {
         LibraryDatabase database = LibraryDatabase.getInstance();
 
@@ -518,6 +558,6 @@ public class StudentDashBoardController implements Initializable {
         showFavBook();
         showTopBorrowTable();
         showTopFavTable();
-
+        showRecommendedBooks();
     }
 }

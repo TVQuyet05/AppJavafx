@@ -13,7 +13,7 @@ public class Book {
     private String description;
     private int quantity;
     private String image;
-
+    private double avgJudge;
     public Book(String id, String title, String author, String genre, String date, String description, int quantity, String image) {
         this.id = id;
         this.title = title;
@@ -44,7 +44,12 @@ public class Book {
         this.author = author;
     }
 
-
+    public Book(String id, String title, String image, double avgJudge) {
+        this.id = id;
+        this.title = title;
+        this.image = image;
+        this.avgJudge = avgJudge;
+    }
     public String getId() {return this.id;}
 
     public String getTitle() {return this.title;}
@@ -60,6 +65,6 @@ public class Book {
     public String getDescription() {return this.description;}
 
     public int getQuantity() {return this.quantity;}
-
+    public double getAvgJudge() { return avgJudge; }
 
 }
