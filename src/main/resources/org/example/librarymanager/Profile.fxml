@@ -10,50 +10,31 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="profile_background" stylesheets="@Profile.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ProfileController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="profile_background" stylesheets="@Profile.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ProfileController">
    <children>
-      <AnchorPane layoutX="44.0" layoutY="150.0" prefHeight="200.0" prefWidth="250.0" styleClass="profile" stylesheets="@Profile.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <AnchorPane layoutX="44.0" layoutY="150.0" prefHeight="231.0" prefWidth="253.0" styleClass="profile" stylesheets="@Profile.css" AnchorPane.bottomAnchor="249.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
             <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../Image/avt.jpg" />
                </image>
             </ImageView>
-            <Label layoutX="14.0" layoutY="257.0" text="Number of books borrowed:" textFill="#345494">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="14.0" layoutY="336.0" text="Number of overdue books:" textFill="#345494">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Line endX="150.0" layoutX="149.0" layoutY="307.0" startX="-100.0" strokeWidth="0.5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Line endX="150.0" layoutX="100.0" layoutY="230.0" startX="-100.0" strokeWidth="0.5" />
-            <Line endX="150.0" layoutX="100.0" layoutY="393.0" startX="-100.0" strokeWidth="0.5" />
-            <Button layoutX="50.0" layoutY="406.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="button_Update" text="Update">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Button>
-            <Label layoutX="186.0" layoutY="257.0" text="20" textFill="#11ff00" />
-            <Label layoutX="184.0" layoutY="335.0" text="3" textFill="RED" />
          </children>
       </AnchorPane>
-      <TextField layoutX="353.0" layoutY="179.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" text="Trần Quang Thành" />
-      <TextField layoutX="353.0" layoutY="346.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" text="23020155" />
+      <TextField layoutX="353.0" layoutY="119.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <TextField layoutX="353.0" layoutY="286.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
       <Label layoutX="295.0" layoutY="20.0" text="Profile" textFill="#345494">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Label layoutX="350.0" layoutY="161.0" text="Full Name" textFill="#345494">
+      <Label layoutX="350.0" layoutY="101.0" text="Full Name" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="353.0" layoutY="327.0" text="Student ID" textFill="#345494">
+      <Label layoutX="353.0" layoutY="267.0" text="Student ID" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -69,11 +50,22 @@
             <FontAwesomeIcon glyphName="MINUS" />
          </graphic>
       </Button>
-      <TextField layoutX="353.0" layoutY="259.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" text="K68-IT2" />
-      <Label layoutX="353.0" layoutY="241.0" text="Class" textFill="#345494">
+      <TextField layoutX="353.0" layoutY="199.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <Label layoutX="353.0" layoutY="181.0" text="Class" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
+      <Label layoutX="353.0" layoutY="355.0" prefHeight="17.0" prefWidth="61.0" text="Password" textFill="#345494">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField layoutX="354.0" layoutY="378.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <Button layoutX="449.0" layoutY="443.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="button_Update" text="Update">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

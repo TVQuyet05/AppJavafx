@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -34,8 +35,13 @@ public class ProfileController implements Initializable {
     public void close() {
         Stage stage = (Stage) close.getScene().getWindow();
         Parent root = stage.getScene().getRoot();
-        addFadeOutEffect(root, () -> System.exit(0));
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(400), root);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setOnFinished(event -> root.getScene().getWindow().hide());
+        fadeTransition.play();
     }
+
 
     public void minimize() {
         Stage stage = (Stage) minimize.getScene().getWindow();
