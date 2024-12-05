@@ -157,13 +157,13 @@ public class DetailBookController implements Initializable {
 
                 // Hiển thị thông báo kết quả
                 if (isSuccess) {
-                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Mượn sách thành công!");
+                    showAlert(Alert.AlertType.INFORMATION, "Successful!", "Borrowed book successfully!");
 
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Thất bại", "Mượn sách thất bại! Bạn cần trả cuốn sách này trước khi mượn tiếp.");
+                    showAlert(Alert.AlertType.ERROR, "Failure", "Book checkout failed! You must return this book before checking out again.");
                 }
             } else {
-                showAlert(Alert.AlertType.WARNING, "Lỗi", "Không tìm thấy mã ISBN của sách!");
+                showAlert(Alert.AlertType.WARNING, "Error", "Book ISBN not found!");
             }
         });
     }
