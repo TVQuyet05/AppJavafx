@@ -24,4 +24,10 @@ public class Student extends User {
     public String get_class() {
         return this._class;
     }
+
+    // Implementation of abstract method
+    @Override
+    public String getUniqueIdentifier() {
+        return this.studentNumber;
+    }
 }

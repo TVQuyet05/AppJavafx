@@ -172,11 +172,11 @@ public class LoginScreenController implements Initializable {
 
             if (checkStudent) {
                 successful();
-                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.1));
                 pauseTransition.setOnFinished((pauseEvent) -> {
                     Parent root1 = login.getParent().getParent();
 
-                    FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
+                    FadeTransition fadeIn2 = new FadeTransition(Duration.millis(10), root1);
                     fadeIn2.setFromValue(1.0);
                     fadeIn2.setToValue(0.0);
                     fadeIn2.setOnFinished(event -> {
@@ -198,7 +198,7 @@ public class LoginScreenController implements Initializable {
                                 stage.setY(mouseEvent.getScreenY() - y);
                             });
 
-                            FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
+                            FadeTransition fadeIn = new FadeTransition(Duration.millis(10), root);
                             fadeIn.setFromValue(0.0);
                             fadeIn.setToValue(1.0);
 
@@ -221,11 +221,11 @@ public class LoginScreenController implements Initializable {
 
                 if(checkManager) {
                     successful();
-                    PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1.5));
+                    PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.1));
                     pauseTransition.setOnFinished((pauseEvent) -> {
                         Parent root1 = login.getParent().getParent();
 
-                        FadeTransition fadeIn2 = new FadeTransition(Duration.millis(1000), root1);
+                        FadeTransition fadeIn2 = new FadeTransition(Duration.millis(10), root1);
                         fadeIn2.setFromValue(1.0);
                         fadeIn2.setToValue(0.0);
                         fadeIn2.setOnFinished(event -> {
@@ -247,7 +247,7 @@ public class LoginScreenController implements Initializable {
                                     stage.setY(mouseEvent.getScreenY() - y);
                                 });
 
-                                FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
+                                FadeTransition fadeIn = new FadeTransition(Duration.millis(10), root);
                                 fadeIn.setFromValue(0.0);
                                 fadeIn.setToValue(1.0);
 
