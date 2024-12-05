@@ -972,6 +972,7 @@ public class LibraryDatabase {
 
         return recommendedBooks;
     }
+
     public boolean updateStudentProfileController(String studentNumber, String password, String fullName, String className) {
         String query = """
         UPDATE student
@@ -993,6 +994,37 @@ public class LibraryDatabase {
             return false;
         }
     }
+
+    public Student getStudentByStudentNumber(String studentNumber) {
+        String query = """
+        SELECT studentNumber, password, name, class
+        FROM student
+        WHERE studentNumber = ?
+    """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, studentNumber);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Tạo đối tượng Student từ kết quả truy vấn
+                    return new Student(
+                            rs.getString("studentNumber"),
+                            rs.getString("password"),
+                            "",
+                            rs.getString("name"),
+                            rs.getString("class")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Trả về null nếu không tìm thấy
+    }
+
 
     public void updateStudentProfile(String studentNumber, String password, String name, String studentClass) {
         String query = """

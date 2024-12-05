@@ -12,11 +12,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static org.example.librarymanager.Util.getData.nameOfUser;
+import static org.example.librarymanager.Util.getData.numberOfUser;
 
 
 public class ProfileController implements Initializable {
@@ -38,16 +41,16 @@ public class ProfileController implements Initializable {
 
     @FXML
     private void onUpdateProfileButtonClick() {
-        // Gọi hàm cập nhật dữ liệu (nếu có)
+        // call update function
         boolean isUpdated = updateProfile();
 
         // Hiện thông báo nếu cập nhật thành công
         if (isUpdated) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Update Success");
-            alert.setHeaderText(null); // Không có tiêu đề phụ
+            alert.setHeaderText(null); // dont have sub title
             alert.setContentText("Information updated successfully!");
-            alert.showAndWait(); // Hiện hộp thoại và chờ người dùng đóng
+            alert.showAndWait(); //show alert
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Update Failed");
@@ -67,6 +70,7 @@ public class ProfileController implements Initializable {
         // Gọi hàm cập nhật trong lớp LibraryDatabase
         return LibraryDatabase.getInstance().updateStudentProfileController(studentNumber, password, fullName, className);
     }
+
     public void close() {
         Stage stage = (Stage) close.getScene().getWindow();
         Parent root = stage.getScene().getRoot();
@@ -113,6 +117,11 @@ public class ProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        studentNumberProfile.setText(numberOfUser);
+        fullNameProfile.setText(nameOfUser);
+        LibraryDatabase database = LibraryDatabase.getInstance();
+        Student student = database.getStudentByStudentNumber(numberOfUser);
+        passwordProfile.setText(student.getPassword());
+        classProfile.setText(student.get_class());
     }
 }
