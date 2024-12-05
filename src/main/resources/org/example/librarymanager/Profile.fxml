@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="profile_background" stylesheets="@Profile.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ProfileController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="708.0" styleClass="profile_background" stylesheets="@Profile.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.ProfileController">
    <children>
-      <AnchorPane layoutX="44.0" layoutY="150.0" prefHeight="231.0" prefWidth="253.0" styleClass="profile" stylesheets="@Profile.css" AnchorPane.bottomAnchor="249.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
-         <children>
-            <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Image/avt.jpg" />
-               </image>
-            </ImageView>
-            <Line endX="150.0" layoutX="100.0" layoutY="230.0" startX="-100.0" strokeWidth="0.5" />
-         </children>
-      </AnchorPane>
-      <TextField layoutX="353.0" layoutY="119.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
-      <TextField layoutX="353.0" layoutY="286.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <TextField fx:id="fullNameProfile" layoutX="212.0" layoutY="119.0" prefHeight="40.0" prefWidth="272.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <TextField fx:id="studentNumberProfile" layoutX="222.0" layoutY="286.0" prefHeight="40.0" prefWidth="272.0" styleClass="text_field" stylesheets="@Profile.css" />
       <Label layoutX="295.0" layoutY="20.0" text="Profile" textFill="#345494">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Label layoutX="350.0" layoutY="101.0" text="Full Name" textFill="#345494">
+      <Label layoutX="222.0" layoutY="101.0" prefHeight="17.0" prefWidth="61.0" text="Full Name" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="353.0" layoutY="267.0" text="Student ID" textFill="#345494">
+      <Label layoutX="224.0" layoutY="267.0" prefHeight="17.0" prefWidth="190.0" text="Student ID" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Line endX="329.0" endY="-7.62939453125E-6" layoutX="371.0" layoutY="73.0" startX="-100.0" strokeWidth="0.1" />
+      <Line endX="329.0" endY="-7.62939453125E-6" layoutX="371.0" layoutY="73.0" startX="-364.79998779296875" strokeWidth="0.1" />
       <Button fx:id="close" layoutX="646.0" layoutY="3.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="50.0" styleClass="close-btn" stylesheets="@Profile.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <graphic>
             <FontAwesomeIcon glyphName="CLOSE" />
@@ -50,19 +36,19 @@
             <FontAwesomeIcon glyphName="MINUS" />
          </graphic>
       </Button>
-      <TextField layoutX="353.0" layoutY="199.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
-      <Label layoutX="353.0" layoutY="181.0" text="Class" textFill="#345494">
+      <TextField fx:id="classProfile" layoutX="216.0" layoutY="199.0" prefHeight="40.0" prefWidth="272.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <Label layoutX="223.0" layoutY="181.0" prefHeight="17.0" prefWidth="158.0" text="Class" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="353.0" layoutY="355.0" prefHeight="17.0" prefWidth="61.0" text="Password" textFill="#345494">
+      <Label layoutX="224.0" layoutY="355.0" prefHeight="17.0" prefWidth="190.0" text="Password" textFill="#345494">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="354.0" layoutY="378.0" prefHeight="40.0" prefWidth="264.0" styleClass="text_field" stylesheets="@Profile.css" />
-      <Button layoutX="449.0" layoutY="443.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="button_Update" text="Update">
+      <TextField fx:id="passwordProfile" layoutX="224.0" layoutY="378.0" prefHeight="40.0" prefWidth="272.0" styleClass="text_field" stylesheets="@Profile.css" />
+      <Button fx:id="updateProfileButton" layoutX="259.0" layoutY="446.0" mnemonicParsing="false" onAction="#onUpdateProfileButtonClick" prefHeight="40.0" prefWidth="212.0" styleClass="button_Update" text="Update">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

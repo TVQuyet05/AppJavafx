@@ -970,6 +970,86 @@ public class LibraryDatabase {
         return recommendedBooks;
     }
 
+    public boolean updateStudentProfileController(String studentNumber, String password, String fullName, String className) {
+        String query = """
+        UPDATE student
+        SET password = ?, name = ?, class = ?
+        WHERE studentNumber = ?
+    """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, password);
+            pstmt.setString(2, fullName);
+            pstmt.setString(3, className);
+            pstmt.setString(4, studentNumber);
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; // Trả về true nếu cập nhật thành công
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Student getStudentByStudentNumber(String studentNumber) {
+        String query = """
+        SELECT studentNumber, password, name, class
+        FROM student
+        WHERE studentNumber = ?
+    """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, studentNumber);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Tạo đối tượng Student từ kết quả truy vấn
+                    return new Student(
+                            rs.getString("studentNumber"),
+                            rs.getString("password"),
+                            "",
+                            rs.getString("name"),
+                            rs.getString("class")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Trả về null nếu không tìm thấy
+    }
+
+
+    public void updateStudentProfile(String studentNumber, String password, String name, String studentClass) {
+        String query = """
+        UPDATE student
+        SET password = ?, name = ?, class = ?
+        WHERE studentNumber = ?
+    """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, password);
+            pstmt.setString(2, name);
+            pstmt.setString(3, studentClass);
+            pstmt.setString(4, studentNumber);
+
+            int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Cập nhật thông tin thành công!");
+            } else {
+                System.out.println("Không tìm thấy sinh viên với mã sinh viên: " + studentNumber);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
