@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
+<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
    <children>
       <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
          <font>
@@ -54,11 +54,11 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="deleteBooks" layoutX="59.0" layoutY="469.0" mnemonicParsing="false" onAction="#deleteBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-deletebook">
+      <Button fx:id="deleteBooks" layoutX="63.0" layoutY="477.0" mnemonicParsing="false" onAction="#deleteBooks" prefHeight="60.0" prefWidth="60.0" styleClass="book-deletebook">
          <graphic>
             <ImageView fitHeight="60.0" fitWidth="60.0">
                <image>
-                  <Image url="@../../../Image/Delete Book.png" />
+                  <Image url="@../../../Image/comment.png" />
                </image>
             </ImageView>
          </graphic></Button>
@@ -84,7 +84,7 @@
             <Font name="Roboto Bold" size="18.0" />
          </font>
       </Label>
-      <Label contentDisplay="TOP" layoutX="68.0" layoutY="433.0" text="Add Book" textFill="#eceff1">
+      <Label contentDisplay="TOP" layoutX="63.0" layoutY="433.0" text="Add Book" textFill="#eceff1">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -99,7 +99,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="61.0" layoutY="545.0" text="Comment Book" textFill="#eceff1">
+      <Label layoutX="50.0" layoutY="545.0" text="Comment Book" textFill="#eceff1">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -257,7 +257,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TableView fx:id="commentBookTable" layoutX="6.0" layoutY="127.0" prefHeight="525.0" prefWidth="800.0">
+            <TableView fx:id="commentBookTable" layoutX="20.0" layoutY="117.0" prefHeight="525.0" prefWidth="800.0" styleClass="table_view" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
               <columns>
                   <TableColumn fx:id="studentNumberColumn" prefWidth="135.99999380111694" text="Student Number" />
                   <TableColumn fx:id="studentNameColumn" prefWidth="149.0" text="Student Name" />
@@ -266,10 +266,13 @@
                   <TableColumn fx:id="judgeColumn" prefWidth="86.0" text="Judge" />
                   <TableColumn fx:id="colAction" prefWidth="92.0" text="Action" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <Label layoutX="14.0" layoutY="68.0" prefHeight="53.0" prefWidth="276.0" text="Comment Book :" textFill="#0048ff">
+            <Label layoutX="14.0" layoutY="63.0" prefHeight="54.0" prefWidth="300.0" text="Comment Book :" textFill="#345494">
                <font>
-                  <Font size="36.0" />
+                  <Font name="System Bold" size="36.0" />
                </font>
             </Label>
          </children>
@@ -294,7 +297,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TableView fx:id="borrowedBookManager_TableView" layoutX="6.0" layoutY="125.0" prefHeight="550.0" prefWidth="789.0">
+            <TableView fx:id="borrowedBookManager_TableView" layoutX="6.0" layoutY="125.0" prefHeight="550.0" prefWidth="789.0" styleClass="table_view">
               <columns>
                 <TableColumn fx:id="col_stdNumber_mng" prefWidth="108.00000143051147" text="Student Num" />
                 <TableColumn fx:id="col_stdName_mng" prefWidth="147.99999237060547" text="Student Name" />

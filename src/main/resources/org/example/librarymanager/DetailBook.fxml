@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DetailBookController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DetailBookController">
    <children>
       <AnchorPane fx:id="anchor_detail_Books" prefHeight="700.0" prefWidth="1301.6000000000001" styleClass="detail_book_background" stylesheets="@DashBoard.css">
          <children>
@@ -105,19 +105,19 @@
                   </Label>
                </children>
             </AnchorPane>
-            <Button fx:id="btn_addBookToLib" layoutX="166.0" layoutY="641.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="49.0" prefWidth="262.0" text="Add/ Update/ Delete Book">
+            <Button fx:id="btn_addBookToLib" layoutX="166.0" layoutY="641.0" mnemonicParsing="false" onAction="#addBookToLibrary" prefHeight="49.0" prefWidth="262.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Add/ Update/ Delete Book">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Button>
             <Label fx:id="path_ImageBook" layoutX="590.0" layoutY="450.0" text="Label" visible="false" />
             <Button fx:id="button_borrow_book" layoutX="109.0" layoutY="646.0" mnemonicParsing="false" onAction="#setActionBorrowButton" prefHeight="40.0" prefWidth="171.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Borrow Book">
                <font>
-                  <Font name="Segoe UI Bold" size="18.0" />
+                  <Font name="Segoe UI Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="save_book_button" layoutX="312.0" layoutY="646.0" mnemonicParsing="false" onAction="#setActionSaveButton" prefHeight="40.0" prefWidth="171.0" styleClass="button_detailbook_borrowBook" text="Add to favorite">
+            <Button fx:id="save_book_button" layoutX="312.0" layoutY="646.0" mnemonicParsing="false" onAction="#setActionSaveButton" prefHeight="40.0" prefWidth="171.0" styleClass="button_detailbook_borrowBook" stylesheets="@DetailBook.css" text="Add to favorite">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Button>
             <ImageView fx:id="image_QRCode" fitHeight="225.0" fitWidth="225.0" layoutX="931.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true" />
@@ -132,7 +132,7 @@
                </font>
             </Label>
             <Label fx:id="lable_typeOfBook" layoutX="385.0" layoutY="33.0" prefHeight="30.0" prefWidth="87.0" text="typeOfBook" visible="false" />
-            <TableView fx:id="tableView_commentForBook" layoutX="588.0" layoutY="445.0" prefHeight="245.0" prefWidth="610.0" visible="false">
+            <TableView fx:id="tableView_commentForBook" layoutX="588.0" layoutY="445.0" prefHeight="245.0" prefWidth="610.0" styleClass="table_view" stylesheets="@DashBoard.css" visible="false">
               <columns>
                 <TableColumn fx:id="col_stdName_cmtBook" prefWidth="163.0" text="Student Name" />
                 <TableColumn fx:id="col_comment_cmtBook" prefWidth="367.0" text="Comment" />

@@ -279,6 +279,7 @@ public class DashBoardController implements Initializable {
             private final Button deleteButton = new Button("Delete");
 
             {
+                deleteButton.setStyle("-fx-background-color: red; -fx-cursor: hand");
                 deleteButton.setOnAction(event -> {
                     CommentBook commentBook = getTableView().getItems().get(getIndex());
                     LibraryDatabase.getInstance().deleteComment(commentBook); // Xóa bình luận khỏi cơ sở dữ liệu
