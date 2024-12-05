@@ -3,7 +3,6 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -17,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
+<AnchorPane fx:id="anchor_DashBoard" prefHeight="700.0" prefWidth="1300.0" styleClass="backgroundleft" stylesheets="@DashBoard.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanager.Controller.DashBoardController">
    <children>
       <Label layoutX="53.0" layoutY="72.0" stylesheets="@DashBoard.css" text="Hi" textFill="WHITE">
          <font>
@@ -100,7 +99,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="61.0" layoutY="545.0" text="Delete Book" textFill="#eceff1">
+      <Label layoutX="61.0" layoutY="545.0" text="Comment Book" textFill="#eceff1">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -220,7 +219,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchor_deleteBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
+      <AnchorPane fx:id="anchor_deleteBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">
          <children>
             <Button layoutX="641.0" layoutY="10.0" mnemonicParsing="false" styleClass="button-btn">
                <graphic>
@@ -258,16 +257,21 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TableView fx:id="commentBookTable" layoutX="6.0" layoutY="175.0" prefHeight="440.0" prefWidth="800.0">
+            <TableView fx:id="commentBookTable" layoutX="6.0" layoutY="127.0" prefHeight="525.0" prefWidth="800.0">
               <columns>
-                  <TableColumn fx:id="studentNumberColumn" prefWidth="122.20000457763672" text="Student Number" />
-                  <TableColumn fx:id="judgeColumn" prefWidth="142.60003662109375" text="judge" />
-                  <TableColumn fx:id="bookTitleColumn" prefWidth="145.0" text="Book Name" />
-                <TableColumn fx:id="commentColumn" prefWidth="123.20010375976562" text="comment" />
-                  <TableColumn fx:id="colAction" prefWidth="94.0" text="Action" />
-                  <TableColumn fx:id="studentNameColumn" prefWidth="234.39990234375" text="Student Name" />
+                  <TableColumn fx:id="studentNumberColumn" prefWidth="135.99999380111694" text="Student Number" />
+                  <TableColumn fx:id="studentNameColumn" prefWidth="149.0" text="Student Name" />
+                <TableColumn fx:id="bookTitleColumn" prefWidth="126.0" text="Book Title" />
+                  <TableColumn fx:id="commentColumn" prefWidth="213.00003051757812" text="Comment" />
+                  <TableColumn fx:id="judgeColumn" prefWidth="86.0" text="Judge" />
+                  <TableColumn fx:id="colAction" prefWidth="92.0" text="Action" />
               </columns>
             </TableView>
+            <Label layoutX="14.0" layoutY="68.0" prefHeight="53.0" prefWidth="276.0" text="Comment Book :" textFill="#0048ff">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="anchor_borrowedBooks" layoutX="496.0" layoutY="18.0" prefHeight="700.0" prefWidth="800.0" styleClass="backgroundright" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="485.6" AnchorPane.rightAnchor="14.4" AnchorPane.topAnchor="8.0">

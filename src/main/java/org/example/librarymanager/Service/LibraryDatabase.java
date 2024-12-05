@@ -529,8 +529,17 @@ public class LibraryDatabase {
 
 
     public void addStudent(Student student) {
+
         Connection connection = getConnection();
-        String query = "INSERT INTO student (studentNumber, password, name, class, image) VALUES (?, ?, ?, ?, ?)";
+
+        String query = "INSERT INTO student (studentNumber, password, name, class, image) " +
+                "VALUES (?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE " +
+                "password = VALUES(password), " +
+                "name = VALUES(name), " +
+                "class = VALUES(class), " +
+                "image = VALUES(image)";
+
         try(PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getStudentNumber());
             stmt.setString(2, student.getPassword());
@@ -681,18 +690,6 @@ public class LibraryDatabase {
         return commentBooks;
     }
 
-    public boolean deleteReview(String studentNumber, String bookId) {
-        String query = "DELETE FROM reviewbook WHERE studentNumber = ? AND book_id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, studentNumber);
-            stmt.setString(2, bookId);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public ObservableList<CommentBook> getCommentsByISBN(String isbn) {
         ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
