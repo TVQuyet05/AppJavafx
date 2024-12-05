@@ -44,7 +44,6 @@ public class ProfileController implements Initializable {
         // call update function
         boolean isUpdated = updateProfile();
 
-        // Hiện thông báo nếu cập nhật thành công
         if (isUpdated) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Update Success");
@@ -59,15 +58,11 @@ public class ProfileController implements Initializable {
             alert.showAndWait();
         }
     }
-
-    // Phương thức cập nhật dữ liệu vào cơ sở dữ liệu
     private boolean updateProfile() {
         String studentNumber = studentNumberProfile.getText();
         String password = passwordProfile.getText();
         String fullName = fullNameProfile.getText();
         String className = classProfile.getText();
-
-        // Gọi hàm cập nhật trong lớp LibraryDatabase
         return LibraryDatabase.getInstance().updateStudentProfileController(studentNumber, password, fullName, className);
     }
 

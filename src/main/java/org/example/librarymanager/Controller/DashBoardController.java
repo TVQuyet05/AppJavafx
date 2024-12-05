@@ -265,17 +265,14 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private void showCommentBook() {
-        // Lấy dữ liệu từ LibraryDatabase
         ObservableList<CommentBook> commentBooks = LibraryDatabase.getInstance().getCommentBooksForManager();
 
-        // Thiết lập các cột
         studentNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudentNumber()));
         studentNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudentName()));
         bookTitleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
         commentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
         judgeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getJudge()).asObject());
 
-        // Thêm cột xóa
         colAction.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 
@@ -299,7 +296,6 @@ public class DashBoardController implements Initializable {
             }
         });
 
-        // Gán dữ liệu vào bảng
         commentBookTable.setItems(commentBooks);
     }
 
@@ -905,7 +901,7 @@ public class DashBoardController implements Initializable {
 
         ObservableList<BorrowedBook> listBorrowedBook = database.getBorrowedBook();
 
-        // Xử lý khi bấm nút btn_showUnreturnedBook
+
         btn_showUnreturnedBook.setOnAction(event -> {
             // remove returned books out of list
             listBorrowedBook.removeIf(borrowedBook -> borrowedBook.getReturn_date() != null);
@@ -935,15 +931,12 @@ public class DashBoardController implements Initializable {
                                 boolean isReturned = database.returnBook(studentNumber, bookId);
 
                                 if (isReturned) {
-                                    // informed returned books successfully
                                     System.out.println("Sách đã được trả: " + borrowedBook.getTitle());
 
-                                    // Cập nhật lại danh sách sau khi trả sách
                                     listBorrowedBook.remove(borrowedBook);
                                     borrowedBookManager_TableView.setItems(null);
                                     borrowedBookManager_TableView.setItems(listBorrowedBook);
                                 } else {
-                                    // Thông báo lỗi
                                     System.out.println("Trả sách không thành công!");
                                 }
                             }
@@ -966,16 +959,12 @@ public class DashBoardController implements Initializable {
             }
         });
 
-        // Xử lý khi bấm nút historyBook
         btn_historyBook.setOnAction(event -> {
-            // Hiển thị lại danh sách đầy đủ (bao gồm sách đã trả)
             listBorrowedBook.clear();
             listBorrowedBook.addAll(database.getBorrowedBook());
 
-            // Hiển thị cột return_date
             col_returnDate_mng.setVisible(true);
 
-            // Xóa cột action (nếu có)
             borrowedBookManager_TableView.getColumns().removeIf(col -> col.getText().equals("Action"));
         });
 
@@ -988,7 +977,6 @@ public class DashBoardController implements Initializable {
         col_dueDate_mng.setCellValueFactory(new PropertyValueFactory<>("due_date"));
         col_returnDate_mng.setCellValueFactory(new PropertyValueFactory<>("return_date"));
 
-        // Gán danh sách vào TableView
         borrowedBookManager_TableView.setItems(listBorrowedBook);
     }
 

@@ -123,15 +123,12 @@ public class DetailBookController implements Initializable {
         String studentNumber = getData.numberOfUser;
         String isbn = isbn_books.getText();
 
-        // Gọi phương thức saveBook để lưu thông tin sách
+
         boolean isSaved = LibraryDatabase.getInstance().saveBook(studentNumber, isbn);
 
-        // Hiển thị thông báo cho người dùng
         if (isSaved) {
-            // Thông báo thành công
             showAlert(Alert.AlertType.INFORMATION, "Success", "The book has been saved successfully!");
         } else {
-            // Thông báo sách đã được lưu rồi
             showAlert(Alert.AlertType.ERROR, "Error", "This book has already been saved!");
         }
 
@@ -148,14 +145,12 @@ public class DetailBookController implements Initializable {
                 return;
             }
 
-            String studentNumber = getData.numberOfUser; // Lấy số sinh viên đang đăng nhập
-            String isbn = isbn_books.getText(); // Lấy mã ISBN từ giao diện (Label)
+            String studentNumber = getData.numberOfUser;
+            String isbn = isbn_books.getText();
 
             if (isbn != null && !isbn.isEmpty()) {
-                // Gọi hàm borrowBook để xử lý logic
                 boolean isSuccess = LibraryDatabase.getInstance().borrowBook(studentNumber, isbn);
 
-                // Hiển thị thông báo kết quả
                 if (isSuccess) {
                     showAlert(Alert.AlertType.INFORMATION, "Thành công", "Mượn sách thành công!");
 
@@ -173,12 +168,10 @@ public class DetailBookController implements Initializable {
             if (actionEvent.getSource() == back_to_Dashboard) {
                 Parent root1 = back_to_Dashboard.getParent();
 
-                // Tạo hiệu ứng mờ dần cho cửa sổ hiện tại
                 FadeTransition fadeOut = new FadeTransition(Duration.millis(500), root1);
                 fadeOut.setFromValue(1.0);
                 fadeOut.setToValue(0.0);
 
-                // Bắt đầu hiệu ứng
                 fadeOut.setOnFinished(event -> {
                     root1.getScene().getWindow().hide();
                 });
@@ -241,7 +234,6 @@ public class DetailBookController implements Initializable {
 //        category_book.layoutYProperty().bind(author_Book.layoutYProperty().add(author_Book.heightProperty()).add(10));
         description_book.setText(description);
 
-        // Cập nhật hình ảnh sách
         try {
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 image_book.setImage(new javafx.scene.image.Image(imageUrl, true));
@@ -253,7 +245,6 @@ public class DetailBookController implements Initializable {
 
     public void addBookToLibrary() throws IOException {
 
-        // Only a manager can add a book to the library
         if ("STUDENT".equals(typeOfUser)) {
             return;
         }
@@ -269,15 +260,12 @@ public class DetailBookController implements Initializable {
                 path_ImageBook.getText()
         );
 
-        // Check if an existing DashBoard stage is open
         Stage existingStage = StageManager.getStage("DashBoard");
         if (existingStage != null) {
-            // Close the existing DashBoard stage
             existingStage.close();
             StageManager.removeStage("DashBoard");
         }
 
-        // Load the new DashBoard stage
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
         Parent root = loader.load();
 
@@ -290,13 +278,11 @@ public class DetailBookController implements Initializable {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
-        stage.setTitle("DashBoard"); // Set the title for tracking
+        stage.setTitle("DashBoard");
         stage.show();
 
-        // Register the new stage in StageManager
         StageManager.addStage("DashBoard", stage);
 
-        // Hide the current window (if necessary)
         btn_addBookToLib.getScene().getWindow().hide();
     }
 

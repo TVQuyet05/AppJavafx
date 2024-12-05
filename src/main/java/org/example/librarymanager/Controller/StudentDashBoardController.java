@@ -244,11 +244,10 @@ public class StudentDashBoardController implements Initializable {
 
         List<Book> recommendedBooks = database.getRecommendedBooks(studentNumber);
 
-        // Kiểm tra số lượng sách gợi ý
         if (recommendedBooks.size() > 0) {
             Book book1 = recommendedBooks.get(0);
             recommendedLabel1.setText(book1.getTitle());
-            recommendedBookImg1.setImage(new Image(book1.getImage())); // Đường dẫn ảnh từ database
+            recommendedBookImg1.setImage(new Image(book1.getImage()));
         }
 
         if (recommendedBooks.size() > 1) {
@@ -271,17 +270,16 @@ public class StudentDashBoardController implements Initializable {
 
         String studentNumber = getData.numberOfUser;
 
-        // Lấy danh sách sách yêu thích của học sinh hiện tại
+
         ObservableList<Book> favBookList = database.getFavBook(studentNumber);
 
-        // Thiết lập giá trị cho các cột TableView
+
         fav_id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         fav_title_col.setCellValueFactory(new PropertyValueFactory<>("title"));
         fav_author_col.setCellValueFactory(new PropertyValueFactory<>("author"));
         fav_genre_col.setCellValueFactory(new PropertyValueFactory<>("genre"));
         fav_date_col.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        // Thêm cột hành động "Xóa"
         fav_action_col.setCellFactory(column -> new TableCell<>() {
             private final Button actionButton = new Button("Delete");
 
@@ -295,9 +293,8 @@ public class StudentDashBoardController implements Initializable {
                 } else {
                     actionButton.setOnAction(event -> {
                         Book book = getTableView().getItems().get(getIndex());
-                        String bookId = book.getId(); // Lấy book_id để xóa trong database
+                        String bookId = book.getId();
 
-                        // Hiển thị hộp thoại xác nhận trước khi xóa
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                                 "Bạn có chắc muốn xóa sách \"" + book.getTitle() + "\" khỏi danh sách yêu thích?",
                                 ButtonType.YES, ButtonType.NO);
@@ -305,13 +302,10 @@ public class StudentDashBoardController implements Initializable {
                         alert.showAndWait();
 
                         if (alert.getResult() == ButtonType.YES) {
-                            // Xóa dữ liệu trong bảng savebook
                             if (database.deleteFavBook(bookId)) {
-                                // Nếu xóa thành công, xóa sách khỏi TableView
                                 favBookList.remove(book);
                                 System.out.println("Đã xóa sách khỏi danh sách yêu thích: " + book.getTitle());
                             } else {
-                                // Thông báo lỗi nếu không xóa được
                                 Alert errorAlert = new Alert(Alert.AlertType.ERROR,
                                         "Không thể xóa sách khỏi cơ sở dữ liệu.", ButtonType.OK);
                                 errorAlert.show();
@@ -324,7 +318,6 @@ public class StudentDashBoardController implements Initializable {
             }
         });
 
-        // Gán danh sách vào TableView
         favBook.setItems(favBookList);
 
         System.out.println("Hiển thị danh sách sách yêu thích thành công!");
@@ -356,10 +349,9 @@ public class StudentDashBoardController implements Initializable {
                     deleteButton.setOnAction(event -> {
 
                         CommentBook commentBook = getTableView().getItems().get(getIndex());
-                        String bookId = commentBook.getId(); // Lấy ID sách
-                        String studentNumber = getData.numberOfUser; // Lấy số sinh viên từ getData
+                        String bookId = commentBook.getId();
+                        String studentNumber = getData.numberOfUser;
 
-                        // Hiển thị hộp thoại xác nhận trước khi xóa
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                                 "Bạn có chắc muốn xóa bình luận về sách \"" + commentBook.getTitle() + "\"?",
                                 ButtonType.YES, ButtonType.NO);
@@ -367,13 +359,10 @@ public class StudentDashBoardController implements Initializable {
                         alert.showAndWait();
 
                         if (alert.getResult() == ButtonType.YES) {
-                            // Thực hiện xóa bình luận
                             if (database.deleteComment(bookId, studentNumber)) {
-                                // Nếu xóa thành công, cập nhật TableView
                                 listCommentBook.remove(commentBook);
                                 System.out.println("Đã xóa bình luận về sách: " + commentBook.getTitle());
                             } else {
-                                // Thông báo lỗi nếu không xóa được
                                 Alert errorAlert = new Alert(Alert.AlertType.ERROR,
                                         "Không thể xóa bình luận khỏi cơ sở dữ liệu.", ButtonType.OK);
                                 errorAlert.show();
@@ -386,7 +375,6 @@ public class StudentDashBoardController implements Initializable {
             }
         });
 
-        // Gán danh sách vào TableView
         cmtBookTab.setItems(listCommentBook);
 
         System.out.println("Hiển thị danh sách bình luận thành công!");
@@ -538,7 +526,6 @@ public class StudentDashBoardController implements Initializable {
 
     private BorrowedBook selectedBook;
 
-    // Hiển thị form review
     public void showReviewForm(BorrowedBook book) {
         selectedBook = book;
         commentBoxTextField.clear();
@@ -551,7 +538,6 @@ public class StudentDashBoardController implements Initializable {
         borrowedBookStudent_TableView.setVisible(false);
     }
 
-    // Lấy giá trị đánh giá từ các CheckBox
     private int getSelectedJudge() {
         if (oneJudge.isSelected()) return 1;
         if (twoJudge.isSelected()) return 2;
@@ -561,7 +547,6 @@ public class StudentDashBoardController implements Initializable {
         return 0;
     }
 
-    // Nút xử lý trả sách và đánh giá
     @FXML
     private void handleReturnSubmitButton(ActionEvent event) {
         if (selectedBook == null) {
@@ -569,13 +554,12 @@ public class StudentDashBoardController implements Initializable {
             return;
         }
 
-        // Kiểm tra nếu sách đã được trả
+
         if (selectedBook.getReturn_date() != null) {
             showAlert("Error", "This book has already been returned.");
             return;
         }
 
-        // Lấy comment và đánh giá
         String comment = commentBoxTextField.getText().trim();
         if (comment.isEmpty()) {
             comment = "No comment"; // Giá trị mặc định nếu người dùng không nhập
@@ -589,7 +573,6 @@ public class StudentDashBoardController implements Initializable {
 
         LibraryDatabase database = LibraryDatabase.getInstance();
 
-        // Thêm đánh giá vào bảng commentBook và reviewBook
         boolean reviewSuccess = database.insertReview(
                 selectedBook.getId(),
                 selectedBook.getStudentNumber(),
