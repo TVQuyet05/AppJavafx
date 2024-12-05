@@ -24,6 +24,7 @@ import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Service.LibraryDatabase;
 import org.example.librarymanager.Service.QRCodeBook;
+import org.example.librarymanager.Util.StageManager;
 import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
@@ -252,23 +253,36 @@ public class DetailBookController implements Initializable {
 
     public void addBookToLibrary() throws IOException {
 
-        // Only manager can't add book to library
-        if(typeOfUser == "STUDENT") {
+        // Only a manager can add a book to the library
+        if ("STUDENT".equals(typeOfUser)) {
             return;
         }
 
-        Book newbook = new Book(isbn_books.getText(), name_Book.getText(), author_Book.getText(),
-                                category_book.getText(), publication_date_Book.getText(), description_book.getText(),
-                                Integer.parseInt(label_quantityBook.getText()), path_ImageBook.getText());
+        Book newbook = new Book(
+                isbn_books.getText(),
+                name_Book.getText(),
+                author_Book.getText(),
+                category_book.getText(),
+                publication_date_Book.getText(),
+                description_book.getText(),
+                Integer.parseInt(label_quantityBook.getText()),
+                path_ImageBook.getText()
+        );
 
+        // Check if an existing DashBoard stage is open
+        Stage existingStage = StageManager.getStage("DashBoard");
+        if (existingStage != null) {
+            // Close the existing DashBoard stage
+            existingStage.close();
+            StageManager.removeStage("DashBoard");
+        }
 
+        // Load the new DashBoard stage
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DashBoard.fxml"));
         Parent root = loader.load();
 
         DashBoardController controller = loader.getController();
-
         controller.addBooks();
-
         controller.setInfoForBook(newbook);
 
         Stage stage = new Stage();
@@ -276,13 +290,16 @@ public class DetailBookController implements Initializable {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        stage.setTitle("DashBoard"); // Set the title for tracking
         stage.show();
 
-        Parent root2 = btn_addBookToLib.getParent();
+        // Register the new stage in StageManager
+        StageManager.addStage("DashBoard", stage);
 
-        root2.getScene().getWindow().hide();
-
+        // Hide the current window (if necessary)
+        btn_addBookToLib.getScene().getWindow().hide();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

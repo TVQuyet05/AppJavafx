@@ -32,6 +32,7 @@ import org.example.librarymanager.Model.BorrowedBook;
 import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
+import org.example.librarymanager.Util.StageManager;
 
 
 import java.io.IOException;
@@ -548,7 +549,9 @@ public class DashBoardController implements Initializable {
         int quantity = 0;
 
         if(!text_quantity.matches("\\d+")) {
-            //Please fill number
+
+            textField_add_Quantity.setText("Please fill number quantity!");
+
             return;
         }
 
@@ -567,6 +570,8 @@ public class DashBoardController implements Initializable {
 
         database.addBook(newbook);
 
+        successful();
+
     }
 
     public void updateBookInDatabase() {
@@ -584,6 +589,7 @@ public class DashBoardController implements Initializable {
 
         if(!text_quantity.matches("\\d+")) {
             //Please fill number
+            textField_add_Quantity.setText("Please fill number quantity!");
             return;
         }
 
@@ -595,7 +601,9 @@ public class DashBoardController implements Initializable {
 
         Book updatedBook = new Book(isbn, book_title, author, genre, date_string, description, quantity, path_image);
 
-        database.updateBook(updatedBook);;
+        database.updateBook(updatedBook);
+
+        successful();
     }
 
     public void deleteBookInDatabase() {
@@ -606,6 +614,8 @@ public class DashBoardController implements Initializable {
         database.deleteBook(isbn);
 
         textField_add_Quantity.setText("0");
+
+        successful();
     }
 
     public void showSignUpAccount() {
@@ -723,11 +733,19 @@ public class DashBoardController implements Initializable {
 
     }
 
+
     public void openViewAllBooks() {
-        // Create a new thread to open the second stage
+        // Check if the ViewAllBooks stage is already open
+        Stage existingStage = StageManager.getStage("ViewAllBooks");
+        if (existingStage != null) {
+            // Close the existing stage
+            existingStage.close();
+            StageManager.removeStage("ViewAllBooks");
+        }
+
+        // Create a new thread to open the new stage
         Thread viewAllBooksThread = new Thread(() -> {
             try {
-
                 // Load the FXML file
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
 
@@ -755,7 +773,12 @@ public class DashBoardController implements Initializable {
 
                         // Set the scene and display the stage
                         stage.setScene(scene);
+                        stage.setTitle("ViewAllBooks"); // Set a title for tracking
                         stage.show();
+
+                        // Register the new stage in the StageManager
+                        StageManager.addStage("ViewAllBooks", stage);
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         System.out.println("Error displaying ViewAllBooks stage.");
@@ -770,8 +793,8 @@ public class DashBoardController implements Initializable {
 
         // Start the thread to open the second stage
         viewAllBooksThread.start();
-
     }
+
 
 
     public void showMemberInformation() {

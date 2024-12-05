@@ -31,6 +31,7 @@ import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
 import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Service.LibraryDatabase;
+import org.example.librarymanager.Util.StageManager;
 import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
@@ -473,37 +474,68 @@ public class StudentDashBoardController implements Initializable {
 
 
     public void openViewAllBooks() {
-        try {
-            // Load the FXML file
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
-
-            // Create a new Scene
-            Scene scene = new Scene(root);
-
-            Stage stage = new Stage();
-
-            // Add mouse event handlers for dragging the window
-            root.setOnMousePressed((MouseEvent event) -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
-
-            root.setOnMouseDragged((MouseEvent event) -> {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            });
-
-            // Set the stage to be transparent
-            stage.initStyle(StageStyle.TRANSPARENT);
-
-            // Set the scene and display the stage
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading ViewAllBooks.fxml");
+        // Check if the ViewAllBooks stage is already open
+        Stage existingStage = StageManager.getStage("ViewAllBooks");
+        if (existingStage != null) {
+            // Close the existing stage
+            existingStage.close();
+            StageManager.removeStage("ViewAllBooks");
         }
+
+        // Create a new thread to open the new stage
+        Thread viewAllBooksThread = new Thread(() -> {
+            try {
+                // Load the FXML file
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/example/librarymanager/ViewAllBooks.fxml")));
+
+                // Create a new Scene
+                Scene scene = new Scene(root);
+
+                // Use Platform.runLater to update the JavaFX UI
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = new Stage();
+
+                        // Add mouse event handlers for dragging the window
+                        root.setOnMousePressed((MouseEvent event) -> {
+                            x = event.getSceneX();
+                            y = event.getSceneY();
+                        });
+
+                        root.setOnMouseDragged((MouseEvent event) -> {
+                            stage.setX(event.getScreenX() - x);
+                            stage.setY(event.getScreenY() - y);
+                        });
+
+                        // Set the stage to be transparent
+                        stage.initStyle(StageStyle.TRANSPARENT);
+
+                        // Set the scene and display the stage
+                        stage.setScene(scene);
+                        stage.setTitle("ViewAllBooks"); // Set a title for tracking
+                        stage.show();
+
+                        // Register the new stage in the StageManager
+                        StageManager.addStage("ViewAllBooks", stage);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error displaying ViewAllBooks stage.");
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error loading ViewAllBooks.fxml");
+            }
+        });
+
+        // Start the thread to open the second stage
+        viewAllBooksThread.start();
     }
+
+
+
     private BorrowedBook selectedBook;
 
     // Hiển thị form review

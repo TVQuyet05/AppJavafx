@@ -20,6 +20,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
+import org.example.librarymanager.Util.StageManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -251,6 +252,7 @@ public class LoginScreenController implements Initializable {
                                 fadeIn.setFromValue(0.0);
                                 fadeIn.setToValue(1.0);
 
+                                StageManager.addStage("DashBoard", stage);
                                 stage.initStyle(StageStyle.TRANSPARENT);
                                 stage.setScene(scene);
                                 stage.show();
