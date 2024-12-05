@@ -650,6 +650,50 @@ public class LibraryDatabase {
     }
 
 
+    public ObservableList<CommentBook> getCommentBooksForManager() {
+        ObservableList<CommentBook> commentBooks = FXCollections.observableArrayList();
+        String query = """
+        SELECT b.book_id,
+            r.studentNumber, s.name AS studentName,
+            b.book_title, r.comment, r.judge
+        FROM reviewbook r
+        JOIN student s ON r.studentNumber = s.studentNumber
+        JOIN book b ON r.book_id = b.book_id
+    """;
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                CommentBook commentBook = new CommentBook(
+                        rs.getString("book_id"),           // ID sách
+                        rs.getString("book_title"),       // Tên sách
+                        "",                               // Tác giả (nếu cần)
+                        rs.getString("comment"),         // Bình luận
+                        rs.getInt("judge"),              // Đánh giá
+                        rs.getString("studentNumber"),   // Mã sinh viên
+                        rs.getString("studentName")      // Tên sinh viên
+                );
+                commentBooks.add(commentBook);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return commentBooks;
+    }
+
+    public boolean deleteReview(String studentNumber, String bookId) {
+        String query = "DELETE FROM reviewbook WHERE studentNumber = ? AND book_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, studentNumber);
+            stmt.setString(2, bookId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public ObservableList<CommentBook> getCommentsByISBN(String isbn) {
         ObservableList<CommentBook> commentBookList = FXCollections.observableArrayList();
 
@@ -786,6 +830,21 @@ public class LibraryDatabase {
             return false;
         }
     }
+    public void deleteComment(CommentBook commentBook) {
+        String query = "DELETE FROM reviewbook WHERE studentNumber = ? AND book_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, commentBook.getStudentNumber());
+            pstmt.setString(2, commentBook.getId()); // ID sách
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public ObservableList<BorrowedBook> getBorrowedBook() {
         Connection connection = getConnection();

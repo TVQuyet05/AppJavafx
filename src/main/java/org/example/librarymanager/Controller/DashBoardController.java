@@ -4,6 +4,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -27,6 +29,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.librarymanager.Model.Book;
 import org.example.librarymanager.Model.BorrowedBook;
+import org.example.librarymanager.Model.CommentBook;
 import org.example.librarymanager.Model.Student;
 import org.example.librarymanager.Service.LibraryDatabase;
 
@@ -238,9 +241,66 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private VBox chartContainer;
+    @FXML
+    private TableView<CommentBook> commentBookTable;
+    @FXML
+    private TableColumn<CommentBook, String> studentNumberColumn;
+    @FXML
+    private TableColumn<CommentBook, String> studentNameColumn;
+    @FXML
+    private TableColumn<CommentBook, String> bookTitleColumn;
+    @FXML
+    private TableColumn<CommentBook, String> commentColumn;
+    @FXML
+    private TableColumn<CommentBook, Integer> judgeColumn;
+    @FXML
+    private TableColumn<CommentBook, Void> colAction;
 
     private double x = 0;
     private double y = 0;
+
+
+
+    @FXML
+    private void showCommentBook() {
+        // Lấy dữ liệu từ LibraryDatabase
+        ObservableList<CommentBook> commentBooks = LibraryDatabase.getInstance().getCommentBooksForManager();
+
+        // Thiết lập các cột
+        studentNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudentNumber()));
+        studentNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudentName()));
+        bookTitleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        commentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
+        judgeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getJudge()).asObject());
+
+        // Thêm cột xóa
+        colAction.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    CommentBook commentBook = getTableView().getItems().get(getIndex());
+                    LibraryDatabase.getInstance().deleteComment(commentBook); // Xóa bình luận khỏi cơ sở dữ liệu
+                    showCommentBook(); // Tải lại bảng sau khi xóa
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+
+        // Gán dữ liệu vào bảng
+        commentBookTable.setItems(commentBooks);
+    }
+
+
 
     private void setGenrePieChart() {
         // Query để lấy tổng số lượng sách theo thể loại, sắp xếp giảm dần
@@ -728,7 +788,7 @@ public class DashBoardController implements Initializable {
         btn_searchStudent.setOnAction(event -> {
             String text_search = textField_searchStudent.getText();
 
-            // Update the filter predicate based on the search termz`
+            // Update the filter predicate based on the search term
             filteredList.setPredicate(student -> {
                 if (text_search == null || text_search.isEmpty()) {
                     return true; // Show all students if the search term is empty
@@ -999,5 +1059,7 @@ public class DashBoardController implements Initializable {
         showSignUpAccount();
 
         showBorrowedBookForManager();
+        showCommentBook();
+
     }
 }

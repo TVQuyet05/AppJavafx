@@ -14,6 +14,14 @@ public class CommentBook extends  Book{
         this.judge = judge != null ? judge : 0;  // Nếu judge null thì mặc định là 0
     }
 
+    public CommentBook(String id, String title, String author, String comment, int judge, String studentNumber, String studentName) {
+        super(id, title, author);
+        this.comment = comment;
+        this.judge = judge;
+        this.studentNumber = studentNumber;
+        this.studentName= studentName;
+    }
+
     public CommentBook(String id, String title, String author, String comment, int judge) {
         super(id, title, author);
         this.comment =comment;
