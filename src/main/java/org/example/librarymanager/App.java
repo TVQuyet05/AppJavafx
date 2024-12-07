@@ -49,7 +49,6 @@ public class App extends Application {
         stage.show();
     }
 
-
     /**
      * @param args the command line arguments
      */

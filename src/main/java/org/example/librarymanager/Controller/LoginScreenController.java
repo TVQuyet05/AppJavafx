@@ -34,9 +34,6 @@ public class LoginScreenController implements Initializable {
     private Button close;
 
     @FXML
-    private Hyperlink forgotfield_password;
-
-    @FXML
     private Button login;
 
     @FXML
@@ -44,9 +41,6 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     private TextField field_password;
-
-    @FXML
-    private Button register;
 
     @FXML
     private TextField register_Users;
@@ -61,12 +55,6 @@ public class LoginScreenController implements Initializable {
     private TextField register_Class;
 
     @FXML
-    private Hyperlink register_SignIn;
-
-    @FXML
-    private Button signUp;
-
-    @FXML
     private TextField field_number;
 
     @FXML
@@ -74,9 +62,6 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     private AnchorPane signIn_Anchor;
-
-    @FXML
-    private AnchorPane forgot_Anchor;
 
     @FXML
     private AnchorPane mess_Success;
@@ -87,11 +72,6 @@ public class LoginScreenController implements Initializable {
     @FXML
     private AnchorPane currentPane = null;
 
-
-
-
-    @FXML
-    private Button forgotpass_submit;
 
     private double x = 0;
     private double y = 0;
@@ -320,14 +300,6 @@ public class LoginScreenController implements Initializable {
     }
 
     public void register_signIn() {
-        switchPain(signIn_Anchor);
-    }
-
-    public void forgotfield_password() {
-        switchPain(forgot_Anchor);
-    }
-
-    public void forgotfield_password_SignIn() {
         switchPain(signIn_Anchor);
     }
 

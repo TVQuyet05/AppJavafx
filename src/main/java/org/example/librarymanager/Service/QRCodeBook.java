@@ -22,6 +22,7 @@ public class QRCodeBook {
 
         // Convert the output stream to a ByteArrayInputStream for JavaFX Image
         ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
         return new Image(inputStream);
     }
 

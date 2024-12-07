@@ -24,6 +24,7 @@ public class StageManager {
         stages.remove(name);
     }
 
+
     // Get all available stages
     public static Map<String, Stage> getAllStages() {
         return stages;

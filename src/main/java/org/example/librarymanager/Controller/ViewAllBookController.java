@@ -29,13 +29,9 @@ import org.example.librarymanager.Service.GoogleBooksAPI;
 import org.example.librarymanager.Service.LibraryDatabase;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -59,13 +55,12 @@ public class ViewAllBookController implements Initializable {
     @FXML
     private TextField field_searchBook;
 
-    @FXML
-    private Button btn_searchBook;
 
 
     private void openBookDetail(String title, String author, String isbn,
                                 String publicationDate, String status,
-                                String category, String description, String imageUrl, int quantity, String preLink) {
+                                String category, String description,
+                                String imageUrl, int quantity, String preLink) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/DetailBook.fxml"));
             Parent root = loader.load();
@@ -100,7 +95,9 @@ public class ViewAllBookController implements Initializable {
     }
 
 
-    public HBox createBookCard(String title, String author, String isbn, String publicationDate , int quantity, String category, String description, String image, String preLink) {
+    public HBox createBookCard(String title, String author, String isbn,
+                               String publicationDate, int quantity, String category,
+                               String description, String image, String preLink) {
 
         // Tạo HBox chính để chia sách và thông tin
         HBox bookCard = new HBox();
@@ -240,15 +237,6 @@ public class ViewAllBookController implements Initializable {
 
     }
 
-    private void addFadeOutEffect(Node node, Runnable onFinished) {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(400));
-        fadeTransition.setNode(node);
-        fadeTransition.setFromValue(1.0);
-        fadeTransition.setToValue(0.0);
-        fadeTransition.setOnFinished(event -> onFinished.run());
-        fadeTransition.play();
-    }
 
     public void close() {
         Stage stage = (Stage) close.getScene().getWindow();

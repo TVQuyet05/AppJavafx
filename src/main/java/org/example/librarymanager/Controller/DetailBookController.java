@@ -2,10 +2,7 @@ package org.example.librarymanager.Controller;
 
 import com.google.zxing.WriterException;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -29,15 +25,12 @@ import org.example.librarymanager.Util.getData;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static org.example.librarymanager.Util.getData.typeOfUser;
 
 public class DetailBookController implements Initializable {
 
-    @FXML
-    private AnchorPane anchor_detail_Books;
 
     @FXML
     private Label author_Book;
@@ -85,9 +78,6 @@ public class DetailBookController implements Initializable {
     private Label label_quantityBook;
 
     @FXML
-    private ImageView qr_book;
-
-    @FXML
     private Label status_book;
 
     @FXML
@@ -102,10 +92,6 @@ public class DetailBookController implements Initializable {
     @FXML
     private TableColumn<?, ?> col_judge_cmtBook;
 
-//    @FXML
-//    private Button btn_addBookToLib;
-//    @FXML
-//    private Button save_book_button;
 
     private double x = 0;
     private double y = 0;
@@ -133,7 +119,6 @@ public class DetailBookController implements Initializable {
         }
 
     }
-
 
 
     @FXML

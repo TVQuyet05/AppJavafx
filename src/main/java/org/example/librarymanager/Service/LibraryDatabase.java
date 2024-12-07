@@ -970,7 +970,8 @@ public class LibraryDatabase {
         return recommendedBooks;
     }
 
-    public boolean updateStudentProfileController(String studentNumber, String password, String fullName, String className) {
+    public boolean updateStudentProfileController(String studentNumber,
+                                                  String password, String fullName, String className) {
         String query = """
         UPDATE student
         SET password = ?, name = ?, class = ?
@@ -1023,45 +1024,15 @@ public class LibraryDatabase {
     }
 
 
-    public void updateStudentProfile(String studentNumber, String password, String name, String studentClass) {
-        String query = """
-        UPDATE student
-        SET password = ?, name = ?, class = ?
-        WHERE studentNumber = ?
-    """;
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, password);
-            pstmt.setString(2, name);
-            pstmt.setString(3, studentClass);
-            pstmt.setString(4, studentNumber);
-
-            int rowsUpdated = pstmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("Cập nhật thông tin thành công!");
-            } else {
-                System.out.println("Không tìm thấy sinh viên với mã sinh viên: " + studentNumber);
+    public void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Database connection closed.");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
-
-
-
-//    public void closeConnection() {
-//        try {
-//            if (connection != null && !connection.isClosed()) {
-//                connection.close();
-//                System.out.println("Database connection closed.");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

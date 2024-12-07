@@ -52,51 +52,7 @@ import static org.example.librarymanager.Util.getData.nameOfUser;
 public class DashBoardController implements Initializable {
 
     @FXML
-    private Button In4;
-
-    @FXML
-    private Button addBooks;
-
-    @FXML
-    private Button addMembers;
-
-    @FXML
-    private Button deleteBooks;
-
-    @FXML
-    private Button home_Screen;
-
-    @FXML
-    private Button information;
-
-    @FXML
-    private Button borrowedBook;
-
-    @FXML
     private Button logOut;
-
-    @FXML
-    private Label numberStudent;
-
-    @FXML
-    private Button returnBooks;
-
-    @FXML
-    private Button searchBooks;
-
-
-    @FXML
-    private Button issue_right;
-
-    @FXML
-    private ImageView search_Image;
-
-    @FXML
-    private TextField search_TextField;
-
-    @FXML
-    private Button setting;
-
     @FXML
     private Button btn_historyBook;
 
@@ -134,9 +90,6 @@ public class DashBoardController implements Initializable {
     private AnchorPane anchor_AddBooks;
 
     @FXML
-    private AnchorPane anchor_FindBooks;
-
-    @FXML
     private AnchorPane anchor_HomeScreen;
 
     @FXML
@@ -158,12 +111,6 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane anchor_memberInformation;
-
-    @FXML
-    private PieChart pie_chart_1;
-
-    @FXML
-    private PieChart pie_chart_2;
 
     @FXML
     private TableView<Student> SignUpAccount_TableView;
@@ -242,24 +189,30 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private VBox chartContainer;
+
     @FXML
     private TableView<CommentBook> commentBookTable;
+
     @FXML
     private TableColumn<CommentBook, String> studentNumberColumn;
+
     @FXML
     private TableColumn<CommentBook, String> studentNameColumn;
+
     @FXML
     private TableColumn<CommentBook, String> bookTitleColumn;
+
     @FXML
     private TableColumn<CommentBook, String> commentColumn;
+
     @FXML
     private TableColumn<CommentBook, Integer> judgeColumn;
+
     @FXML
     private TableColumn<CommentBook, Void> colAction;
 
     private double x = 0;
     private double y = 0;
-
 
 
 
@@ -439,24 +392,7 @@ public class DashBoardController implements Initializable {
         }
     }
 
-    public void switchPain(AnchorPane nextPane) {
-        SignUpAccount_TableView.getSelectionModel().clearSelection();
-        FadeTransition fade = new FadeTransition(Duration.millis(300), currentPane);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.0);
-        fade.setOnFinished(event -> {
-            currentPane.setVisible(false);
-            nextPane.setVisible(true);
 
-            FadeTransition fade2 = new FadeTransition(Duration.millis(800), nextPane);
-            fade2.setFromValue(0.0);
-            fade2.setToValue(1.0);
-            fade2.play();
-
-            currentPane = nextPane;
-        });
-        fade.play();
-    }
 
     public void addBooks() {
         System.out.println("Go to addBook AnchorPane successfully!");
@@ -464,30 +400,6 @@ public class DashBoardController implements Initializable {
         switchPain(anchor_AddBooks);
     }
 
-    public void findBooks() {
-        switchPain(anchor_FindBooks);
-    }
-
-    public void showInfoStudent() {
-        switchPain(anchor_memberInformation);
-    }
-
-
-    public void deleteBooks() {
-        switchPain(anchor_deleteBooks);
-    }
-
-    public void borrowedBooks() {
-        switchPain(anchor_borrowedBooks);
-    }
-
-    public void addMembers() {
-        switchPain(anchor_addMember);
-    }
-
-    public void backHome() {
-        switchPain(anchor_HomeScreen);
-    }
 
     public void successful() {
         GaussianBlur gaussianBlur = new GaussianBlur();
@@ -503,18 +415,6 @@ public class DashBoardController implements Initializable {
         });
 
         pauseTransition.play();
-    }
-
-    public void detailBooks() {
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanager/BookDetail.fxml"));
-            Parent root = fxmlLoader.load();
-
-            Stage  stage = (Stage) anchor_DashBoard.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setInfoForBook(Book bookFromAPI) {
@@ -1045,16 +945,48 @@ public class DashBoardController implements Initializable {
 
     }
 
+    public void switchPain(AnchorPane nextPane) {
+        SignUpAccount_TableView.getSelectionModel().clearSelection();
+        FadeTransition fade = new FadeTransition(Duration.millis(300), currentPane);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.setOnFinished(event -> {
+            currentPane.setVisible(false);
+            nextPane.setVisible(true);
+
+            FadeTransition fade2 = new FadeTransition(Duration.millis(800), nextPane);
+            fade2.setFromValue(0.0);
+            fade2.setToValue(1.0);
+            fade2.play();
+
+            currentPane = nextPane;
+        });
+        fade.play();
+    }
+
+    public void showInfoStudent() {
+        switchPain(anchor_memberInformation);
+    }
+
+    public void deleteBooks() {
+        switchPain(anchor_deleteBooks);
+    }
+
+    public void borrowedBooks() {
+        switchPain(anchor_borrowedBooks);
+    }
+
+    public void addMembers() {
+        switchPain(anchor_addMember);
+    }
+
+    public void backHome() {
+        switchPain(anchor_HomeScreen);
+    }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-//        try {
-//            initializeDashBoard();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         SignUpAccount_TableView.getSelectionModel().clearSelection();
 
@@ -1070,6 +1002,7 @@ public class DashBoardController implements Initializable {
         showSignUpAccount();
 
         showBorrowedBookForManager();
+
         showCommentBook();
 
     }

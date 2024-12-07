@@ -3,12 +3,6 @@ import javafx.scene.image.Image;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -39,7 +32,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
-import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -50,24 +42,6 @@ import static org.example.librarymanager.Util.getData.numberOfUser;
 public class StudentDashBoardController implements Initializable {
 
     @FXML
-    private Button CommentBooks;
-
-    @FXML
-    private Button FavouriteBooks;
-
-    @FXML
-    private Button In4;
-
-    @FXML
-    private AnchorPane anchor_HomeScreen;
-
-    @FXML
-    private Button home_Screen;
-
-    @FXML
-    private Button information;
-
-    @FXML
     private Button logOut;
 
     @FXML
@@ -75,15 +49,6 @@ public class StudentDashBoardController implements Initializable {
 
     @FXML
     private Label label_Today;
-
-    @FXML
-    private Button returnBooks;
-
-    @FXML
-    private Button setting;
-
-    @FXML
-    private Button viewAllBooks;
 
     @FXML
     private AnchorPane commentBook_std;
@@ -142,11 +107,13 @@ public class StudentDashBoardController implements Initializable {
     private  TableColumn <CommentBook,Integer> cmt_judge_col;
     @FXML
     private  TableColumn <CommentBook, String> commentActionColumn;
+
     @FXML
     private AnchorPane currentPane = null;
-    private ObservableList<CommentBook> cmtBookList;
+
     double x = 0;
     double y = 0;
+
     @FXML
     private TableView<Object[]> topBorrowTable;
 
@@ -179,8 +146,6 @@ public class StudentDashBoardController implements Initializable {
     @FXML
     private TableColumn<BorrowedBook, String> returnActionColumn;
     @FXML
-    private Button returnSubmitButton;
-    @FXML
     private AnchorPane reviewAnchor;
     @FXML
     private TextField commentBoxTextField;
@@ -206,6 +171,8 @@ public class StudentDashBoardController implements Initializable {
     private CheckBox fourJudge;
     @FXML
     private CheckBox fiveJudge;
+
+    private BorrowedBook selectedBook;
 
     public void showTopFavTable(){
         List<Object[]> favBooks = LibraryDatabase.getInstance().getTopFavBook();
@@ -524,8 +491,6 @@ public class StudentDashBoardController implements Initializable {
 
 
 
-    private BorrowedBook selectedBook;
-
     public void showReviewForm(BorrowedBook book) {
         selectedBook = book;
         commentBoxTextField.clear();
@@ -650,23 +615,6 @@ public class StudentDashBoardController implements Initializable {
         });
 
         borrowedBookStudent_TableView.setItems(listBorrowedBooks);
-    }
-
-    // Thiết lập hành động cho các CheckBox
-    private void setupCheckBoxActions() {
-        CheckBox[] checkBoxes = {oneJudge, twoJudge, threeJudge, fourJudge, fiveJudge};
-
-        for (CheckBox checkBox : checkBoxes) {
-            checkBox.setOnAction(event -> {
-                if (checkBox.isSelected()) {
-                    for (CheckBox otherCheckBox : checkBoxes) {
-                        if (otherCheckBox != checkBox) {
-                            otherCheckBox.setSelected(false); // Bỏ chọn các checkbox khác
-                        }
-                    }
-                }
-            });
-        }
     }
 
     public void returnBook() {

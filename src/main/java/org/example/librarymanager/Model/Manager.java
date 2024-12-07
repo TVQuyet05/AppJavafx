@@ -4,7 +4,8 @@ public class Manager extends User {
 
     private final String managerNumber;
 
-    public Manager(String managerNumber, String password, String name) {
+    public Manager(String managerNumber,
+                   String password, String name) {
         super(name, password);
         this.managerNumber = managerNumber;
     }

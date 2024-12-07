@@ -1,7 +1,6 @@
 package org.example.librarymanager.Util;
 
 public class getData {
-
     // type is STUDENT or MANAGER
     public static String typeOfUser = "USER";
 

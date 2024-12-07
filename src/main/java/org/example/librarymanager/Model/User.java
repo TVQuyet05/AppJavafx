@@ -3,6 +3,7 @@ package org.example.librarymanager.Model;
 public abstract class User {
 
     private final String name;
+
     private final String password;
 
     public User(String name, String password) {

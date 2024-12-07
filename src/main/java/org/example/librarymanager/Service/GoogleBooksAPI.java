@@ -55,10 +55,6 @@ public class GoogleBooksAPI {
                 JsonObject book = item.getAsJsonObject();
                 JsonObject volumeInfo = book.getAsJsonObject("volumeInfo");
 
-//                System.out.println(volumeInfo.toString());
-//
-//                exit(0);
-
                 // Parse book details
                 String title = volumeInfo.has("title") ? volumeInfo.get("title").getAsString() : "No title available";
                 //String authors = volumeInfo.has("authors") ? volumeInfo.get("authors").toString() : "No authors available";

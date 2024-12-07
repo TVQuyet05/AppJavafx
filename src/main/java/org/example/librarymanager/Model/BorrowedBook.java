@@ -11,8 +11,9 @@ public class BorrowedBook extends Book {
     private Date due_date;
     private Date return_date;
 
-    public BorrowedBook(String studentNumber, String studentName, String book_id,
-                        String title, String author, String genre, String date, String image,
+    public BorrowedBook(String studentNumber, String studentName,
+                        String book_id, String title, String author,
+                        String genre, String date, String image,
                         Date borrow_date, Date due_date, Date return_date) {
 
         super(book_id, title, author, genre, date, image);

@@ -36,8 +36,7 @@ public class ProfileController implements Initializable {
     private TextField studentNumberProfile;
     @FXML
     private TextField passwordProfile;
-    @FXML
-    private Button updateProfileButton;
+
 
     @FXML
     private void onUpdateProfileButtonClick() {
